@@ -1,1 +1,4 @@
 language: java
+
+deploy:
+	skip_cleanup: true
