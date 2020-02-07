@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 echo "Building debug and release APKs..."
-./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
+./WalkWalkRevolution/gradlew :app:assembleDebug :app:assembleDebugAndroidTest
 
 echo "Downloading google-cloud-sdk..."
 wget --quiet --output-document=/tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
