@@ -46,6 +46,6 @@ jobs:
      if: (type = push AND branch IN (master, dev)) OR (type = pull_request)
      before_install:
         - openssl aes-256-cbc -K $encrypted_1ee928734d3c_key -iv $encrypted_1ee928734d3c_iv -in gcloud-service-key.json.enc -out gcloud-service-key.json -d
-        - chmod +x ./run_tests_on_firebase_test_lab.sh
+        - chmod +x run_tests_on_firebase_test_lab.sh
      script: ./WalkWalkRevolution/run_tests_on_firebase_test_lab.sh
 
