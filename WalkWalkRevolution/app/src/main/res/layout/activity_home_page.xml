@@ -6,4 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".HomePage">
 
+    <TextView
+        android:id="@+id/stepsTitleText"
+        android:layout_width="259dp"
+        android:layout_height="77dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="Daily Steps"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.085" />
+
+    <TextView
+        android:id="@+id/distanceTitleText"
+        android:layout_width="259dp"
+        android:layout_height="77dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="Distance"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.383" />
+
+    <Button
+        android:id="@+id/startButt"
+        android:layout_width="205dp"
+        android:layout_height="62dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="START"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.792" />
+
+    <Button
+        android:id="@+id/routesButt"
+        android:layout_width="205dp"
+        android:layout_height="62dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="ROUTES"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.941" />
+
+    <TextView
+        android:id="@+id/stepCountText"
+        android:layout_width="239dp"
+        android:layout_height="52dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="0 s"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.225" />
+
+    <TextView
+        android:id="@+id/distanceCountText"
+        android:layout_width="239dp"
+        android:layout_height="52dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="0 mi"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.515" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
