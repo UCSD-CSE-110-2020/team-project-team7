@@ -3,15 +3,22 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TreeSet;
 
 public class RoutesForm extends AppCompatActivity {
 
@@ -121,7 +128,6 @@ public class RoutesForm extends AppCompatActivity {
             seconds = Integer.parseInt(inputSeconds);
         }
 
-
         // Handle error for required fields, route name and starting point
         boolean error = false;
         if (routeName.matches("")) {
@@ -148,9 +154,10 @@ public class RoutesForm extends AppCompatActivity {
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
 
-        // TODO, add the route to sharedpreferecnes
-
-
+        // Save the route into the TreeSet routes list back in sharedPrefs
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this );
+        // TreeSaveManipulation.saveTreeSet(Route route, sharedPreferences);
 
         Intent intent = new Intent(this, RoutesList.class);
         startActivity(intent);
@@ -174,7 +181,7 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     /**
-     *
+     * Handles coming back from the SetDate Activity (Saving the new date chosen on the DatePIcker).
      * @param requestCode
      * @param resultCode
      * @param data
@@ -188,6 +195,5 @@ public class RoutesForm extends AppCompatActivity {
             }
         }
     }
-
 
 }
