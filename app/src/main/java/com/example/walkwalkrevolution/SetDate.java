@@ -82,7 +82,7 @@ public class SetDate extends AppCompatActivity {
             dayStr = "0" + dayStr;
         }
 
-        String date = "" + monthStr + "/" + dayStr + "/" + year;
+        String date = monthStr + "/" + dayStr + "/" + year;
 
         // Pass the new date back to the RoutesForm
         Intent intent = new Intent();
