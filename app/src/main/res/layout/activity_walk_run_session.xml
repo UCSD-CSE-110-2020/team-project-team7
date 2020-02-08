@@ -6,4 +6,89 @@
     android:layout_height="match_parent"
     tools:context=".WalkRunSession">
 
+    <TextView
+        android:id="@+id/activity_distance_text2"
+        android:layout_width="259dp"
+        android:layout_height="77dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="Steps"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.253" />
+
+    <TextView
+        android:id="@+id/activity_miles_number2"
+        android:layout_width="239dp"
+        android:layout_height="52dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="0 Steps"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="259dp"
+        android:layout_height="77dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="@string/timer"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114" />
+
+    <Button
+        android:id="@+id/stop_btn"
+        android:layout_width="205dp"
+        android:layout_height="62dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="@string/stop_btn"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.792" />
+
+    <TextView
+        android:id="@+id/activity_distance_text"
+        android:layout_width="259dp"
+        android:layout_height="77dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="Distance"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.513" />
+
+    <TextView
+        android:id="@+id/activity_miles_number"
+        android:layout_width="239dp"
+        android:layout_height="52dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="0 mi"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.64" />
 </androidx.constraintlayout.widget.ConstraintLayout>
