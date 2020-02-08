@@ -12,6 +12,7 @@
         <activity android:name=".RoutesForm" />
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
+        <activity android:name=".StepCountActivity" />
         <activity android:name=".HomePage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
