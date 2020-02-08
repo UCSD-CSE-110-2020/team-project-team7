@@ -6,4 +6,17 @@
     <string name="input_height_msg">Input your height below</string>
     <string name="height_save_btn">Save</string>>
     <string name="default_height">175</string>>
+
+    <!--Route Form/List-->
+    <string name="route_details">Route Details</string>
+    <string name="route_name">Route Name</string>
+    <string name="starting_point">Starting Point</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="steps">Steps</string>
+    <string name="distance">Distance</string>
+    <string name="colon">:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_route_date">Choose the date of your Route!</string>
 </resources>
