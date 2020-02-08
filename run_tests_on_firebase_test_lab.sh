@@ -21,6 +21,6 @@ gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
 echo "Running Android Tests with Firebase Test Lab..."
 gcloud firebase test android run \
    --type instrumentation \
-   --app ./WalkWalkRevolution/app/build/outputs/apk/debug/app-debug.apk \
-   --test ./WalkWalkRevolution/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+   --app ./app/build/outputs/apk/debug/app-debug.apk \
+   --test ./app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 
