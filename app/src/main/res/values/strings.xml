@@ -3,4 +3,7 @@
 
     <string name="stop_btn">Stop</string>>
     <string name="timer">placeholder</string>
+    <string name="input_height_msg">Input your height below</string>
+    <string name="height_save_btn">Save</string>>
+    <string name="default_height">175</string>>
 </resources>
