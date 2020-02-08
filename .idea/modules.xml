@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/WALK_WALK_REVOLUTION.iml" filepath="$PROJECT_DIR$/.idea/WALK_WALK_REVOLUTION.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WalkWalkRevolution.iml" filepath="$PROJECT_DIR$/WalkWalkRevolution.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>

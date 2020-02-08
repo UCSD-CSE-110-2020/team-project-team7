@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">WalkWalkRevolution</string>
+
+    <!--Route Form/List-->
+    <string name="route_details">Route Details</string>
+    <string name="route_name">Route Name</string>
+    <string name="starting_point">Starting Point</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="steps">Steps</string>
+    <string name="distance">Distance</string>
+    <string name="colon">:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_route_date">Choose the date of your Route!</string>
 </resources>
