@@ -150,6 +150,8 @@ public class RoutesForm extends AppCompatActivity {
 
         // TODO, add the route to sharedpreferecnes
 
+
+
         Intent intent = new Intent(this, RoutesList.class);
         startActivity(intent);
     }
