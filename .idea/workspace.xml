@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AndroidLayouts">
-    <shared>
-      <config />
-    </shared>
-  </component>
-  <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
-  </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="100a00c6-2d77-414b-9a12-256077d1a4fc" name="Default Changelist" comment="" />
-=======
     <list default="true" id="100a00c6-2d77-414b-9a12-256077d1a4fc" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/SetDate.java" afterDir="false" />
@@ -25,7 +14,6 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_routes_form.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_routes_form.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
->>>>>>> master
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,25 +21,6 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DefaultGradleProjectSettings">
-<<<<<<< HEAD
-    <option name="isMigrated" value="true" />
-  </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_26dd" />
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <projects_view />
-      </state>
-    </system>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
-=======
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
@@ -69,24 +38,10 @@
                 <element signature="e#3769#3889#0" expanded="true" />
                 <element signature="e#3888#3889#0" expanded="true" />
               </folding>
->>>>>>> master
             </state>
           </provider>
         </entry>
       </file>
-<<<<<<< HEAD
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_height_form.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="36" lean-forward="true" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
-              <folding>
-                <element signature="e#595#621#0" expanded="true" />
-                <element signature="e#1189#1214#0" expanded="true" />
-                <element signature="e#1729#1753#0" expanded="true" />
-              </folding>
-=======
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -101,45 +56,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
->>>>>>> master
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-<<<<<<< HEAD
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-              <folding>
-                <element signature="e#607#1237#0" expanded="true" />
-                <element signature="e#1236#1237#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="39" lean-forward="true" selection-start-column="39" selection-end-column="39" />
-=======
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
->>>>>>> master
             </state>
           </provider>
         </entry>
@@ -153,75 +78,25 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/WalkWalkRevolution/app/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_walk_run_session.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_height_form.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-<<<<<<< HEAD
-    <option name="x" value="960" />
-    <option name="y" value="23" />
-    <option name="width" value="960" />
-    <option name="height" value="1177" />
-=======
     <option name="x" value="174" />
     <option name="y" value="57" />
     <option name="width" value="1356" />
     <option name="height" value="843" />
->>>>>>> master
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView">
+      <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-<<<<<<< HEAD
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="walkwalkrevolution" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java (generated)" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-=======
               <item name="WalkWalkRevolution" type="b2602c69:ProjectViewProjectNode" />
               <item name="wwr" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
@@ -259,7 +134,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="walkwalkrevolution" type="462c0819:PsiDirectoryNode" />
->>>>>>> master
             </path>
           </expand>
           <select />
@@ -267,34 +141,14 @@
       </pane>
       <pane id="PackagesPane" />
       <pane id="Scope" />
-<<<<<<< HEAD
-      <pane id="ProjectPane" />
-    </panes>
-  </component>
-  <component name="PropertiesComponent">
-    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_26dd" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-02-08T17:08:13.464Z" />
-=======
       <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
->>>>>>> master
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
-<<<<<<< HEAD
-  </component>
-  <component name="RecentsManager">
-    <key name="android.template.packageName">
-      <recent name="com.example.walkwalkrevolution" />
-    </key>
-    <key name="android.template.parentActivityClass">
-      <recent name="" />
-    </key>
-=======
->>>>>>> master
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -308,11 +162,7 @@
       </list>
     </option>
   </component>
-<<<<<<< HEAD
-  <component name="RunManager">
-=======
   <component name="RunManager" selected="Android App.RoutesFrm">
->>>>>>> master
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -320,8 +170,6 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-<<<<<<< HEAD
-=======
     <configuration name="RoutesFrm" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="app" />
       <option name="DEPLOY" value="true" />
@@ -375,7 +223,6 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
->>>>>>> master
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="app" />
       <option name="DEPLOY" value="true" />
@@ -429,13 +276,10 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-<<<<<<< HEAD
-=======
     <list>
       <item itemvalue="Android App.app" />
       <item itemvalue="Android App.RoutesFrm" />
     </list>
->>>>>>> master
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -450,60 +294,19 @@
     </task>
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-<<<<<<< HEAD
-    <frame x="0" y="23" width="1920" height="1177" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.2342918" />
-=======
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Build Variants" side_tool="true" />
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.23076923" />
->>>>>>> master
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
       <window_info id="Resources Explorer" order="5" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Favorites" order="7" side_tool="true" />
-<<<<<<< HEAD
-      <window_info id="Build Variants" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="0" />
-      <window_info anchor="bottom" id="TODO" order="1" sideWeight="0.49946752" weight="0.3299539" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="2" sideWeight="0.49627262" visible="true" weight="0.3299539" />
-      <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.5037274" side_tool="true" visible="true" weight="0.3299539" />
-      <window_info anchor="bottom" id="Run" order="4" sideWeight="0.49840257" weight="0.3299539" />
-      <window_info anchor="bottom" id="Logcat" order="5" sideWeight="0.49893504" weight="0.3299539" />
-      <window_info anchor="bottom" id="Android Profiler" order="6" sideWeight="0.49946752" weight="0.3299539" />
-      <window_info anchor="bottom" id="Debug" order="7" />
-      <window_info anchor="bottom" id="Build" order="8" sideWeight="0.49520767" weight="0.22764976" />
-      <window_info anchor="bottom" id="Find" order="9" />
-      <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="right" id="Theme Preview" order="1" />
-      <window_info anchor="right" id="Palette&#9;" order="2" />
-      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
-      <window_info anchor="right" id="Gradle" order="4" />
-      <window_info anchor="right" id="Preview" order="5" />
-    </layout>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/.travis.yml" />
-    <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/app/build.gradle" />
-=======
       <window_info anchor="bottom" id="Run" />
       <window_info anchor="bottom" id="Logcat" />
       <window_info anchor="bottom" id="Android Profiler" />
@@ -521,53 +324,10 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
->>>>>>> master
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/settings.gradle" />
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/gradlew.bat" />
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/build.gradle" />
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/gradle.properties" />
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/gradlew" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/ui/login/LoginActivity.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_height_form.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_routes_list.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_routes_form.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_walk_run_session.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="52" column="11" selection-start-line="52" selection-start-column="11" selection-end-line="52" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="39" lean-forward="true" selection-start-column="39" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="e#607#1237#0" expanded="true" />
-            <element signature="e#1236#1237#0" expanded="true" />
-=======
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/app/build.gradle" />
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/.travis.yml" />
     <entry file="file://$PROJECT_DIR$/WalkWalkRevolution/gradlew" />
@@ -587,34 +347,10 @@
             <element signature="e#3660#3661#0" expanded="true" />
             <element signature="e#3769#3889#0" expanded="true" />
             <element signature="e#3888#3889#0" expanded="true" />
->>>>>>> master
           </folding>
         </state>
       </provider>
     </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home_page.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_height_form.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="36" lean-forward="true" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
-          <folding>
-            <element signature="e#595#621#0" expanded="true" />
-            <element signature="e#1189#1214#0" expanded="true" />
-            <element signature="e#1729#1753#0" expanded="true" />
-          </folding>
-=======
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -626,7 +362,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
->>>>>>> master
         </state>
       </provider>
     </entry>
