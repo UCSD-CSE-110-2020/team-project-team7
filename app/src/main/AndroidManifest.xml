@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RoutesForm" />
+        <activity android:name=".RoutesForm" android:exported="true"/>
+        <activity android:name=".SetDate"/>
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".HomePage">
