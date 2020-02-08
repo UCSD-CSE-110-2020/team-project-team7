@@ -24,7 +24,7 @@ public class WalkRunSession extends AppCompatActivity {
         setContentView(R.layout.activity_walk_run_session);
 
 
-        timerText = findViewById(R.id.timer);
+        timerText = findViewById(R.id.timer_text);
         TimerCount runner = new TimerCount();
         String result = timerText.getText().toString();
         runner.execute(result);
