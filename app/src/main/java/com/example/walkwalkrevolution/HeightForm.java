@@ -33,4 +33,13 @@ public class HeightForm extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * prevents the user from pressing the back button to go back to the home screen
+     */
+    @Override
+    public void onBackPressed(){
+        Toast.makeText(HeightForm.this, "Please press the save button to go back", Toast.LENGTH_SHORT).show();
+    }
+
 }

@@ -52,7 +52,7 @@ public class HomePage extends AppCompatActivity {
      * first time the user opens the app
      */
     public void firstLogin(SharedPreferences pref){
-        //pref.edit().putBoolean("my_first_time", true).commit();
+        pref.edit().putBoolean("my_first_time", true).commit();
         if (pref.getBoolean("my_first_time", true)) {
             //the app is being launched for first time
             launchFirstSession();

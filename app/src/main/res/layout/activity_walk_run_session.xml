@@ -84,7 +84,7 @@
         android:layout_height="52dp"
         android:fontFamily="casual"
         android:gravity="center"
-        android:text=""
+        android:text="0 miles"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
