@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.TreeSet;
 
@@ -24,15 +27,22 @@ public class RoutesList extends AppCompatActivity {
 
     private static final String TAG = "RoutesList";
 
-    public TreeSet<Route> routes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
 
-        //checkForRoutesDatabaseExistence();
         initRecyclerView();
+
+        Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
+
+        addRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RoutesList.this, RoutesForm.class));
+            }
+        });
 
 
     }
@@ -49,65 +59,4 @@ public class RoutesList extends AppCompatActivity {
 
         Log.d(TAG, "Finished initRecyclerView ");
     }
-/*
-    private void checkForRoutesDatabaseExistence(){
-        Log.d(TAG, "checkForRoutesDatabaseExistence Null: " + (this.routes == null));
-        this.routes = new TreeSet<>(new TreeSetComparator());
-        Route a = new Route("Ark Walk", "SP", 0, 0);
-        a.setDate("01/01/2020");
-        a.setSteps(2000);
-        a.setDistance(1);
-        Route b = new Route("Berry Avenue", "SP", 0, 0);
-        b.setDate("12/28/2020");
-        b.setSteps(500);
-        b.setDistance(0.9f);
-        Route c = new Route("Gary's Weird Ass Garden", "SP", 0,0);
-        c.setDate("09/09/2000");
-        c.setSteps(5);
-        c.setDistance(0.1f);
-        Route d = new Route("Sunset Valley (Streets)", "SP",0,0);
-        d.setDate("10/20/2025");
-        d.setSteps(100000);
-        d.setDistance(50.7f);
-        //must remove whitespace from beginning and end
-        Route e = new Route("Some really long ass text that keeps going until I'm hoping it gets cut off", "ll",0,0);
-        e.setDate("10/20/2025");
-        e.setSteps(100000);
-        e.setDistance(50.7f);
-        this.routes.add(b);
-        this.routes.add(d);
-        this.routes.add(c);
-        this.routes.add(a);
-        this.routes.add(e);
-        Log.d(TAG, "checkForRoutesDatabaseExistence Size: " + (this.routes.size()));
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//
-//        //Called first time app launch (eventually place to height screen)
-//        if (!prefs.getBoolean("firstTimeLaunch", false)) {
-//            //initializes datebase
-//            databaseSetup();
-//
-//            // mark first time has ran.
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.putBoolean("firstTimeLaunch", true);
-//            editor.apply();
-//        }
-//        //app has run before --> display recycler view
-//        else{
-//            loadTreeSet();
-//            initRecyclerView();
-//        }
-    }
-
-    private void databaseSetup(){
-        this.routes = new TreeSet<>(new treeSetComparator());
-        //saveTreeSet();
-    }
-    class treeSetComparator implements Comparator<Route> {
-        @Override
-        public int compare(Route route, Route t1) {
-            return route.name.compareTo(t1.name);
-        }
-    }
- */
 }
