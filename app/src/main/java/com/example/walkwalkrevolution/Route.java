@@ -24,7 +24,7 @@ public class Route {
      * @param distance      - float, distance traveled
      */
     public Route(String name, String startingPoint, int steps, float distance) {
-        this.name = "name";
+        this.name = name;
         this.startingPoint = startingPoint;
         this.steps = steps;
         this.distance = distance;
@@ -58,6 +58,10 @@ public class Route {
      * @param seconds- int, how many secs a walk/run takes
      */
     public void setDuration(int minutes, int seconds) { this.minutes = minutes; this.seconds = seconds; }
+
+    public void setDistance(float distance){
+        this.distance = distance;
+    }
 
 
 }
