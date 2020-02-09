@@ -2,24 +2,36 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class HomePage extends AppCompatActivity {
+
+    private TextView stepCountText;
+    private StepCountActivity sc;
+    public static final String TAG = "StepCountActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        Button launchActivity = (Button) findViewById(R.id.startButt);
+        // Starts AsyncTask for step counter
+        stepCountText = findViewById(R.id.stepCountText);
+        String test = "10";
+        sc = new StepCountActivity(stepCountText);
+        sc.execute(test);
 
+        Button launchActivity = (Button) findViewById(R.id.startButt);
         // used to start the walk/run activity
         launchActivity.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -27,7 +39,6 @@ public class HomePage extends AppCompatActivity {
                 launchSession();
             }
         });
-
 
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
@@ -61,5 +72,20 @@ public class HomePage extends AppCompatActivity {
             pref.edit().putBoolean("my_first_time", false).commit();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // If authentication was required during google fit setup, this will be called after the user authenticates
+        if(resultCode == Activity.RESULT_OK) {
+            if(requestCode == sc.fitnessService.getRequestCode()) {
+                sc.fitnessService.updateStepCount();
+            }
+        } else {
+            Log.e(TAG, "ERROR, google fit result code: " + resultCode);
+        }
+    }
+
 }
 
