@@ -29,7 +29,7 @@ public class WalkRunSession extends AppCompatActivity {
         timerText = findViewById(R.id.timer_text);
         TimerCount runner = new TimerCount();
         String result = timerText.getText().toString();
-        runner.execute(result);
+        runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,result);
 
 
         // button that stops the activity
