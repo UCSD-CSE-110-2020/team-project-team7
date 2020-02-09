@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -82,6 +83,12 @@ public class RoutesForm extends AppCompatActivity {
                     stepsView.setText(steps + " s");
                     distanceView.setText(distance + " mi");
 
+                    Route routeBeingWalked = TreeSetManipulation.getRouteBeingWalked();
+                    if(routeBeingWalked != null){
+                        routeNameEditText.setText(routeBeingWalked.name);
+                        startingPEditText.setText(routeBeingWalked.startingPoint);
+                    }
+
                 } else {
                     // From plus sign, Route List instead, display defaults for steps and distance
                     // They will both be 0 by default
@@ -151,23 +158,36 @@ public class RoutesForm extends AppCompatActivity {
             return;
         }
 
-        // Create a Route based on the inputs
         Route savedRoute = new Route(routeName, startingPoint, steps, distance);
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
 
-
-
-        // Save the route into the TreeSet routes list back in sharedPrefs
-        SharedPreferences sharedPreferences =
-                getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-
-        boolean routeWasSaved = TreeSetManipulation.updateTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute);
-        // TreeSaveManipulation.updateTreeSet(Route route, sharedPreferences);
-        if(routeWasSaved) {
+        Route walkedRoute = TreeSetManipulation.getRouteBeingWalked();
+        if(walkedRoute != null){
             Intent intent = new Intent(this, RoutesList.class);
+            SharedPreferences sharedPreferences =
+                    getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+            TreeSetManipulation.updateTreeSet(sharedPreferences, new TreeSetComparator(), walkedRoute, savedRoute);
+            Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }
+        else{
+            // Save the route into the TreeSet routes list back in sharedPrefs
+            SharedPreferences sharedPreferences =
+                    getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+
+            boolean routeWasSaved = TreeSetManipulation.addTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute);
+            // TreeSaveManipulation.updateTreeSet(Route route, sharedPreferences);
+            if(routeWasSaved) {
+                Intent intent = new Intent(this, RoutesList.class);
+                Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     /**

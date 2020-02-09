@@ -33,6 +33,16 @@ public class Route {
         this.seconds = 0;
     }
 
+    public void setEverything(String name, String startingPoint, int steps, float distance, String date, int minutes, int seconds){
+        this.name = name.trim();
+        this.startingPoint = startingPoint.trim();
+        this.steps = steps;
+        this.distance = distance;
+        this.date = date.trim();
+        this.minutes = minutes;
+        this.seconds = seconds;
+    }
+
     // Setter methods
     /**
      * Setter method for name instance var.
