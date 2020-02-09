@@ -28,10 +28,27 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        Button routesPage = findViewById(R.id.routesButt);
+
+        routesPage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                routesSession();
+            }
+        });
+
 
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
 
+    }
+
+    /**
+     * used to launch the walk/run session
+     */
+    public void routesSession(){
+        Intent intent = new Intent(this, RoutesList.class);
+        startActivity(intent);
     }
 
     /**
@@ -52,7 +69,7 @@ public class HomePage extends AppCompatActivity {
      * first time the user opens the app
      */
     public void firstLogin(SharedPreferences pref){
-        pref.edit().putBoolean("my_first_time", true).commit();
+        //pref.edit().putBoolean("my_first_time", true).commit();
         if (pref.getBoolean("my_first_time", true)) {
             //the app is being launched for first time
             launchFirstSession();
