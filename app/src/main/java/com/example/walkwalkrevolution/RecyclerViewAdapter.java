@@ -6,10 +6,12 @@
 package com.example.walkwalkrevolution;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,13 +41,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_route_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
+            @Override
+            public void onEdit(int p) {
+                TreeSetManipulation.setRouteBeingWalked(nthRouteInTreeSet(p));
+                Log.d(TAG, "RouteBeingWalked: " + TreeSetManipulation.getRouteBeingWalked().name);
+                mContext.startActivity(new Intent(mContext, WalkRunSession.class));
+            }
+        });
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Route route = nthRouteInTreeSet(position);
+        final Route route = nthRouteInTreeSet(position);
         Log.d(TAG, "onBindViewHolder: Position" + position + " Route Null: " + (route == null));
 
         //holder.routeName.setText(trimmedRouteName(route.name));
@@ -64,6 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
+    //NEED TO FIX THIS METHOD
     private String trimmedRouteName(String name){
         int maxLength = MAX_LENGTH;
         if(name.length() < MAX_LENGTH){
@@ -104,21 +114,44 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return routes.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        MyClickListener listener;
 
         TextView routeName;
         TextView routeDate;
         TextView routeSteps;
         TextView routeMiles;
         RelativeLayout parentLayout;
+        Button startRoute;
 
-        public ViewHolder(@NonNull View itemView) {
+        public interface MyClickListener{
+            public void onEdit(int p);
+        }
+        public ViewHolder(@NonNull View itemView, MyClickListener listener) {
             super(itemView);
             routeName = itemView.findViewById(R.id.routeName);
             routeDate = itemView.findViewById(R.id.routeDate);
             routeSteps = itemView.findViewById(R.id.routeSteps);
             routeMiles = itemView.findViewById(R.id.routeMiles);
             parentLayout = itemView.findViewById(R.id.relativeLayoutRouteItem);
+            startRoute = itemView.findViewById(R.id.startButton);
+
+            this.listener = listener;
+
+            startRoute.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.startButton:
+                    listener.onEdit(this.getLayoutPosition());
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 }
