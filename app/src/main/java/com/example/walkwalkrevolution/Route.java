@@ -24,10 +24,13 @@ public class Route {
      * @param distance      - float, distance traveled
      */
     public Route(String name, String startingPoint, int steps, float distance) {
-        this.name = "name";
-        this.startingPoint = startingPoint;
+        this.name = name.trim();
+        this.startingPoint = startingPoint.trim();
         this.steps = steps;
         this.distance = distance;
+        this.date = "date";
+        this.minutes = 0;
+        this.seconds = 0;
     }
 
     // Setter methods
@@ -36,21 +39,21 @@ public class Route {
      * @param name - String denoting new name of starting point
      */
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
     /**
      * Setter method for startingPoint instance var.
      * @param startingPoint - String denoting new name of starting point
      */
     public void setStartingPoint(String startingPoint) {
-        this.startingPoint = startingPoint;
+        this.startingPoint = startingPoint.trim();
     }
     /**
      * Setter method for date instance var.
      * @param date - String denoting a date for the route
      */
     public void setDate(String date) {
-        this.date = date;
+        this.date = date.trim();
     }
     /**
      * Setter method for duration instance var.
@@ -58,6 +61,14 @@ public class Route {
      * @param seconds- int, how many secs a walk/run takes
      */
     public void setDuration(int minutes, int seconds) { this.minutes = minutes; this.seconds = seconds; }
+
+    public void setDistance(float distance){
+        this.distance = distance;
+    }
+
+    public void setSteps(int steps){
+        this.steps = steps;
+    }
 
 
 }
