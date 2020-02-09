@@ -156,13 +156,18 @@ public class RoutesForm extends AppCompatActivity {
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
 
+
+
         // Save the route into the TreeSet routes list back in sharedPrefs
         SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this );
-        // TreeSaveManipulation.updateTreeSet(Route route, sharedPreferences);
+                getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
 
-        Intent intent = new Intent(this, RoutesList.class);
-        startActivity(intent);
+        boolean routeWasSaved = TreeSetManipulation.updateTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute);
+        // TreeSaveManipulation.updateTreeSet(Route route, sharedPreferences);
+        if(routeWasSaved) {
+            Intent intent = new Intent(this, RoutesList.class);
+            startActivity(intent);
+        }
     }
 
     /**

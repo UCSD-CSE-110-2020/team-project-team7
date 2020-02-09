@@ -48,7 +48,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Route route = nthRouteInTreeSet(position);
         Log.d(TAG, "onBindViewHolder: Position" + position + " Route Null: " + (route == null));
 
-        holder.routeName.setText(trimmedRouteName(route.name));
+        //holder.routeName.setText(trimmedRouteName(route.name));
+        holder.routeName.setText(route.name);
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
