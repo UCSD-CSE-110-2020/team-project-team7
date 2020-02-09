@@ -5,36 +5,39 @@ import android.widget.TextView;
 
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
+import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 
 public class StepCountActivity extends AsyncTask<String, String, String> {
 
-    public static final String FITNESS_SERVICE_KEY = "GOOGLE_FIT";
-    private static final String TAG = "StepCountActivity";
-    private TextView textSteps;
-    public FitnessService fitnessService;
-    private long stepCount;
-    //private String fitnessServiceKey;
 
-    public StepCountActivity(TextView tv) {
+    private TextView textSteps;
+    private GoogleFitAdapter gfa;
+    private HomePage homePage;
+
+
+    public StepCountActivity(TextView tv, GoogleFitAdapter gfa, HomePage hp) {
 
         this.textSteps = tv;
-        //this.fitnessServiceKey = getStringExtra(FITNESS_SERVICE_KEY);
-        this.fitnessService = FitnessServiceFactory.create(FITNESS_SERVICE_KEY, this);
+        this.gfa = gfa;
+        this.homePage = hp;
     }
 
     @Override
     protected void onPreExecute() {
-        fitnessService.setup();
+
+        //fitnessService.setup();
+        //gfa.setup();
     }
 
     @Override
     protected String doInBackground(String... strings) {
         while(true) {
-            publishProgress(String.valueOf(stepCount));
+            publishProgress(String.valueOf(homePage.getStepCount()));
             try {
-                Thread.sleep(5000);
-                fitnessService.updateStepCount();
+                Thread.sleep(1000);
+                //fitnessService.updateStepCount();
+                gfa.updateStepCount();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -49,8 +52,5 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
         textSteps.setText(text[0]);
     }
 
-    public void setStepCount(long sc) {
-        stepCount = sc;
-    }
 }
 

@@ -22,11 +22,9 @@ public class GoogleFitAdapter implements FitnessService {
     private GoogleSignInAccount account;
 
     private HomePage activity;
-    private StepCountActivity stepCount;
 
-    public GoogleFitAdapter(HomePage activity, StepCountActivity sc) {
+    public GoogleFitAdapter(HomePage activity) {
 
-        this.stepCount = sc;
         this.activity = activity;
     }
 
@@ -94,7 +92,7 @@ public class GoogleFitAdapter implements FitnessService {
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
-                                stepCount.setStepCount(total);
+                                activity.setStepCount(total);
                                 Log.d(TAG, "Total steps: " + total);
                             }
                         })
