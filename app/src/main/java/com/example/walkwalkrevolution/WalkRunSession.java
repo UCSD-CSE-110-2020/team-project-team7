@@ -15,6 +15,8 @@ public class WalkRunSession extends AppCompatActivity {
 
     private boolean isCancelled = false;
     private long startTime = System.currentTimeMillis();
+    private int minutes;
+    private int seconds;
     private TextView timerText;
 
 
@@ -49,6 +51,14 @@ public class WalkRunSession extends AppCompatActivity {
      */
     public void launchRouteForm(){
         Intent intent = new Intent(this, RoutesForm.class);
+
+        // Push data to RouteForm
+        intent.putExtra("From_Intent", "From_Walk/Run");
+        intent.putExtra("minutes", minutes);
+        intent.putExtra("minutes", minutes);
+        intent.putExtra("seconds", seconds);
+//        intent.putExtra("steps", steps);
+//        intent.putExtra("distance", distance);
         startActivity(intent);
     }
 
@@ -67,8 +77,8 @@ public class WalkRunSession extends AppCompatActivity {
 
             while(true){
                 long millis = System.currentTimeMillis() - startTime;
-                int seconds = (int)(millis/1000);
-                int minutes = seconds/60;
+                seconds = (int)(millis/1000);
+                minutes = seconds/60;
                 seconds %= 60;
                 toReturn = String.format("%d:%02d", minutes, seconds);
                 publishProgress(toReturn);

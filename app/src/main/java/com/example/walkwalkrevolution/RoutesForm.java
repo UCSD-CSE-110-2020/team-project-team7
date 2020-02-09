@@ -76,8 +76,9 @@ public class RoutesForm extends AppCompatActivity {
                     seconds = fromIntent.getIntExtra("seconds", 0);
 
                     // Display data from walk/run session
-                    minutesEditText.setText(minutes);
-                    secondsEditText.setText(seconds);
+                    //String.format("%d:%02d", minutes, seconds);
+                    minutesEditText.setText(String.format("%02d", minutes));
+                    secondsEditText.setText(String.format("%02d", seconds));
                     stepsView.setText(steps + " s");
                     distanceView.setText(distance + " mi");
 
@@ -150,6 +151,7 @@ public class RoutesForm extends AppCompatActivity {
             return;
         }
 
+        // Create a Route based on the inputs
         Route savedRoute = new Route(routeName, startingPoint, steps, distance);
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
@@ -157,7 +159,7 @@ public class RoutesForm extends AppCompatActivity {
         // Save the route into the TreeSet routes list back in sharedPrefs
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this );
-        // TreeSaveManipulation.saveTreeSet(Route route, sharedPreferences);
+        // TreeSaveManipulation.updateTreeSet(Route route, sharedPreferences);
 
         Intent intent = new Intent(this, RoutesList.class);
         startActivity(intent);
@@ -182,9 +184,6 @@ public class RoutesForm extends AppCompatActivity {
 
     /**
      * Handles coming back from the SetDate Activity (Saving the new date chosen on the DatePIcker).
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
