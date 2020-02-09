@@ -26,6 +26,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             publishProgress(String.valueOf(stepCount));
         }
         return null;
+        //
     }
 
     @Override
