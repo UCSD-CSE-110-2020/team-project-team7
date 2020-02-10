@@ -1,13 +1,7 @@
 package com.example.walkwalkrevolution;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.widget.TextView;
 
-import com.example.walkwalkrevolution.fitness.FitnessService;
-import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
+import android.os.AsyncTask;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 
@@ -23,8 +17,6 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        //fitnessService.setup();
-        //gfa.setup();
     }
 
     @Override
@@ -42,7 +34,6 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onProgressUpdate(String... text) {
-        //textSteps.setText(text[0]);
         updateStep.updateStepView(text[0]);
     }
 
