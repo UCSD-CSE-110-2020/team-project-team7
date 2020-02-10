@@ -26,6 +26,7 @@ import java.util.TreeSet;
 public class RoutesList extends AppCompatActivity {
 
     private static final String TAG = "RoutesList";
+    public static final String ROUTE_CREATE_INTENT = "From_Routes_Creation";
 
 
     @Override
@@ -40,7 +41,7 @@ public class RoutesList extends AppCompatActivity {
         addRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RoutesList.this, RoutesForm.class));
+                redirectToFormForRouteCreation();
             }
         });
 
@@ -53,10 +54,16 @@ public class RoutesList extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         //RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, routes);
         //replace with loadTreeSet instead of routes
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences, new TreeSetComparator()));
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Log.d(TAG, "Finished initRecyclerView ");
+    }
+
+    private void redirectToFormForRouteCreation(){
+        Intent intent = new Intent(RoutesList.this, RoutesForm.class);
+        intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
+        startActivity(intent);
     }
 }

@@ -100,7 +100,7 @@
                     app:srcCompat="@android:drawable/btn_star_big_off" />
 
                 <ImageButton
-                    android:id="@+id/deleteButton"
+                    android:id="@+id/deleteRoute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
