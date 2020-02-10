@@ -21,21 +21,21 @@ import java.util.TreeSet;
 public class TreeSetManipulation {
 
     public final static String SHARED_PREFS_TREE_SET = "treeSet";
-    public static Route routeBeingWalked = null;
+    private static Route selectedRoute = null;
 
-    public static void initalizeTreeSet(SharedPreferences sharedPreferences){
+    public static void initializeTreeSet(SharedPreferences sharedPreferences){
         List<Route> list = new ArrayList<>();
         saveTreeSet(sharedPreferences, list);
         Log.d("updateTreeSet", "123");
     }
 
-    public static void saveTreeSet(SharedPreferences sharedPreferences, List<Route> list){
+    private static void saveTreeSet(SharedPreferences sharedPreferences, List<Route> list){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(list);
         Log.d("json", json);
         editor.putString(SHARED_PREFS_TREE_SET, json);
-        editor.commit();
+        editor.apply();
     }
 
     public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator ){
@@ -49,13 +49,18 @@ public class TreeSetManipulation {
         return treeSet;
     }
 
-    public static void updateTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator, Route prevRoute, Route updatedRoute){
+    public static boolean updateTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator,  Route updatedRoute){
         TreeSet<Route> treeSet = loadTreeSet(sharedPreferences, comparator);
         Log.d("updateTreeSet", "hello");
-        treeSet.remove(prevRoute);
+        //route's modified name updated to something already in the list (other than original name)
+        if(!selectedRoute.compareRoute(updatedRoute) && treeSet.contains(updatedRoute)){
+            return false;
+        }
+        treeSet.remove(selectedRoute);
         treeSet.add(updatedRoute);
         saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
-        setRouteBeingWalked(null);
+        setSelectedRoute(null);
+        return true;
     }
 
     public static boolean addTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator, Route route){
@@ -69,11 +74,11 @@ public class TreeSetManipulation {
         return true;
     }
 
-    public static void setRouteBeingWalked(Route routeBeingWalked) {
-        TreeSetManipulation.routeBeingWalked = routeBeingWalked;
+    public static void setSelectedRoute(Route routeBeingWalked) {
+        TreeSetManipulation.selectedRoute = routeBeingWalked;
     }
 
-    public static Route getRouteBeingWalked() {
-        return routeBeingWalked;
+    public static Route getSelectedRoute() {
+        return selectedRoute;
     }
 }
