@@ -66,18 +66,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
+     * setStepCount is called within GoogleFitAdapter.java --> updates stepCount to amount of steps
+     * getStepCount is called within StepCountActivity.java --> get stepCount
+     * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
      */
-    public void updateStepView(String str) {
-        stepCountText.setText(str);
-    }
+    public void updateStepView(String str) { stepCountText.setText(str); }
 
-    public void setStepCount(long sc) {
-        stepCount = sc;
-    }
+    public void setStepCount(long sc) { stepCount = sc; }
 
-    public long getStepCount() {
-        return this.stepCount;
-    }
+    public long getStepCount() { return this.stepCount; }
 
     /**
      * used to launch the walk/run session
@@ -95,12 +92,14 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         startActivity(intent);
     }
 
+    /**
+     * launched only once, when the app is opened for the first time
+     */
     public void launchFirstSession(){
         Intent intent = new Intent(this, HeightForm.class);
         startActivity(intent);
     }
-
-
+    
     /**
      * first time the user opens the app
      */

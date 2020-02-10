@@ -1,6 +1,8 @@
 package com.example.walkwalkrevolution.fitness;
 
 import androidx.annotation.NonNull;
+
+import android.app.Activity;
 import android.util.Log;
 
 import com.example.walkwalkrevolution.HomePage;

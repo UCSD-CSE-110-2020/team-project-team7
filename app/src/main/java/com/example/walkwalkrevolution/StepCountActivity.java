@@ -22,7 +22,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPreExecute() {
-
+        super.onPreExecute();
         //fitnessService.setup();
         //gfa.setup();
     }
