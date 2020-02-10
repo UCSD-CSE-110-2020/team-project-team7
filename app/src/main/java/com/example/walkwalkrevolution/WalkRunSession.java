@@ -13,6 +13,8 @@ import java.util.Timer;
 
 public class WalkRunSession extends AppCompatActivity {
 
+    public static final String WALK_RUN_INTENT = "From_Walk/Run";
+
     private boolean isCancelled = false;
     private long startTime = System.currentTimeMillis();
     private int minutes;
@@ -53,7 +55,7 @@ public class WalkRunSession extends AppCompatActivity {
         Intent intent = new Intent(this, RoutesForm.class);
 
         // Push data to RouteForm
-        intent.putExtra("From_Intent", "From_Walk/Run");
+        intent.putExtra("From_Intent", WALK_RUN_INTENT);
         intent.putExtra("minutes", minutes);
         intent.putExtra("minutes", minutes);
         intent.putExtra("seconds", seconds);
