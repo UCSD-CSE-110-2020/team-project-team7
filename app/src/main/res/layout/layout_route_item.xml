@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/relativeLayoutRouteItem"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/route_item_style"
@@ -74,7 +74,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/startButton"
+                android:id="@+id/startRoute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start"
