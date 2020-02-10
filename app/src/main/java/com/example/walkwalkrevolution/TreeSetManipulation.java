@@ -38,7 +38,6 @@ public class TreeSetManipulation {
         editor.commit();
     }
 
-
     public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator ){
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
