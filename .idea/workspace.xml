@@ -18,18 +18,27 @@
     <list default="true" id="a9c2a898-7bff-4991-a0a8-8bc2eab33bbe" name="Default Changelist" comment="">
 =======
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="617005bb-96dd-44cb-b2ba-e283b759f3fe" name="Default Changelist" comment="">
 >>>>>>> master
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="6b0223e2-90dd-427c-8dfd-d0339f6ffd9c" name="Default Changelist" comment="">
+>>>>>>> master
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" afterDir="false" />
+<<<<<<< HEAD
 <<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_routes_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_routes_list.xml" afterDir="false" />
 =======
+=======
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java" afterDir="false" />
+>>>>>>> master
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_route_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_route_item.xml" afterDir="false" />
 >>>>>>> master
     </list>
@@ -94,6 +103,7 @@
 =======
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -144,11 +154,20 @@
                 <element signature="e#1542#1543#0" expanded="true" />
 =======
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java">
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java">
+>>>>>>> master
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+            <state relative-caret-position="315">
+              <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
               <folding>
+<<<<<<< HEAD
                 <element signature="imports" expanded="true" />
+>>>>>>> master
+=======
+                <element signature="e#1561#1688#0" expanded="true" />
+                <element signature="e#1687#1688#0" expanded="true" />
 >>>>>>> master
               </folding>
             </state>
@@ -238,10 +257,13 @@
     <option name="height" value="1177" />
 =======
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/layout_route_item.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" />
       </list>
     </option>
   </component>
@@ -269,11 +291,6 @@
             <path>
               <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
             </path>
             <path>
               <item name="WalkWalkRevolution" type="1abcf292:AndroidViewProjectNode" />
@@ -685,31 +702,31 @@
     <frame x="0" y="23" width="1440" height="826" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.3297568" />
-      <window_info id="Structure" side_tool="true" />
-      <window_info id="Build Variants" side_tool="true" />
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Resources Explorer" />
-      <window_info id="Favorites" side_tool="true" />
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Run" />
-      <window_info anchor="bottom" id="Logcat" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="TODO" />
-      <window_info anchor="bottom" id="Android Profiler" />
-      <window_info anchor="bottom" id="Debug" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Build" weight="0.32833788" />
-      <window_info anchor="right" id="Device File Explorer" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Gradle" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Android WiFi ADB" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Preview" />
+      <window_info id="Capture Tool" order="1" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.3297568" />
+      <window_info id="Structure" order="3" side_tool="true" />
+      <window_info id="Build Variants" order="4" side_tool="true" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Designer" order="6" />
+      <window_info id="Resources Explorer" order="7" />
+      <window_info id="Favorites" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Logcat" order="0" />
+      <window_info anchor="bottom" id="TODO" order="1" />
+      <window_info anchor="bottom" id="Android Profiler" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" />
+      <window_info anchor="bottom" id="Run" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.32833788" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" order="1" />
+      <window_info anchor="right" id="Gradle" order="2" />
+      <window_info anchor="right" id="Theme Preview" order="3" />
+      <window_info anchor="right" id="Android WiFi ADB" order="4" />
+      <window_info anchor="right" id="Palette&#9;" order="5" />
+      <window_info anchor="right" id="Preview" order="6" />
     </layout>
   </component>
   <component name="editorHistoryManager">
@@ -718,20 +735,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="28" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -745,20 +748,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="58" column="44" lean-forward="true" selection-start-line="58" selection-start-column="44" selection-end-line="58" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="742">
@@ -768,15 +757,64 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
->>>>>>> master
+        <state relative-caret-position="300">
+          <caret line="44" column="23" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1630#1637#0" expanded="true" />
+            <element signature="e#3005#3006#0" expanded="true" />
+            <element signature="e#3041#3042#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="79" lean-forward="true" selection-start-line="9" selection-start-column="79" selection-end-line="9" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="21" column="17" lean-forward="true" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding>
+            <element signature="e#1287#1456#0" expanded="true" />
+            <element signature="e#1455#1456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="54" column="59" lean-forward="true" selection-start-line="54" selection-start-column="59" selection-end-line="54" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+<<<<<<< HEAD
+          <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+>>>>>>> master
+=======
+          <caret line="14" column="29" lean-forward="true" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+>>>>>>> master
+          <folding>
+            <element signature="e#0#65#0" expanded="true" />
+            <element signature="e#3840#3841#0" expanded="true" />
+            <element signature="e#3878#3879#0" expanded="true" />
+            <element signature="e#3922#3923#0" expanded="true" />
+            <element signature="e#3962#3963#0" expanded="true" />
+            <element signature="e#4008#4009#0" expanded="true" />
+            <element signature="e#4048#4049#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -800,6 +838,12 @@
         <state relative-caret-position="2280">
           <caret line="179" column="49" selection-start-line="179" selection-start-column="49" selection-end-line="179" selection-end-column="49" />
 >>>>>>> master
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="15" column="49" lean-forward="true" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -811,6 +855,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
 <<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/MyClickListener.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -838,12 +883,20 @@
             <element signature="e#1542#1543#0" expanded="true" />
 =======
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java">
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java">
+>>>>>>> master
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
+        <state relative-caret-position="315">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#0#65#0" expanded="true" />
             <element signature="imports" expanded="true" />
+>>>>>>> master
+=======
+            <element signature="e#1561#1688#0" expanded="true" />
+            <element signature="e#1687#1688#0" expanded="true" />
 >>>>>>> master
           </folding>
         </state>
