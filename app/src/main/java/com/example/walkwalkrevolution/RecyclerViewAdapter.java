@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +24,7 @@ import java.util.TreeSet;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
+    public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
     private static final int MAX_LENGTH = 25;
 
     private TreeSet<Route> routes = new TreeSet<Route>();
@@ -43,10 +43,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_route_item, parent, false);
         ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
             @Override
-            public void onEdit(int p) {
-                TreeSetManipulation.setRouteBeingWalked(nthRouteInTreeSet(p));
-                Log.d(TAG, "RouteBeingWalked: " + TreeSetManipulation.getRouteBeingWalked().name);
+            public void onStartWalkRunSession(int p) {
+                Log.d(TAG, "Button Clicked --> onStartWalkRunSession Called ");
+                TreeSetManipulation.setSelectedRoute(nthRouteInTreeSet(p));
+                Log.d(TAG, "RouteBeingWalked: " + TreeSetManipulation.getSelectedRoute().name);
                 mContext.startActivity(new Intent(mContext, WalkRunSession.class));
+            }
+
+            @Override
+            public void onPreviewDetailsPage(int p) {
+                Log.d(TAG, "Button Clicked --> onPreviewDetailsPage Called ");
+                Intent intent = new Intent(mContext, RoutesForm.class);
+                // Push data to RouteForm
+                intent.putExtra("From_Intent", PREVIEW_DETAILS_INTENT);
+                TreeSetManipulation.setSelectedRoute(nthRouteInTreeSet(p));
+                Log.d(TAG, "RouteBeingWalked: " + TreeSetManipulation.getSelectedRoute().name);
+                mContext.startActivity(intent);
             }
         });
         return holder;
@@ -62,15 +74,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
-
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext,"Clicking works..." , Toast.LENGTH_SHORT).show();
-                //should link to details form with prefilled information
-            }
-        });
-
     }
 
     //NEED TO FIX THIS METHOD
@@ -126,27 +129,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Button startRoute;
 
         public interface MyClickListener{
-            public void onEdit(int p);
+            void onStartWalkRunSession(int p);
+
+            void onPreviewDetailsPage(int p);
         }
+
         public ViewHolder(@NonNull View itemView, MyClickListener listener) {
             super(itemView);
             routeName = itemView.findViewById(R.id.routeName);
             routeDate = itemView.findViewById(R.id.routeDate);
             routeSteps = itemView.findViewById(R.id.routeSteps);
             routeMiles = itemView.findViewById(R.id.routeMiles);
-            parentLayout = itemView.findViewById(R.id.relativeLayoutRouteItem);
-            startRoute = itemView.findViewById(R.id.startButton);
+            parentLayout = itemView.findViewById(R.id.parentLayout);
+            startRoute = itemView.findViewById(R.id.startRoute);
 
             this.listener = listener;
 
             startRoute.setOnClickListener(this);
+            parentLayout.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.startButton:
-                    listener.onEdit(this.getLayoutPosition());
+                case R.id.startRoute:
+                    listener.onStartWalkRunSession(this.getLayoutPosition());
+                    break;
+                case R.id.parentLayout:
+                    listener.onPreviewDetailsPage(this.getLayoutPosition());
                     break;
                 default:
                     break;

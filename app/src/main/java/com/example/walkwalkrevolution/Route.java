@@ -70,5 +70,12 @@ public class Route {
         this.steps = steps;
     }
 
+    public boolean compareRoute(Route route){
+        if(this.name.equals(route.name)){
+            return true;
+        }
+        return false;
+    }
+
 
 }

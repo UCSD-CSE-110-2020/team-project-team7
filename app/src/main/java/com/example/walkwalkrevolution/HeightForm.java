@@ -17,7 +17,7 @@ public class HeightForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_height_form);
 
-        TreeSetManipulation.initalizeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
+        TreeSetManipulation.initializeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
 
         Button saveBtn = (Button) findViewById(R.id.height_save_btn);
 
