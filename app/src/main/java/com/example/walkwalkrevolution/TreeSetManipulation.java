@@ -21,6 +21,7 @@ import java.util.TreeSet;
 public class TreeSetManipulation {
 
     public final static String SHARED_PREFS_TREE_SET = "treeSet";
+    private static TreeSetComparator comparator = new TreeSetComparator();
     private static Route selectedRoute = null;
 
     public static void initializeTreeSet(SharedPreferences sharedPreferences){
@@ -37,15 +38,15 @@ public class TreeSetManipulation {
         editor.putString(SHARED_PREFS_TREE_SET, json);
         editor.apply();
     }
-    
-    public static TreeSet<Route> deleteRouteInTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator, Route route){
-        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences, comparator);
+
+    public static TreeSet<Route> deleteRouteInTreeSet(SharedPreferences sharedPreferences,  Route route){
+        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
         treeSet.remove(route);
         saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
         return treeSet;
     }
 
-    public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator ){
+    public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences){
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
         Type type = new TypeToken<List<Route>>() {}.getType();
@@ -56,8 +57,8 @@ public class TreeSetManipulation {
         return treeSet;
     }
 
-    public static boolean updateRouteInTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator,  Route updatedRoute){
-        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences, comparator);
+    public static boolean updateRouteInTreeSet(SharedPreferences sharedPreferences, Route updatedRoute){
+        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
         Log.d("updateTreeSet", "hello");
         //route's modified name updated to something already in the list (other than original name)
         if(!selectedRoute.compareRoute(updatedRoute) && treeSet.contains(updatedRoute)){
@@ -70,8 +71,8 @@ public class TreeSetManipulation {
         return true;
     }
 
-    public static boolean addRouteInTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator, Route route){
-        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences, comparator);
+    public static boolean addRouteInTreeSet(SharedPreferences sharedPreferences, Route route){
+        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
         Log.d("addTreeSet", "hello");
         boolean wasAdded = treeSet.add(route);
         if(!wasAdded){

@@ -54,7 +54,7 @@ public class RoutesList extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         //RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, routes);
         //replace with loadTreeSet instead of routes
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences, new TreeSetComparator()));
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

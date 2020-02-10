@@ -194,7 +194,7 @@ public class RoutesForm extends AppCompatActivity {
 
         //Anything involving the Routes Page executes here
         if(TreeSetManipulation.getSelectedRoute() != null){
-            boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute);
+            boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences,  savedRoute);
             //updatedEntry is not a duplicate entry (other than the one it was modifying)
             if(wasUpdated) {
                 Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
@@ -204,7 +204,7 @@ public class RoutesForm extends AppCompatActivity {
             }
         }
         //Start button from Home page was pressed & routes entry is not a duplicate
-        else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute)){
+        else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)){
             Log.d(TAG, "Entry Successfully Created - Not a duplicate");
             Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
             startActivity(intent);

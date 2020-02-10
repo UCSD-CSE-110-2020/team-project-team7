@@ -45,7 +45,6 @@ public class WalkRunSession extends AppCompatActivity {
                 launchRouteForm();
             }
         });
-
     }
 
     /**
