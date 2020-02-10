@@ -9,28 +9,38 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+
 import java.util.Timer;
 
-public class WalkRunSession extends AppCompatActivity {
+public class WalkRunSession extends HomePage {
 
     private boolean isCancelled = false;
     private long startTime = System.currentTimeMillis();
     private int minutes;
     private int seconds;
     private TextView timerText;
-
+    //private TextView stepCountText;
+    //private long stepCount;
+    private StepCountActivity sc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_run_session);
 
-
+        // timer
         timerText = findViewById(R.id.timer_text);
         TimerCount runner = new TimerCount();
         String result = timerText.getText().toString();
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,result);
 
+        // steps
+        //stepCountText = findViewById(R.id.)
+        //stepCount = 0;
+        //GoogleFitAdapter googleApi = new GoogleFitAdapter(this);
+        //sc = new StepCountActivity(googleApi);
+        //sc.updateStep = this;
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
