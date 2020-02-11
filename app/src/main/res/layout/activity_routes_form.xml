@@ -7,10 +7,56 @@
     tools:context=".RoutesForm">
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="117dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="6dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/LinearLayout02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout7"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.886">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/notesButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/note"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="119dp"
+            android:layout_height="39dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/difficultySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+                android:entries="@array/difficulties"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="287dp"
-        android:layout_height="339dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="286dp"
+        android:layout_height="266dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +89,7 @@
                         android:layout_width="105dp"
                         android:layout_height="35dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/actor"
                         android:text="@string/route_name" />
 
                 </LinearLayout>
@@ -65,6 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_weight="1"
+                        android:fontFamily="@font/actor"
                         android:text="@string/starting_point" />
                 </LinearLayout>
 
@@ -129,7 +177,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_weight="1"
-                    android:onClick="openSetDate" />
+                    android:onClick="openSetDate"
+                    android:textColor="#2196F3" />
 
             </LinearLayout>
 
@@ -145,6 +194,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="12dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/actor"
                     android:text="@string/duration" />
 
                 <LinearLayout
@@ -163,6 +213,7 @@
                         android:ems="10"
                         android:inputType="number"
                         android:maxLength="4"
+                        android:textColor="#2196F3"
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -187,6 +238,8 @@
                         android:ems="10"
                         android:inputType="number"
                         android:maxLength="2"
+                        android:textColor="#2196F3"
+                        android:textColorLink="#002196F3"
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -204,22 +257,24 @@
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="284dp"
-            android:layout_height="116dp"
+            android:layout_height="83dp"
             android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="137dp"
-                android:layout_height="match_parent"
+                android:layout_height="72dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/stepsView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/actor"
                     android:gravity="center"
                     android:text="@string/steps"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -231,29 +286,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="13dp"
-                android:layout_height="match_parent"
+                android:layout_height="76dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="74dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/distanceView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/actor"
                     android:gravity="center"
                     android:text="@string/distance"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -267,7 +324,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -284,30 +341,142 @@
 
     <LinearLayout
         android:id="@+id/LinearLayout02"
-        android:layout_width="317dp"
-        android:layout_height="52dp"
+        android:layout_width="318dp"
+        android:layout_height="46dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.913">
 
         <Button
             android:id="@+id/SaveButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/save"></Button>
 
         <Button
             android:id="@+id/CancelButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/cancel"></Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="179dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/LinearLayout02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.872">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/flatOrHillyButton"
+                android:layout_width="104dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:background="#2196F3"
+                android:fontFamily="@font/actor"
+                android:text="ToggleButton"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textOn="@string/flat"
+                android:textOff="@string/hilly"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="10dp"
+                android:layout_height="73dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
+
+            <ToggleButton
+                android:id="@+id/loopOrOutBackButton"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:background="#2196F3"
+                android:fontFamily="@font/actor"
+                android:text="ToggleButton"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textOn="@string/loop"
+                android:textOff="@string/out_back"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/streetOrTrailButton"
+                android:layout_width="104dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:background="#2196F3"
+                android:fontFamily="@font/actor"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textOn="@string/street"
+                android:textOff="@string/trail"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="10dp"
+                android:layout_height="73dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"></LinearLayout>
+
+            <ToggleButton
+                android:id="@+id/evenOrUnevenButton"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:background="#2196F3"
+                android:fontFamily="@font/actor"
+                android:text="ToggleButton"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textOn="@string/even"
+                android:textOff="@string/uneven"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

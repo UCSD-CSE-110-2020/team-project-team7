@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,18 +30,26 @@ public class RoutesForm extends AppCompatActivity {
 
     private static final String TAG = "RoutesForm";
 
-    // Edit Texts and Buttons
-    private EditText routeNameEditText;
-    private EditText startingPEditText;
-    private EditText minutesEditText;
-    private EditText secondsEditText;
-    private TextView dateDisplayTextView;
-    private TextView stepsView;
-    private TextView distanceView;
+    // Edit Texts
+    private EditText routeNameEditText, startingPEditText, minutesEditText, secondsEditText;
+    private TextView dateDisplayTextView, stepsView, distanceView;
+
+    // Booleans for toggle Buttons for setting extra features and Toggle Buttons themselves
+    private boolean isFlat, isStreet, isLoop, isEven;
+    private ToggleButton flatOrHillyButton, streetOrTrailButton, loopOrOutBackButton,
+            evenOrUnevenButton;
+    private Spinner difficultySpinner;
 
     // Data obtained from Walk/Run session
     private int steps, minutes, seconds;
     private float distance;
+
+    // NOtes taken for the Route
+    private String notes = "";
+
+    // Request code constants
+    private final int REQUEST_DATE = 1;
+    private final int REQUEST_NOTES = 2;
 
 
     @Override
@@ -48,7 +60,7 @@ public class RoutesForm extends AppCompatActivity {
         Log.d(TAG, "Starting Form SetUp");
         formSetUp();
 
-        // Handle onClickListeners for Save and Cancel Buttons
+        // Handle onClickListeners for Buttons
         Button saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -61,9 +73,19 @@ public class RoutesForm extends AppCompatActivity {
                 cancel();
             }
         });
+        Button notesButton = (Button) findViewById(R.id.notesButton);
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openNotesActivity(v);
+            }
+        });
 
     }
 
+    /**
+     * Initalize instance vars for most Activity objects. Set up the date. Find out which
+     * intent called this Activity.
+     */
     private void formSetUp(){
         // Get ids of EditTexts and TextViews
         routeNameEditText = (EditText) findViewById(R.id.routeNameEditText);
@@ -74,6 +96,9 @@ public class RoutesForm extends AppCompatActivity {
         stepsView = (TextView) findViewById(R.id.stepsNumView);
         distanceView = (TextView) findViewById(R.id.distanceNumView);
 
+        // Set up ToggleButton listeners
+        setUpToggleFeatures();
+
         // Setting the date, automatically set it to the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date currentTime = Calendar.getInstance().getTime();
@@ -83,6 +108,9 @@ public class RoutesForm extends AppCompatActivity {
         checkIntent();
     }
 
+    /**
+     * Find on which intent opened this Activity and fill up the page correspondingly.
+     */
     private void checkIntent(){
         Log.d(TAG, "Checking for Intents");
 
@@ -119,11 +147,17 @@ public class RoutesForm extends AppCompatActivity {
         }
     }
 
+    /**
+     * Currently creating a new Route.
+     */
     private void intentFromRoutesCreation(){
         stepsView.setText(steps + " s");
         distanceView.setText(distance + " mi");
     }
 
+    /**
+     * Viewing a previously made Route from Routes page.
+     */
     private void intentFromRoutesDetails(){
         Route routeToDetail = TreeSetManipulation.getSelectedRoute();
 
@@ -140,8 +174,30 @@ public class RoutesForm extends AppCompatActivity {
         secondsEditText.setEnabled(false);
         stepsView.setEnabled(false);
         distanceView.setEnabled(false);
+
+        // Load extra features info and update buttons accordingly
+        isFlat = routeToDetail.isFlat;
+        isLoop = routeToDetail.isLoop;
+        isStreet = routeToDetail.isStreet;
+        isEven = routeToDetail.isEven;
+        updateToggleFeatures();
+
+        // Load notes
+        notes = routeToDetail.notes;
+
+        // Load difficulty
+        String difficulty = routeToDetail.difficulty;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.difficulties, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        difficultySpinner.setAdapter(adapter);
+        int spinnerPosition = adapter.getPosition(difficulty);
+        difficultySpinner.setSelection(spinnerPosition);
     }
 
+    /**
+     * Stopped a walk Run Session.
+     */
     private void intentFromWalkRunSession(Intent fromIntent){
         // Get data from walk/run session
         steps = fromIntent.getIntExtra("steps", 0);
@@ -215,6 +271,9 @@ public class RoutesForm extends AppCompatActivity {
         Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Get the filled in entries and returns a newly created Route object bsaed on entries.
+     */
     private Route entriesAsRouteObject(){
         String routeName = routeNameEditText.getText().toString();
         String startingPoint = startingPEditText.getText().toString();
@@ -222,9 +281,20 @@ public class RoutesForm extends AppCompatActivity {
         Route savedRoute = new Route(routeName, startingPoint, steps, distance);
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
+
+        savedRoute.setIsFlat(isFlat);
+        savedRoute.setIsLoop(isLoop);
+        savedRoute.setIsStreet(isStreet);
+        savedRoute.setIsEven(isEven);
+        savedRoute.setNotes(notes);
+
+        savedRoute.setDifficulty(difficultySpinner.getSelectedItem().toString());
         return savedRoute;
     }
 
+    /**
+     * Error checking for required feels, such as routeName and startingPoint.
+     */
     private boolean errorCheckingRequiredFields(){
         // Get fields in EditTexts and TextViews
         String routeName = routeNameEditText.getText().toString();
@@ -275,7 +345,16 @@ public class RoutesForm extends AppCompatActivity {
     public void openSetDate(View view) {
         Intent intent = new Intent(this, SetDate.class);
         intent.putExtra("date", dateDisplayTextView.getText().toString());
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, REQUEST_DATE);
+    }
+
+    /**
+     * Opens the Notes Activity so the user can write their own notes.
+     */
+    public void openNotesActivity(View view) {
+        Intent intent = new Intent(this, NotesPage.class);
+        intent.putExtra("notes", notes);
+        startActivityForResult(intent, REQUEST_NOTES);
     }
 
     /**
@@ -283,12 +362,64 @@ public class RoutesForm extends AppCompatActivity {
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
-                String dateStr = data.getStringExtra("newDate");
-                dateDisplayTextView.setText(dateStr);
-            }
+        switch (requestCode) {
+            case REQUEST_DATE:
+                if(resultCode == RESULT_OK) {
+                    String dateStr = data.getStringExtra("newDate");
+                    dateDisplayTextView.setText(dateStr);
+                }
+                break;
+            case REQUEST_NOTES:
+                if(resultCode == RESULT_OK) {
+                    notes = data.getStringExtra("newNotes");
+                }
+                break;
         }
+    }
+
+    /**
+     * Set up the ToggleButtons and their onClickListeners.
+     */
+    private void setUpToggleFeatures() {
+        // Get ids of ToggleButtons
+        flatOrHillyButton = (ToggleButton) findViewById(R.id.flatOrHillyButton);
+        streetOrTrailButton = (ToggleButton) findViewById(R.id.streetOrTrailButton);
+        loopOrOutBackButton = (ToggleButton) findViewById(R.id.loopOrOutBackButton);
+        evenOrUnevenButton = (ToggleButton) findViewById(R.id.evenOrUnevenButton);
+
+        difficultySpinner = (Spinner) findViewById(R.id.difficultySpinner);
+
+        flatOrHillyButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isFlat = isChecked;
+            }
+        });
+        streetOrTrailButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isStreet = isChecked;
+            }
+        });
+        loopOrOutBackButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isLoop = isChecked;
+            }
+        });
+        evenOrUnevenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isEven = isChecked;
+            }
+        });
+
+    }
+
+    /**
+     * Update ToggleButtons based on received data (current values of booleans).
+     */
+    private void updateToggleFeatures() {
+        flatOrHillyButton.setChecked(isFlat);
+        streetOrTrailButton.setChecked(isStreet);
+        loopOrOutBackButton.setChecked(isLoop);
+        evenOrUnevenButton.setChecked(isEven);
     }
 
 }

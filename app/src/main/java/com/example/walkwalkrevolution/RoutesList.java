@@ -45,7 +45,6 @@ public class RoutesList extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void initRecyclerView(){
