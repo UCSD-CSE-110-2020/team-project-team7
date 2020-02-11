@@ -79,4 +79,8 @@ public class RoutesList extends AppCompatActivity {
     private void redirectToHomePage(){
         startActivity(new Intent(RoutesList.this, HomePage.class));
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

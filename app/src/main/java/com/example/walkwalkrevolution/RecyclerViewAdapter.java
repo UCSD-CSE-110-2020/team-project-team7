@@ -5,7 +5,9 @@
 
 package com.example.walkwalkrevolution;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -60,7 +64,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onPreviewDetailsPage(int p) {
                 Log.d(TAG, "Button Clicked --> onPreviewDetailsPage Called ");
                 Intent intent = new Intent(mContext, RoutesForm.class);
-                // Push data to RouteForm
                 intent.putExtra("From_Intent", PREVIEW_DETAILS_INTENT);
                 TreeSetManipulation.setSelectedRoute(nthRouteInTreeSet(p));
                 Log.d(TAG, "SelectedRoute: " + TreeSetManipulation.getSelectedRoute().name);
@@ -70,11 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onDeleteCurrentRoute(int p) {
                 Log.d(TAG, "Button Clicked --> onDeleteCurrentRoute Called ");
-                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-                routes = TreeSetManipulation.deleteRouteInTreeSet(prefs, nthRouteInTreeSet(p));
-                notifyDataSetChanged();
-                Toast.makeText(mContext, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
-
+                displayRouteDeletionDialogue(mContext, nthRouteInTreeSet(p));
             }
 
             @Override
@@ -98,6 +97,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return holder;
     }
 
+    private void displayRouteDeletionDialogue(final Context context, final Route route){
+        new AlertDialog.Builder(context)
+                .setTitle("Delete Route")
+                .setMessage("Are you sure you want to delete this entry? This is an irreversible action.")
+                .setCancelable(false)
+
+                .setNegativeButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences prefs = context.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+                        routes = TreeSetManipulation.deleteRouteInTreeSet(prefs, route);
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Route route = nthRouteInTreeSet(position);
@@ -108,10 +131,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
 
-        favoriteButtonStyle(holder, route);
-    }
-
-    private void favoriteButtonStyle(ViewHolder holder, Route route){
         if(route.getIsFavorited()){
             holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.favorite_button_clicked_style));
         }
