@@ -45,6 +45,15 @@ public class RoutesList extends AppCompatActivity {
             }
         });
 
+        Button goToHomePage = (Button) findViewById(R.id.goToHomePage);
+
+        goToHomePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectToHomePage();
+            }
+        });
+
 
     }
 
@@ -65,5 +74,9 @@ public class RoutesList extends AppCompatActivity {
         Intent intent = new Intent(RoutesList.this, RoutesForm.class);
         intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
         startActivity(intent);
+    }
+
+    private void redirectToHomePage(){
+        startActivity(new Intent(RoutesList.this, HomePage.class));
     }
 }

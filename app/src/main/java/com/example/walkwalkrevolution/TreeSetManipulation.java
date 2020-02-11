@@ -45,6 +45,15 @@ public class TreeSetManipulation {
         return treeSet;
     }
 
+    public static TreeSet<Route> updateRoot(SharedPreferences sharedPreferences, TreeSetComparator comparator, Route updatedRoute){
+        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences, comparator);
+        Log.d("updateRoot", "hello");
+        treeSet.remove(updatedRoute);
+        treeSet.add(updatedRoute);
+        saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
+        return treeSet;
+    }
+
     public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences, TreeSetComparator comparator ){
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
