@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,9 +24,9 @@ import java.util.TreeSet;
 
 public class RoutesForm extends AppCompatActivity {
 
+    private static final String TAG = "RoutesForm";
+
     // Edit Texts and Buttons
-    private Button saveButton;
-    private Button cancelButton;
     private EditText routeNameEditText;
     private EditText startingPEditText;
     private EditText minutesEditText;
@@ -44,16 +45,17 @@ public class RoutesForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_form);
 
+        Log.d(TAG, "Starting Form SetUp");
         formSetUp();
 
         // Handle onClickListeners for Save and Cancel Buttons
-        saveButton = (Button) findViewById(R.id.SaveButton);
+        Button saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 attemptToSave();
             }
         });
-        cancelButton = (Button) findViewById(R.id.CancelButton);
+        Button cancelButton = (Button) findViewById(R.id.CancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 cancel();
@@ -82,33 +84,44 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     private void checkIntent(){
+        Log.d(TAG, "Checking for Intents");
+
         // Check which intent we are from
         Intent fromIntent = this.getIntent();
         if (fromIntent != null) {
-
+            String fromIntentStr;
             try {
-                // Try to get which intent we are from
-                String fromIntentStr = fromIntent.getExtras().getString("From_Intent");
 
-                //From Walk/Run Session (includes both Routes & Home Start buttons)
-                if(fromIntentStr.equals("From_Walk/Run"))
-                {
+                fromIntentStr = fromIntent.getExtras().getString("From_Intent");
+                fromIntentStr.length();
+
+            }catch(NullPointerException e) {
+                Log.d(TAG, "Null Pointer Exception Caught");
+                return;
+            }
+
+            switch (fromIntentStr) {
+                case WalkRunSession.WALK_RUN_INTENT:
                     intentFromWalkRunSession(fromIntent);
-
-                }
-                //From Routes for Details Preview
-                else if(fromIntentStr.equals(RecyclerViewAdapter.PREVIEW_DETAILS_INTENT)){
+                    Log.d(TAG, "Intent Found: Walk/Run Session");
+                    break;
+                case RecyclerViewAdapter.PREVIEW_DETAILS_INTENT:
                     intentFromRoutesDetails();
-                }
-                //From Routes for Route Addition (+)
-                else {
-                    // They will both be 0 by default
-                    stepsView.setText(steps + " s");
-                    distanceView.setText(distance + " mi");
-                }
-
-            } catch(NullPointerException e) {}
+                    Log.d(TAG, "Intent Found: Details Preview from Routes Page");
+                    break;
+                case RoutesList.ROUTE_CREATE_INTENT:
+                    intentFromRoutesCreation();
+                    Log.d(TAG, "Intent Found: Route Creation from Routes Page");
+                    break;
+                default:
+                    break;
+            }
         }
+    }
+
+    private void intentFromRoutesCreation(){
+        stepsView.setText(steps + " s");
+        distanceView.setText(distance + " mi");
     }
 
     private void intentFromRoutesDetails(){
@@ -164,11 +177,14 @@ public class RoutesForm extends AppCompatActivity {
      * and save it in SharedPref. Then go to Routes List Activity.
      */
     private void attemptToSave() {
+        Log.d(TAG, "Save Button Clicked --> attempting to save");
 
         if(errorCheckingRequiredFields()){
+            Log.d(TAG, "Errors Found");
             return;
         }
 
+        Log.d(TAG, "No Errors Found");
         Route savedRoute = entriesAsRouteObject();
 
         Intent intent = new Intent(this, RoutesList.class);
@@ -178,20 +194,23 @@ public class RoutesForm extends AppCompatActivity {
 
         //Anything involving the Routes Page executes here
         if(TreeSetManipulation.getSelectedRoute() != null){
-            boolean wasUpdated = TreeSetManipulation.updateTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute);
+            boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences,  savedRoute);
             //updatedEntry is not a duplicate entry (other than the one it was modifying)
             if(wasUpdated) {
+                Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
                 Toast.makeText(this, "Route Successfully Modified", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 return;
             }
         }
         //Start button from Home page was pressed & routes entry is not a duplicate
-        else if(TreeSetManipulation.addTreeSet(sharedPreferences, new TreeSetComparator(), savedRoute)){
+        else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)){
+            Log.d(TAG, "Entry Successfully Created - Not a duplicate");
             Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
             startActivity(intent);
             return;
         }
+        Log.d(TAG, "Entry Rejected - Duplicate");
         //Any instance of duplicates entries from either Start buttons
         Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
     }
@@ -245,6 +264,7 @@ public class RoutesForm extends AppCompatActivity {
      * Cancel button behavior. Go to Routes List Activity without saving data.
      */
     private void cancel() {
+        Log.d(TAG, "Cancel Button clicked --> Redirected to Routes Page");
         Intent intent = new Intent(this, RoutesList.class);
         startActivity(intent);
     }
