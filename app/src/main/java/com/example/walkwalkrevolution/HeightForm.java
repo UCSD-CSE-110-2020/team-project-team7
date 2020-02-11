@@ -2,6 +2,7 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class HeightForm extends AppCompatActivity {
+
+    public static final String HEIGHT_FORM_INTENT = "From_Height_Form";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +29,13 @@ public class HeightForm extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                EditText heightInfo = findViewById(R.id.height_input);
-                editor.putString("height", heightInfo.getText().toString());
+                EditText heightInfoFeet = findViewById(R.id.height_input_ft);
+                EditText heightInfoInches = findViewById(R.id.height_input_in);
+                editor.putInt("height_ft", Integer.parseInt(heightInfoFeet.getText().toString()));
+                editor.putInt("height_in", Integer.parseInt(heightInfoInches.getText().toString()));
                 editor.apply();
 
-                Toast.makeText(HeightForm.this, "Saved Height:" + heightInfo.getText().toString(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(HeightForm.this, "Saved Height:" + heightInfoFeet.getText().toString(), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

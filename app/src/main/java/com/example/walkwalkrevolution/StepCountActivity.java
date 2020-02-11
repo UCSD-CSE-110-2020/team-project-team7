@@ -22,7 +22,8 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... strings) {
         while(true) {
-            publishProgress(String.valueOf(updateStep.getStepCount()));
+            publishProgress(String.valueOf(updateStep.getStepCount()),
+                            String.valueOf(updateStep.getStepCount() / updateStep.getStepsPerMile()));
             try {
                 Thread.sleep(1000);
                 gfa.updateStepCount();
@@ -34,8 +35,12 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onProgressUpdate(String... text) {
+
         updateStep.updateStepView(text[0]);
+        updateStep.updatesMilesView(text[1]);
     }
+
+    //public double calculatedMiles(long steps, )
 
 }
 

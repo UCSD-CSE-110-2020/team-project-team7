@@ -13,7 +13,7 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 import java.util.Timer;
 
-public class WalkRunSession extends HomePage {
+public class WalkRunSession extends HomePage implements UpdateStepTextView {
 
     public static final String WALK_RUN_INTENT = "From_Walk/Run";
 
@@ -22,9 +22,10 @@ public class WalkRunSession extends HomePage {
     private int minutes;
     private int seconds;
     private TextView timerText;
-    //private TextView stepCountText;
-    //private long stepCount;
-    private StepCountActivity sc;
+
+    private TextView stepCountText;
+    private StepCountActivity sta;
+    private long stepCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,11 @@ public class WalkRunSession extends HomePage {
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,result);
 
         // steps
-        //stepCountText = findViewById(R.id.)
-        //stepCount = 0;
-        //GoogleFitAdapter googleApi = new GoogleFitAdapter(this);
-        //sc = new StepCountActivity(googleApi);
-        //sc.updateStep = this;
+        stepCountText = findViewById(R.id.activity_miles_number2);
+        stepCount = 0;
+        GoogleFitAdapter googleApi = new GoogleFitAdapter(this);
+        sta = new StepCountActivity(googleApi);
+        sta.updateStep = this;
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
@@ -56,6 +57,19 @@ public class WalkRunSession extends HomePage {
             }
         });
     }
+
+    /**
+     * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
+     * setStepCount is called within GoogleFitAdapter.java --> updates stepCount to amount of steps
+     * getStepCount is called within StepCountActivity.java --> get stepCount
+     * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
+     */
+    @Override
+    public void updateStepView(String str) { stepCountText.setText(str); }
+    @Override
+    public void setStepCount(long sc) { stepCount = sc; }
+    @Override
+    public long getStepCount() { return this.stepCount; }
 
     /**
      * launches to the routes form

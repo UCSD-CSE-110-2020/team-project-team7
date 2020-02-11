@@ -20,15 +20,23 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
-    private TextView stepCountText;
     private StepCountActivity sc;
-
+    private TextView stepCountText;
+    private TextView milesText;
     private long stepCount;
+    private int stepsPerMile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        // retrieve height;
+        SharedPreferences getHeight = getSharedPreferences("height", 0);
+        int feet = getHeight.getInt("height_ft", 0);
+        int inches = getHeight.getInt("height_in", 0);
+        int heightInInches = (feet * 12) + inches;
+        stepsPerMile = calculateStepsPerMile(heightInInches);
 
         // Create Fitness Service
         stepCount = 0;
@@ -37,6 +45,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
+        milesText = findViewById(R.id.activity_miles_number2);
         sc = new StepCountActivity(googleApi);
         sc.updateStep = this;
         sc.execute();
@@ -76,6 +85,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public long getStepCount() { return this.stepCount; }
 
+    public void updatesMilesView(String str) { milesText.setText(str); }
+
+    public int getStepsPerMile() { return this.stepsPerMile; }
+
     /**
      * used to launch the walk/run session
      */
@@ -113,6 +126,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         }
     }
 
+    private int calculateStepsPerMile(int heightInInches) {
+        double strideLengthFeet = (heightInInches * 0.413) / 12;
+        return (int)(5280 / strideLengthFeet);
+    }
 
 }
 
