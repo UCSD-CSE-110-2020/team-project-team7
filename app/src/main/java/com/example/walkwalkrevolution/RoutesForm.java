@@ -161,13 +161,14 @@ public class RoutesForm extends AppCompatActivity {
     private void intentFromRoutesDetails(){
         Route routeToDetail = TreeSetManipulation.getSelectedRoute();
 
-        //prefill all information
+        //prefill all required information
         routeNameEditText.setText(routeToDetail.name);
         startingPEditText.setText(routeToDetail.startingPoint);
         minutesEditText.setText(String.format("%02d", routeToDetail.minutes));
         secondsEditText.setText(String.format("%02d", routeToDetail.seconds));
         stepsView.setText(routeToDetail.steps + " s");
         distanceView.setText(routeToDetail.distance + " mi");
+        dateDisplayTextView.setText(routeToDetail.date);
 
         //disable editing for minutes, steps, and distance
         minutesEditText.setEnabled(false);
@@ -184,15 +185,8 @@ public class RoutesForm extends AppCompatActivity {
 
         // Load notes
         notes = routeToDetail.notes;
-
         // Load difficulty
-        String difficulty = routeToDetail.difficulty;
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.difficulties, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        difficultySpinner.setAdapter(adapter);
-        int spinnerPosition = adapter.getPosition(difficulty);
-        difficultySpinner.setSelection(spinnerPosition);
+        loadDifficulty(routeToDetail);
     }
 
     /**
@@ -225,6 +219,18 @@ public class RoutesForm extends AppCompatActivity {
         //prefill information for everything but Steps, Distance, and Time
         routeNameEditText.setText(routeBeingWalked.name);
         startingPEditText.setText(routeBeingWalked.startingPoint);
+
+        // Load extra features info and update buttons accordingly
+        isFlat = routeBeingWalked.isFlat;
+        isLoop = routeBeingWalked.isLoop;
+        isStreet = routeBeingWalked.isStreet;
+        isEven = routeBeingWalked.isEven;
+        updateToggleFeatures();
+
+        // Load notes
+        notes = routeBeingWalked.notes;
+        // Load difficulty
+        loadDifficulty(routeBeingWalked);
     }
 
     /**
@@ -282,12 +288,12 @@ public class RoutesForm extends AppCompatActivity {
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
 
+        // Save extra features
         savedRoute.setIsFlat(isFlat);
         savedRoute.setIsLoop(isLoop);
         savedRoute.setIsStreet(isStreet);
         savedRoute.setIsEven(isEven);
         savedRoute.setNotes(notes);
-
         savedRoute.setDifficulty(difficultySpinner.getSelectedItem().toString());
         return savedRoute;
     }
@@ -422,4 +428,16 @@ public class RoutesForm extends AppCompatActivity {
         evenOrUnevenButton.setChecked(isEven);
     }
 
+    /**
+     * Updates the difficulty spinner based on the Route.
+     */
+    private void loadDifficulty(Route route) {
+        String difficulty = route.difficulty;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.difficulties, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        difficultySpinner.setAdapter(adapter);
+        int spinnerPosition = adapter.getPosition(difficulty);
+        difficultySpinner.setSelection(spinnerPosition);
+    }
 }

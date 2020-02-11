@@ -39,6 +39,14 @@ public class TreeSetManipulation {
         editor.apply();
     }
 
+    public static TreeSet<Route> updateRoot(SharedPreferences sharedPreferences, Route route){
+        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
+        treeSet.remove(route);
+        treeSet.add(route);
+        TreeSetManipulation.saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
+        return treeSet;
+    }
+
     public static TreeSet<Route> deleteRouteInTreeSet(SharedPreferences sharedPreferences,  Route route){
         TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
         treeSet.remove(route);
@@ -53,7 +61,9 @@ public class TreeSetManipulation {
         Log.d("create", json);
         List<Route> list = gson.fromJson(json, type);
         TreeSet<Route> treeSet = new TreeSet<Route>(comparator);
-        treeSet.addAll(list);
+        if (list != null) {
+            treeSet.addAll(list);
+        }
         return treeSet;
     }
 

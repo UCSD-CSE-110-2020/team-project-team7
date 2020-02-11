@@ -373,7 +373,7 @@
         android:id="@+id/linearLayout7"
         android:layout_width="179dp"
         android:layout_height="87dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="5dp"
         android:layout_marginRight="3dp"
         android:layout_marginBottom="2dp"
         android:orientation="vertical"
@@ -401,8 +401,8 @@
                 android:text="ToggleButton"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textOn="@string/flat"
                 android:textOff="@string/hilly"
+                android:textOn="@string/flat"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -424,8 +424,8 @@
                 android:text="ToggleButton"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textOn="@string/loop"
                 android:textOff="@string/out_back"
+                android:textOn="@string/loop"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -447,8 +447,8 @@
                 android:fontFamily="@font/actor"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textOn="@string/street"
                 android:textOff="@string/trail"
+                android:textOn="@string/street"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -470,8 +470,8 @@
                 android:text="ToggleButton"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textOn="@string/even"
                 android:textOff="@string/uneven"
+                android:textOn="@string/even"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

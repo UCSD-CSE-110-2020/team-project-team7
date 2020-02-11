@@ -2,10 +2,12 @@ package com.example.walkwalkrevolution;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Scroller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,6 +53,12 @@ public class NotesPage extends AppCompatActivity {
                 cancel();
             }
         });
+
+        // Set up scroll ability for notesEditText
+        notesEditText.setScroller(new Scroller(this));
+        notesEditText.setMaxLines(200);
+        notesEditText.setVerticalScrollBarEnabled(true);
+        notesEditText.setMovementMethod(new ScrollingMovementMethod());
     }
 
     /**
