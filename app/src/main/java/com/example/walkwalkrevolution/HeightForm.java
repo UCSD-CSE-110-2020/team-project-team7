@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,10 @@ public class HeightForm extends AppCompatActivity {
                 EditText heightInfoFeet = findViewById(R.id.height_input_ft);
                 EditText heightInfoInches = findViewById(R.id.height_input_in);
                 editor.putInt("height_ft", Integer.parseInt(heightInfoFeet.getText().toString()));
+                Log.d("starting height in feet", heightInfoFeet.getText().toString());
                 editor.putInt("height_in", Integer.parseInt(heightInfoInches.getText().toString()));
+                Log.d("starting height in inces", heightInfoInches.getText().toString());
+
                 editor.apply();
 
                 Toast.makeText(HeightForm.this, "Saved Height:" + heightInfoFeet.getText().toString(), Toast.LENGTH_SHORT).show();

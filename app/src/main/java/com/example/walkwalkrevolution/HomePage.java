@@ -20,11 +20,11 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
-    private StepCountActivity sc;
-    private TextView stepCountText;
-    private TextView milesText;
-    private long stepCount;
-    private int stepsPerMile;
+    public StepCountActivity sc;
+    public TextView stepCountText;
+    public TextView milesText;
+    public long stepCount;
+    public double stepsPerMile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public void updatesMilesView(String str) { milesText.setText(str); }
 
-    public int getStepsPerMile() { return this.stepsPerMile; }
+    public double getStepsPerMile() { return this.stepsPerMile; }
 
     /**
      * used to launch the walk/run session
@@ -126,7 +126,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         }
     }
 
-    private int calculateStepsPerMile(int heightInInches) {
+    public int calculateStepsPerMile(int heightInInches) {
         double strideLengthFeet = (heightInInches * 0.413) / 12;
         return (int)(5280 / strideLengthFeet);
     }

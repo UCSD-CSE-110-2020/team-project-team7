@@ -5,6 +5,6 @@ public interface UpdateStepTextView {
     void setStepCount(long sc);
     long getStepCount();
     void updatesMilesView(String updatedMiles);
-    int getStepsPerMile();
+    double getStepsPerMile();
 
 }
