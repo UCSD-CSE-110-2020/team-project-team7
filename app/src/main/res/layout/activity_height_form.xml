@@ -27,10 +27,10 @@
         android:layout_height="65dp"
         android:fontFamily="casual"
         android:gravity="center"
+        android:inputType="numberSigned"
         android:text="ft."
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="36sp"
-        android:inputType="numberSigned"
         app:layout_constraintBottom_toBottomOf="@+id/height_input_in"
         app:layout_constraintEnd_toStartOf="@+id/height_input_in"
         app:layout_constraintHorizontal_bias="1.0"
@@ -72,6 +72,7 @@
         android:id="@+id/height_input_ft"
         android:layout_width="96dp"
         android:layout_height="65dp"
+        android:layout_marginStart="76dp"
         android:layout_marginTop="75dp"
         android:layout_marginBottom="53dp"
         android:fontFamily="casual"
@@ -81,9 +82,11 @@
         android:text="@string/default_height"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/height_save_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_height_button"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="277dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/height_input_in"
@@ -98,7 +101,9 @@
         android:text="@string/default_height"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/height_save_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.298"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_height_button"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="103dp" />
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

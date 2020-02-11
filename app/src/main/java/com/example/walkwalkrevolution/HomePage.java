@@ -45,7 +45,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
-        milesText = findViewById(R.id.activity_miles_number2);
+        milesText = findViewById(R.id.distanceCountText);
         sc = new StepCountActivity(googleApi);
         sc.updateStep = this;
         sc.execute();

@@ -9,6 +9,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     public UpdateStepTextView updateStep;
     private GoogleFitAdapter gfa;
+    double miles;
 
     public StepCountActivity(GoogleFitAdapter gfa) {
         this.gfa = gfa;
@@ -16,17 +17,20 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPreExecute() {
+
         super.onPreExecute();
+        miles = 0;
     }
 
     @Override
     protected String doInBackground(String... strings) {
         while(true) {
             publishProgress(String.valueOf(updateStep.getStepCount()),
-                            String.valueOf(updateStep.getStepCount() / updateStep.getStepsPerMile()));
+                            String.valueOf(miles));
             try {
                 Thread.sleep(1000);
                 gfa.updateStepCount();
+                miles = updateStep.getStepCount() / updateStep.getStepsPerMile();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
