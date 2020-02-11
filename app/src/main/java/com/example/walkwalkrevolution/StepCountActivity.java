@@ -2,6 +2,8 @@ package com.example.walkwalkrevolution;
 
 
 import android.os.AsyncTask;
+import android.util.Log;
+
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 
@@ -28,7 +30,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             publishProgress(String.valueOf(updateStep.getStepCount()),
                             String.valueOf(miles));
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
                 gfa.updateStepCount();
                 miles = updateStep.getStepCount() / updateStep.getStepsPerMile();
             } catch (InterruptedException e) {
@@ -39,7 +41,8 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onProgressUpdate(String... text) {
-
+        Log.d("steps" , text[0]);
+        Log.d("miles", text[1]);
         updateStep.updateStepView(text[0]);
         updateStep.updatesMilesView(text[1]);
     }
