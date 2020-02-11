@@ -39,13 +39,21 @@ public class TreeSetManipulation {
         editor.apply();
     }
 
+    public static TreeSet<Route> updateRoot(SharedPreferences sharedPreferences, Route route){
+        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
+        treeSet.remove(route);
+        treeSet.add(route);
+        TreeSetManipulation.saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
+        return treeSet;
+    }
+
     public static TreeSet<Route> deleteRouteInTreeSet(SharedPreferences sharedPreferences,  Route route){
         TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
         treeSet.remove(route);
         saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
         return treeSet;
     }
-    
+
     public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences){
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");

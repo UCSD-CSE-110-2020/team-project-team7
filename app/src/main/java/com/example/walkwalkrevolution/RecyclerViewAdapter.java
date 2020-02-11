@@ -84,7 +84,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 routeSelected.toggleIsFavorited();
 
                 SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-                routes = TreeSetManipulation.updateRoot(prefs, new TreeSetComparator(), routeSelected);
+                routes = TreeSetManipulation.updateRoot(prefs, routeSelected);
                 notifyDataSetChanged();
 
                 if(routeSelected.getIsFavorited()){
