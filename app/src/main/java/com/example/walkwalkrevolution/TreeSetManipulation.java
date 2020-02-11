@@ -45,7 +45,7 @@ public class TreeSetManipulation {
         saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
         return treeSet;
     }
-
+    
     public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences){
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");

@@ -14,6 +14,7 @@ public class Route {
     public String date;
     public int minutes;
     public int seconds;
+    public boolean isFavorited;
 
     /**
      * Constructor for a Route object.
@@ -31,6 +32,7 @@ public class Route {
         this.date = "date";
         this.minutes = 0;
         this.seconds = 0;
+        this.isFavorited = false;
     }
 
     // Setter methods
@@ -62,6 +64,10 @@ public class Route {
      */
     public void setDuration(int minutes, int seconds) { this.minutes = minutes; this.seconds = seconds; }
 
+    public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
+
+    public boolean getIsFavorited() { return this.isFavorited; }
+
     public void setDistance(float distance){
         this.distance = distance;
     }
@@ -76,6 +82,7 @@ public class Route {
         }
         return false;
     }
+
 
 
 }
