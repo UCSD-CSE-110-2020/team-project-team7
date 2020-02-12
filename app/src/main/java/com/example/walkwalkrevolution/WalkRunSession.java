@@ -82,8 +82,8 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         intent.putExtra("minutes", minutes);
         intent.putExtra("minutes", minutes);
         intent.putExtra("seconds", seconds);
-//        intent.putExtra("steps", steps);
-//        intent.putExtra("distance", distance);
+        intent.putExtra("steps", stepCount);
+        intent.putExtra("distance", stepCount / stepsPerMile);
         startActivity(intent);
     }
 
