@@ -31,7 +31,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
     public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
-    private static final int MAX_LENGTH = 25;
+    private static final int MAX_LENGTH_NAME = 25;
+    private static final int MAX_LENGTH_SP = 15;
 
     public List<Route> routes;
     private Context mContext;
@@ -123,7 +124,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final Route route = routes.get(position);
         Log.d(TAG, "onBindViewHolder: Position" + position + " Route Null: " + (route == null));
 
-        holder.routeName.setText(trimmedRouteName(route.name));
+        holder.routeName.setText(trimmedRouteValue(route.name, MAX_LENGTH_NAME));
+        holder.startingPoint.setText(formatStartingPoint(trimmedRouteValue(route.startingPoint, MAX_LENGTH_SP)));
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
@@ -137,12 +139,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    private String trimmedRouteName(String name){
-        if(name.length() < MAX_LENGTH){
+    private String trimmedRouteValue(String name, int maxLimit){
+        if(name.length() < maxLimit){
             return name;
         }
         //trims till specified length
-        String trimmedName = name.substring(0, MAX_LENGTH);
+        String trimmedName = name.substring(0, maxLimit);
 
         try{
             //retrims string to the last space - ASSUMES there is a space
@@ -154,17 +156,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         return trimmedName;
     }
-
-//    private Route nthRouteInTreeSet(int position){
-//        Iterator<Route> it = routes.iterator();
-//        int i = -1;
-//        Route route = null;
-//        while(it.hasNext() && i < position) {
-//            route = it.next();
-//            i++;
-//        }
-//        return route;
-//    }
 
     private String formatDate(String date){
         return "Date: " + date;
@@ -178,6 +169,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return "Miles: " + miles;
     }
 
+    private String formatStartingPoint(String startingPoint){
+        return "Start: " + startingPoint;
+    }
+
     @Override
     public int getItemCount() {
         Log.d(TAG, "getItemCount");
@@ -189,6 +184,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         MyClickListener listener;
 
         TextView routeName;
+        TextView startingPoint;
         TextView routeDate;
         TextView routeSteps;
         TextView routeMiles;
@@ -210,6 +206,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(@NonNull View itemView, MyClickListener listener) {
             super(itemView);
             routeName = itemView.findViewById(R.id.routeName);
+            startingPoint = itemView.findViewById(R.id.startingPoint);
             routeDate = itemView.findViewById(R.id.routeDate);
             routeSteps = itemView.findViewById(R.id.routeSteps);
             routeMiles = itemView.findViewById(R.id.routeMiles);
