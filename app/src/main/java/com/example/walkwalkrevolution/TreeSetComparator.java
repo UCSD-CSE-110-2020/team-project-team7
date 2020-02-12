@@ -10,7 +10,7 @@ class TreeSetComparator implements Comparator<Route> {
         int result = route.name.toLowerCase().compareTo(t1.name.toLowerCase());
         //strings are the same content wise --> compare capitalization now
         if(result == 0){
-               return route.name.compareTo(t1.name);
+            return route.name.compareTo(t1.name);
         }
         return result;
     }

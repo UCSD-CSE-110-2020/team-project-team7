@@ -15,6 +15,7 @@
             android:name=".RoutesForm"
             android:exported="true" />
         <activity android:name=".SetDate" />
+        <activity android:name=".NotesPage" />
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".HomePage">
@@ -24,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

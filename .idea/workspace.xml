@@ -25,6 +25,7 @@
 =======
     <list default="true" id="6b0223e2-90dd-427c-8dfd-d0339f6ffd9c" name="Default Changelist" comment="">
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> master
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" afterDir="false" />
@@ -37,6 +38,16 @@
 =======
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java" afterDir="false" />
+>>>>>>> master
+=======
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/button_click_gradient.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/button_default_style.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/favorite_button_clicked_style.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/favorite_button_default_style.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" afterDir="false" />
 >>>>>>> master
 =======
       <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/button_click_gradient.xml" afterDir="false" />
@@ -64,8 +75,12 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5X_API_28" />
 <<<<<<< HEAD
+=======
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Android_Wear_Round_API_28" />
+>>>>>>> master
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -73,6 +88,7 @@
       </state>
     </system>
   </component>
+<<<<<<< HEAD
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
@@ -282,6 +298,14 @@
   </component>
 =======
     </leaf>
+=======
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="resourceFile" />
+      </list>
+    </option>
+>>>>>>> master
   </component>
 >>>>>>> master
 =======
@@ -296,6 +320,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         <option value="$PROJECT_DIR$/app/build.gradle" />
@@ -326,6 +351,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java" />
 =======
 >>>>>>> master
+=======
+>>>>>>> master
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetComparator.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" />
@@ -344,19 +371,24 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
+<<<<<<< HEAD
     <option name="x" value="-29" />
+=======
+    <option name="x" value="31" />
+>>>>>>> master
     <option name="y" value="23" />
-    <option name="width" value="1440" />
+    <option name="width" value="1451" />
     <option name="height" value="826" />
 >>>>>>> master
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
       <pane id="ProjectPane" />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       <pane id="PackagesPane" />
@@ -428,6 +460,8 @@
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
     </key>
 =======
+=======
+>>>>>>> master
       <pane id="PackagesPane" />
       <pane id="Scope" />
 =======
@@ -651,6 +685,7 @@
     <task active="true" id="Default" summary="Default task">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <changelist id="a9c2a898-7bff-4991-a0a8-8bc2eab33bbe" name="Default Changelist" comment="" />
       <created>1581207598470</created>
       <option name="number" value="Default" />
@@ -786,6 +821,9 @@
 =======
       <changelist id="6b0223e2-90dd-427c-8dfd-d0339f6ffd9c" name="Default Changelist" comment="" />
 >>>>>>> master
+=======
+      <changelist id="6b0223e2-90dd-427c-8dfd-d0339f6ffd9c" name="Default Changelist" comment="" />
+>>>>>>> master
       <created>1581294341353</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -794,17 +832,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-29" y="23" width="1440" height="826" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info id="Capture Tool" order="1" />
       <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.34406295" />
+=======
+    <frame x="31" y="23" width="1451" height="826" extended-state="0" />
+    <layout>
+      <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
+      <window_info id="Capture Tool" order="1" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.34399432" />
+>>>>>>> master
       <window_info id="Structure" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Designer" order="6" />
-      <window_info id="Resources Explorer" order="7" />
+      <window_info id="Resources Explorer" order="7" weight="0.32977968" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Logcat" order="0" />
       <window_info anchor="bottom" id="TODO" order="1" />
@@ -910,6 +956,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/button_default_style.xml">
+<<<<<<< HEAD
       <provider selected="true" editor-type-id="text-editor">
 <<<<<<< HEAD
         <state relative-caret-position="210">
@@ -927,6 +974,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/favorite_button_default_style.xml">
       <provider selected="true" editor-type-id="text-editor">
+=======
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="9" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/favorite_button_default_style.xml">
+      <provider selected="true" editor-type-id="text-editor">
+>>>>>>> master
         <state relative-caret-position="90">
           <caret line="6" column="27" lean-forward="true" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
         </state>
@@ -936,6 +993,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
           <caret line="53" column="23" lean-forward="true" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
           <folding>
             <element signature="imports" expanded="true" />
@@ -947,13 +1007,22 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="18" selection-start-line="18" selection-end-line="18" />
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_route_item.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="108" column="80" selection-start-line="108" selection-start-column="40" selection-end-line="108" selection-end-column="80" />
+>>>>>>> master
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/set_date.xml">
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor" />
@@ -985,10 +1054,13 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
+=======
+>>>>>>> master
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/favorite_button_clicked_style.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="6" column="11" lean-forward="true" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+<<<<<<< HEAD
         </state>
       </provider>
     </entry>
@@ -1006,10 +1078,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="35" column="47" selection-start-line="35" selection-start-column="47" selection-end-line="35" selection-end-column="47" />
+=======
+>>>>>>> master
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java">
+<<<<<<< HEAD
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
           <caret line="39" column="13" lean-forward="true" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
@@ -1027,10 +1102,13 @@
 =======
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java">
 >>>>>>> master
+=======
+>>>>>>> master
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
           <caret line="104" lean-forward="true" selection-start-line="104" selection-end-line="104" />
           <folding>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <element signature="e#0#65#0" expanded="true" />
@@ -1053,6 +1131,8 @@
             <element signature="e#1296#1459#0" expanded="true" />
             <element signature="e#1458#1459#0" expanded="true" />
 =======
+=======
+>>>>>>> master
             <element signature="e#0#65#0" expanded="true" />
             <element signature="imports" expanded="true" />
             <element signature="e#5817#5818#0" expanded="true" />
@@ -1061,6 +1141,7 @@
             <element signature="e#5939#5940#0" expanded="true" />
             <element signature="e#5985#5986#0" expanded="true" />
             <element signature="e#6025#6026#0" expanded="true" />
+<<<<<<< HEAD
 >>>>>>> master
           </folding>
         </state>
@@ -1075,6 +1156,8 @@
             <element signature="imports" expanded="true" />
             <element signature="e#2343#2344#0" expanded="true" />
             <element signature="e#2382#2383#0" expanded="true" />
+=======
+>>>>>>> master
           </folding>
         </state>
       </provider>

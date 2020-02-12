@@ -28,6 +28,7 @@
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="376dp"
+            android:headerBackground="#2196F3"
             android:scaleX="0.8"
             android:scaleY="0.7" />
     </LinearLayout>

@@ -19,6 +19,11 @@ public class HeightForm extends AppCompatActivity {
 
         TreeSetManipulation.initializeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
 
+        SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("height", "175");
+        editor.apply();
+
         Button saveBtn = (Button) findViewById(R.id.height_save_btn);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
