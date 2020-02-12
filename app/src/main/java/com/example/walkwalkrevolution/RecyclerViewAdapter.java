@@ -5,7 +5,9 @@
 
 package com.example.walkwalkrevolution;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -21,8 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -32,10 +33,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
     private static final int MAX_LENGTH = 25;
 
-    private TreeSet<Route> routes;
+    public List<Route> routes;
     private Context mContext;
 
-    public RecyclerViewAdapter(Context mContext, TreeSet<Route> routes) {
+    public RecyclerViewAdapter(Context mContext, List<Route> routes) {
         this.mContext = mContext;
         this.routes = routes;
         Log.d(TAG, "Recycler View Adapter Constructor");
@@ -46,12 +47,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, final int viewType) {
         Log.d(TAG, "onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_route_item, parent, false);
-        ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
+        final ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
             @Override
             public void onStartWalkRunSession(int p) {
                 Log.d(TAG, "Button Clicked --> onStartWalkRunSession Called ");
-                TreeSetManipulation.setSelectedRoute(nthRouteInTreeSet(p));
+                TreeSetManipulation.setSelectedRoute(routes.get(p));
                 Log.d(TAG, "SelectedRoute: " + TreeSetManipulation.getSelectedRoute().name);
+                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+                TreeSetManipulation.saveTreeSet(prefs, routes);
                 mContext.startActivity(new Intent(mContext, WalkRunSession.class));
             }
 
@@ -59,9 +62,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onPreviewDetailsPage(int p) {
                 Log.d(TAG, "Button Clicked --> onPreviewDetailsPage Called ");
                 Intent intent = new Intent(mContext, RoutesForm.class);
-                // Push data to RouteForm
                 intent.putExtra("From_Intent", PREVIEW_DETAILS_INTENT);
-                TreeSetManipulation.setSelectedRoute(nthRouteInTreeSet(p));
+                TreeSetManipulation.setSelectedRoute(routes.get(p));
                 Log.d(TAG, "SelectedRoute: " + TreeSetManipulation.getSelectedRoute().name);
                 mContext.startActivity(intent);
             }
@@ -69,25 +71,69 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onDeleteCurrentRoute(int p) {
                 Log.d(TAG, "Button Clicked --> onDeleteCurrentRoute Called ");
-                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-                routes = TreeSetManipulation.deleteRouteInTreeSet(prefs, nthRouteInTreeSet(p));
-                notifyDataSetChanged();
-                Toast.makeText(mContext, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
+                displayRouteDeletionDialogue(mContext, p);
+            }
 
+            @Override
+            public void onFavoriteCurrentRoute(int p) {
+                Log.d(TAG, "Button Clicked --> onFavoriteCurrentRoute Called ");
+                Route routeSelected = routes.get(p);
+                routeSelected.toggleIsFavorited();
+
+//                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+//                routes = TreeSetManipulation.updateRoot(prefs, routeSelected);
+
+                notifyDataSetChanged();
+
+                if(routeSelected.getIsFavorited()){
+                    Toast.makeText(mContext, "Route Favorited", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(mContext, "Route Unfavorited", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return holder;
     }
 
+    private void displayRouteDeletionDialogue(final Context context, final int position){
+        new AlertDialog.Builder(context)
+                .setTitle("Delete Route")
+                .setMessage("Are you sure you want to delete this entry? This is an irreversible action.")
+                .setCancelable(false)
+
+                .setNegativeButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        routes.remove(position);
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Route route = nthRouteInTreeSet(position);
+        final Route route = routes.get(position);
         Log.d(TAG, "onBindViewHolder: Position" + position + " Route Null: " + (route == null));
 
         holder.routeName.setText(trimmedRouteName(route.name));
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
+
+        if(route.getIsFavorited()){
+            holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.favorite_button_states));
+        }
+        else{
+            holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.routes_list_start_button_states));
+        }
     }
 
 
@@ -109,16 +155,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return trimmedName;
     }
 
-    private Route nthRouteInTreeSet(int position){
-        Iterator<Route> it = routes.iterator();
-        int i = -1;
-        Route route = null;
-        while(it.hasNext() && i < position) {
-            route = it.next();
-            i++;
-        }
-        return route;
-    }
+//    private Route nthRouteInTreeSet(int position){
+//        Iterator<Route> it = routes.iterator();
+//        int i = -1;
+//        Route route = null;
+//        while(it.hasNext() && i < position) {
+//            route = it.next();
+//            i++;
+//        }
+//        return route;
+//    }
 
     private String formatDate(String date){
         return "Date: " + date;
@@ -149,6 +195,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         RelativeLayout parentLayout;
         Button startRoute;
         ImageButton deleteRoute;
+        ImageButton favoriteRoute;
 
         public interface MyClickListener{
             void onStartWalkRunSession(int p);
@@ -156,6 +203,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             void onPreviewDetailsPage(int p);
 
             void onDeleteCurrentRoute(int p);
+
+            void onFavoriteCurrentRoute(int p);
         }
 
         public ViewHolder(@NonNull View itemView, MyClickListener listener) {
@@ -167,12 +216,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             parentLayout = itemView.findViewById(R.id.parentLayout);
             startRoute = itemView.findViewById(R.id.startRoute);
             deleteRoute = itemView.findViewById(R.id.deleteRoute);
+            favoriteRoute = itemView.findViewById(R.id.favoriteRoute);
 
             this.listener = listener;
 
             startRoute.setOnClickListener(this);
             deleteRoute.setOnClickListener(this);
             parentLayout.setOnClickListener(this);
+            favoriteRoute.setOnClickListener(this);
         }
 
         @Override
@@ -186,6 +237,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     break;
                 case R.id.deleteRoute:
                     listener.onDeleteCurrentRoute(this.getLayoutPosition());
+                    break;
+                case R.id.favoriteRoute:
+                    listener.onFavoriteCurrentRoute(this.getLayoutPosition());
                     break;
                 default:
                     break;

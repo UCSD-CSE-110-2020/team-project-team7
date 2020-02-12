@@ -7,6 +7,7 @@ import android.os.Bundle;
 public class Route {
 
     // Public instance variables
+    // Required vars
     public String name;
     public String startingPoint;
     public int steps;
@@ -14,6 +15,15 @@ public class Route {
     public String date;
     public int minutes;
     public int seconds;
+    public boolean isFavorited;
+    
+    // Optional vars
+    public boolean isFlat; //Flat or Hilly
+    public boolean isLoop; // Loop or OutBack
+    public boolean isStreet; // Street or Trail
+    public boolean isEven; // Even or Uneven
+    public String difficulty; // Easy, medium, or hard
+    public String notes;
 
     /**
      * Constructor for a Route object.
@@ -31,6 +41,7 @@ public class Route {
         this.date = "date";
         this.minutes = 0;
         this.seconds = 0;
+        this.isFavorited = false;
     }
 
     // Setter methods
@@ -62,6 +73,10 @@ public class Route {
      */
     public void setDuration(int minutes, int seconds) { this.minutes = minutes; this.seconds = seconds; }
 
+    public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
+
+    public boolean getIsFavorited() { return this.isFavorited; }
+
     public void setDistance(float distance){
         this.distance = distance;
     }
@@ -70,12 +85,40 @@ public class Route {
         this.steps = steps;
     }
 
+    /**
+     * Compares two Routes.
+     */
     public boolean compareRoute(Route route){
         if(this.name.equals(route.name)){
             return true;
         }
         return false;
     }
+
+    /**
+     * Setter method for isFlat.
+     */
+    public void setIsFlat(boolean flatOrHilly) { this.isFlat = flatOrHilly; }
+    /**
+     * Setter method for isLoop.
+     */
+    public void setIsLoop(boolean loopOrOutBack) { this.isLoop = loopOrOutBack; }
+    /**
+     * Setter method for isStreet.
+     */
+    public void setIsStreet(boolean streetOrTrail) { this.isStreet = streetOrTrail; }
+    /**
+     * Setter method for isEven.
+     */
+    public void setIsEven(boolean evenOrUneven) { this.isEven = evenOrUneven; }
+    /**
+     * Setter method for difficulty.
+     */
+    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+    /**
+     * Setter method for note.
+     */
+    public void setNotes(String notes) { this.notes = notes; }
 
 
 }

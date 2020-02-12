@@ -4,53 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetDate">
+    tools:context=".NotesPage">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="301dp"
-        android:layout_height="380dp"
-        android:orientation="vertical"
+    <EditText
+        android:id="@+id/notesEditText"
+        android:layout_width="271dp"
+        android:layout_height="351dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="32dp"
+        android:background="#E2F3F3F3"
+        android:fontFamily="@font/actor"
+        android:gravity="top"
+        android:hint="Type your note here..."
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/LinearLayout02"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/pickDateView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:text="@string/choose_route_date"
-            android:textSize="19sp" />
-
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="match_parent"
-            android:layout_height="376dp"
-            android:headerBackground="#2196F3"
-            android:scaleX="0.8"
-            android:scaleY="0.7" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.211" />
 
     <LinearLayout
         android:id="@+id/LinearLayout02"
-        android:layout_width="317dp"
-        android:layout_height="52dp"
+        android:layout_width="318dp"
+        android:layout_height="46dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.913">
 
         <Button
             android:id="@+id/SaveButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:background="@drawable/routes_list_start_button_states"
             android:layout_weight="1"
             android:text="@string/save"></Button>
@@ -58,10 +51,11 @@
         <Button
             android:id="@+id/CancelButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:background="@drawable/routes_list_start_button_states"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:text="@string/cancel"></Button>
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

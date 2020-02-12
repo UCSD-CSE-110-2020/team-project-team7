@@ -54,14 +54,15 @@
         android:id="@+id/stop_btn"
         android:layout_width="205dp"
         android:layout_height="62dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/routes_list_start_button_states"
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/stop_btn"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.792" />
+        app:layout_constraintHorizontal_bias="0.543"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/activity_distance_text"
