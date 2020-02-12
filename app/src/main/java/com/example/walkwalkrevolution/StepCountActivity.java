@@ -19,7 +19,6 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
         miles = 0;
     }
@@ -30,8 +29,10 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             publishProgress(String.valueOf(updateStep.getStepCount()),
                             String.valueOf(miles));
             try {
-                Thread.sleep(5000);
-                gfa.updateStepCount();
+                Thread.sleep(1000);
+                //gfa.updateStepCount();
+                // TODO DELETE LATER HARD CODE STEPS
+                //updateStep.setStepCount(updateStep.getStepCount() + 10);
                 miles = Math.floor((updateStep.getStepCount() / updateStep.getStepsPerMile()) * 100) / 100;
             } catch (InterruptedException e) {
                 e.printStackTrace();

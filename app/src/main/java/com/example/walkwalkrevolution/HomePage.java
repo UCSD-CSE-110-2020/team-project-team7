@@ -27,18 +27,19 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public long stepCount;
     public double stepsPerMile;
     public GoogleFitAdapter googleApi;
+    // TODO TEST BUTTON
+    public Button incrementSteps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        launchFirstSession();
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
 
         // retrieve height;
-        SharedPreferences getHeight = getSharedPreferences("height", 0);
+        final SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 0);
         Log.d("feet from home", String.valueOf(feet));
         int inches = getHeight.getInt("height_in", 0);
@@ -58,6 +59,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         sc = new StepCountActivity(googleApi);
         sc.updateStep = this;
         sc.execute();
+
+        // TODO TEST BUTTON FUNCTION
+        incrementSteps = findViewById(R.id.testbutton);
+        incrementSteps.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                setStepCount(getStepCount() + 500);
+            }
+        });
 
         // used to start the walk/run activity
         Button launchActivity = (Button) findViewById(R.id.startButt);

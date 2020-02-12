@@ -23,9 +23,9 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     private int seconds;
     private TextView timerText;
 
-    private TextView stepCountText;
-    private StepCountActivity sta;
-    private long stepCount;
+    //private TextView stepCountText;
+    //private StepCountActivity sta;
+    //private long stepCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,8 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         stepCountText = findViewById(R.id.activity_miles_number2);
         stepCount = 0;
         GoogleFitAdapter googleApi = new GoogleFitAdapter(this);
-        sta = new StepCountActivity(googleApi);
-        sta.updateStep = this;
+        sc = new StepCountActivity(googleApi);
+        sc.updateStep = this;
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
@@ -64,12 +64,12 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
      * getStepCount is called within StepCountActivity.java --> get stepCount
      * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
      */
-    @Override
+    /*@Override
     public void updateStepView(String str) { stepCountText.setText(str); }
     @Override
     public void setStepCount(long sc) { stepCount = sc; }
     @Override
-    public long getStepCount() { return this.stepCount; }
+    public long getStepCount() { return this.stepCount; }*/
 
     /**
      * launches to the routes form
