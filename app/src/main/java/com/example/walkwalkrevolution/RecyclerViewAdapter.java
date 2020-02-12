@@ -71,7 +71,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onDeleteCurrentRoute(int p) {
                 Log.d(TAG, "Button Clicked --> onDeleteCurrentRoute Called ");
                 SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-                routes = TreeSetManipulation.deleteRouteInTreeSet(prefs, new TreeSetComparator(), nthRouteInTreeSet(p));
+                routes = TreeSetManipulation.deleteRouteInTreeSet(prefs, nthRouteInTreeSet(p));
                 notifyDataSetChanged();
                 Toast.makeText(mContext, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
 
