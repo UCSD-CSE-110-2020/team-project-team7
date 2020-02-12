@@ -35,7 +35,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
-        
+
         // retrieve height;
         SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 0);
