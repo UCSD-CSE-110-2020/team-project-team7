@@ -51,6 +51,7 @@
             android:id="@+id/SaveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/routes_list_start_button_states"
             android:layout_weight="1"
             android:text="@string/save"></Button>
 
@@ -58,6 +59,7 @@
             android:id="@+id/CancelButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/routes_list_start_button_states"
             android:layout_weight="1"
             android:text="@string/cancel"></Button>
     </LinearLayout>
