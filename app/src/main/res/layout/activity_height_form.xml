@@ -25,14 +25,14 @@
         android:id="@+id/height_save_btn"
         android:layout_width="205dp"
         android:layout_height="62dp"
+        android:background="@drawable/routes_list_start_button_states"
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/height_save_btn"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.551" />
+        app:layout_constraintTop_toBottomOf="@+id/height_input" />
 
     <EditText
         android:id="@+id/height_input"
