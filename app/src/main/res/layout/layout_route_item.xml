@@ -4,7 +4,7 @@
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/route_item_style"
+    android:background="@drawable/route_item_states"
     android:padding="15dp">
 
     <TextView
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start"
-                android:background="@drawable/routes_list_start_button_style"
+                android:background="@drawable/routes_list_start_button_states"
                 android:drawableLeft="@drawable/resized_fitness_icon"
                 android:textAlignment="center"
                 android:textColor="#000000"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@drawable/routes_list_start_button_style"
+                    android:background="@drawable/routes_list_start_button_states"
                     app:srcCompat="@android:drawable/btn_star_big_off" />
 
                 <ImageButton
@@ -106,7 +106,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/routes_list_start_button_style"
+                    android:background="@drawable/routes_list_start_button_states"
                     app:srcCompat="@android:drawable/ic_delete" />
             </LinearLayout>
         </LinearLayout>
