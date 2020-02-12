@@ -203,8 +203,8 @@ public class RoutesForm extends AppCompatActivity {
         //String.format("%d:%02d", minutes, seconds);
         minutesEditText.setText(String.format("%02d", minutes));
         secondsEditText.setText(String.format("%02d", seconds));
-        stepsView.setText(steps + " s");
-        distanceView.setText(distance + " mi");
+        stepsView.setText(steps + " steps");
+        distanceView.setText(distance + " miles");
 
         //Walk/Run Session started from Routes page
        if(TreeSetManipulation.getSelectedRoute() != null){
