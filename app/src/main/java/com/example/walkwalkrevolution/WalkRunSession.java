@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 
@@ -104,5 +105,13 @@ public class WalkRunSession extends AppCompatActivity {
 
 
 
+    }
+
+    /**
+     * prevents the user from pressing the back button to go back to the home screen
+     */
+    @Override
+    public void onBackPressed(){
+        Toast.makeText(this, "Please press the stop button to go stop", Toast.LENGTH_SHORT).show();
     }
 }
