@@ -5,7 +5,8 @@
     <string name="timer">placeholder</string>
     <string name="input_height_msg">Input your height below</string>
     <string name="height_save_btn">Save</string>>
-    <string name="default_height">175</string>>
+    <string name="default_feet">5</string>>
+    <string name="default_inches">7</string>
 
     <!--Route Form/List-->
     <string name="route_details">Route Details</string>

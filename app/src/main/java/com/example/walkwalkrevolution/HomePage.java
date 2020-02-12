@@ -33,6 +33,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        launchFirstSession();
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
 

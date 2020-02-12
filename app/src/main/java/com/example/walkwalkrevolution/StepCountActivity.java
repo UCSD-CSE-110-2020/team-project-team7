@@ -32,8 +32,6 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             try {
                 Thread.sleep(5000);
                 gfa.updateStepCount();
-                // TODO DELETE THIS TEST LATER
-                //updateStep.setStepCount(updateStep.getStepCount() + 20); // WORKS WHEN THIS IS TESTED
                 miles = Math.floor((updateStep.getStepCount() / updateStep.getStepsPerMile()) * 100) / 100;
             } catch (InterruptedException e) {
                 e.printStackTrace();
