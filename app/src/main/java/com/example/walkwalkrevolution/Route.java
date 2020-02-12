@@ -15,6 +15,7 @@ public class Route {
     public String date;
     public int minutes;
     public int seconds;
+    public boolean isFavorited;
     
     // Optional vars
     public boolean isFlat; //Flat or Hilly
@@ -40,6 +41,7 @@ public class Route {
         this.date = "date";
         this.minutes = 0;
         this.seconds = 0;
+        this.isFavorited = false;
     }
 
     // Setter methods
@@ -70,6 +72,10 @@ public class Route {
      * @param seconds- int, how many secs a walk/run takes
      */
     public void setDuration(int minutes, int seconds) { this.minutes = minutes; this.seconds = seconds; }
+
+    public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
+
+    public boolean getIsFavorited() { return this.isFavorited; }
 
     public void setDistance(float distance){
         this.distance = distance;
@@ -113,5 +119,6 @@ public class Route {
      * Setter method for note.
      */
     public void setNotes(String notes) { this.notes = notes; }
+
 
 }
