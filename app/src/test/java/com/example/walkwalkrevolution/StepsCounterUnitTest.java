@@ -17,8 +17,6 @@ public class StepsCounterUnitTest {
 
     private class mockHomePage extends HomePage {
 
-
-        private int height;
         private double miles;
         public void setStepUpdateView(long steps) {
             stepsPerMile = calculateStepsPerMile(70);

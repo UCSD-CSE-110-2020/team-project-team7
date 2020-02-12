@@ -43,8 +43,6 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected void onProgressUpdate(String... text) {
-        Log.d("steps" , text[0]);
-        Log.d("miles", text[1]);
         updateStep.updateStepView(text[0]);
         updateStep.updatesMilesView(text[1]);
     }

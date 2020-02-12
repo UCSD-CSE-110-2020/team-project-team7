@@ -20,27 +20,35 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
+    public final String TAG = "Home Page";
     public StepCountActivity sc;
     public TextView stepCountText;
     public TextView milesText;
     public long stepCount;
     public double stepsPerMile;
+    public GoogleFitAdapter googleApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        firstLogin(settings);
+        
         // retrieve height;
         SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 0);
+        Log.d("feet from home", String.valueOf(feet));
         int inches = getHeight.getInt("height_in", 0);
+        Log.d("inches from home", String.valueOf(inches));
+
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
         // Create Fitness Service
         stepCount = 0;
-        GoogleFitAdapter googleApi = new GoogleFitAdapter(this);
+        googleApi = new GoogleFitAdapter(this);
         googleApi.setup();
 
         // Starts AsyncTask for step counter
@@ -68,10 +76,23 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             }
         });
 
-        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-        firstLogin(settings);
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //If authentication was required during google fit setup,
+        // this will be called after the user authenticates
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == googleApi.getRequestCode()) {
+                googleApi.updateStepCount();
+            }
+        } else {
+            Log.e(TAG, "ERROR, google fit result code: " + resultCode);
+        }
+    }
 
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
