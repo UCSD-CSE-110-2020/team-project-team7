@@ -10,32 +10,23 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class StepCountActivity extends AsyncTask<String, String, String> {
 
-
-    private TextView textSteps;
     private FitnessService fs;
     private HomePage homePage;
     private boolean testStep;
 
 
-    public StepCountActivity(TextView tv, FitnessService fs, HomePage hp, boolean testStep) {
+    public StepCountActivity(FitnessService fs, HomePage hp, boolean testStep) {
 
-        this.textSteps = tv;
         this.fs = fs;
         this.homePage = hp;
         this.testStep = testStep;
     }
 
     @Override
-    protected void onPreExecute() {
-
-        //fitnessService.setup();
-        //gfa.setup();
-        fs.setup();
-    }
+    protected void onPreExecute() {fs.setup();}
 
     @Override
     protected String doInBackground(String... strings) {
-
         do {
             // Don't update step count from publish if testing
             if(!testStep) {publishProgress(String.valueOf(homePage.getStepCount()));}
@@ -49,15 +40,10 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
         } while(!testStep);
 
         return null;
-
     }
 
     @Override
-    protected void onProgressUpdate(String... text) {
-        //textSteps.setText(text[0]);
-        // Set step count text from home
-        homePage.setStepCount(Long.parseLong(text[0]));
-    }
+    protected void onProgressUpdate(String... text) {homePage.setStepCount(Long.parseLong(text[0]));}
 
 }
 

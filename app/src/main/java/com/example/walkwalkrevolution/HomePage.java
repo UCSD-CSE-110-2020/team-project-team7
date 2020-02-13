@@ -57,7 +57,7 @@ public class HomePage extends AppCompatActivity {
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
-        sc = new StepCountActivity(stepCountText, fitnessService, this, testStep);
+        sc = new StepCountActivity(fitnessService, this, testStep);
 
         sc.execute();
 
