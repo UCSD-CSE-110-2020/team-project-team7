@@ -24,10 +24,10 @@ public class HomePage extends AppCompatActivity {
 
     private TextView stepCountText;
     private StepCountActivity sc;
-
     private FitnessService fitnessService;
     public String fitnessServiceKey = "GOOGLE_FIT";
     private long stepCount;
+    private boolean testStep = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,13 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        // Checks if doing unit test before grabbing String extra
+        fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        if(fitnessServiceKey == null) {
+            fitnessServiceKey = "GOOGLE_FIT";
+            testStep = false;
+        }
+
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
         //fitnessService.setup();
 
@@ -50,8 +57,7 @@ public class HomePage extends AppCompatActivity {
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
-        System.out.println("");
-        sc = new StepCountActivity(stepCountText, fitnessService, this);
+        sc = new StepCountActivity(stepCountText, fitnessService, this, testStep);
 
         sc.execute();
 
@@ -115,6 +121,7 @@ public class HomePage extends AppCompatActivity {
 
     public void setStepCount(long sc) {
         stepCount = sc;
+        stepCountText.setText(String.valueOf(sc));
     }
 
     public long getStepCount() {
@@ -122,4 +129,3 @@ public class HomePage extends AppCompatActivity {
     }
 
 }
-

@@ -14,13 +14,15 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     private TextView textSteps;
     private FitnessService fs;
     private HomePage homePage;
+    private boolean testStep;
 
 
-    public StepCountActivity(TextView tv, FitnessService fs, HomePage hp) {
+    public StepCountActivity(TextView tv, FitnessService fs, HomePage hp, boolean testStep) {
 
         this.textSteps = tv;
         this.fs = fs;
         this.homePage = hp;
+        this.testStep = testStep;
     }
 
     @Override
@@ -33,24 +35,28 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        while(true) {
-            publishProgress(String.valueOf(homePage.getStepCount()));
+
+        do {
+            // Don't update step count from publish if testing
+            if(!testStep) {publishProgress(String.valueOf(homePage.getStepCount()));}
+
             try {
                 Thread.sleep(1000);
-                //fitnessService.updateStepCount();
                 fs.updateStepCount();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        } while(!testStep);
 
-            //strings[0] = String.valueOf(num);
+        return null;
 
-        }
     }
 
     @Override
     protected void onProgressUpdate(String... text) {
-        textSteps.setText(text[0]);
+        //textSteps.setText(text[0]);
+        // Set step count text from home
+        homePage.setStepCount(Long.parseLong(text[0]));
     }
 
 }

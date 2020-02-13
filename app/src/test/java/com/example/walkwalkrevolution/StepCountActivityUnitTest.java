@@ -33,25 +33,21 @@ public class StepCountActivityUnitTest {
     @Before
     public void setUp() {
         FitnessServiceFactory.put(TEST_SERVICE, TestFitnessService::new);
-        System.out.println("after put");
         intent = new Intent(ApplicationProvider.getApplicationContext(), HomePage.class);
-        System.out.println("intent");
-        //intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
+
+        // Pass Test variables to Homepage
+        intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
+        intent.putExtra("testStep", true);
     }
 
     @Test
     public void testUpdateStepsButton() {
         nextStepCount = 1337;
-        System.out.println("step");
 
         ActivityScenario<HomePage> scenario = ActivityScenario.launch(intent);
 
-        System.out.println("launched activity");
-
         scenario.onActivity(activity -> {
             TextView textSteps = activity.findViewById(R.id.stepCountText);
-            activity.fitnessServiceKey = TEST_SERVICE;
-
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
     }
@@ -62,7 +58,6 @@ public class StepCountActivityUnitTest {
 
         public TestFitnessService(HomePage homePage) {
             this.homePage = homePage;
-            System.out.println("homepage ctor");
         }
 
         @Override
