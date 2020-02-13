@@ -20,11 +20,13 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomePage extends AppCompatActivity {
 
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+
     private TextView stepCountText;
     private StepCountActivity sc;
 
     private FitnessService fitnessService;
-    private String fitnessServiceKey = "GOOGLE_FIT";
+    public String fitnessServiceKey = "GOOGLE_FIT";
     private long stepCount;
 
     @Override
@@ -33,13 +35,24 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         // Create Fitness Service
-        stepCount = 0;
-        GoogleFitAdapter g = new GoogleFitAdapter(this);
-        g.setup();
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomePage hp) {
+                return new GoogleFitAdapter(hp);
+            }
+        });
+
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        //fitnessService.setup();
+
+        //GoogleFitAdapter g = new GoogleFitAdapter(this);
+        //g.setup();
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
-        sc = new StepCountActivity(stepCountText, g, this);
+        System.out.println("");
+        sc = new StepCountActivity(stepCountText, fitnessService, this);
+
         sc.execute();
 
         Button launchActivity = (Button) findViewById(R.id.startButt);

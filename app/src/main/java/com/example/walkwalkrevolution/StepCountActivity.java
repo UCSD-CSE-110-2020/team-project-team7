@@ -12,14 +12,14 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
 
     private TextView textSteps;
-    private GoogleFitAdapter gfa;
+    private FitnessService fs;
     private HomePage homePage;
 
 
-    public StepCountActivity(TextView tv, GoogleFitAdapter gfa, HomePage hp) {
+    public StepCountActivity(TextView tv, FitnessService fs, HomePage hp) {
 
         this.textSteps = tv;
-        this.gfa = gfa;
+        this.fs = fs;
         this.homePage = hp;
     }
 
@@ -28,6 +28,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
         //fitnessService.setup();
         //gfa.setup();
+        fs.setup();
     }
 
     @Override
@@ -37,7 +38,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             try {
                 Thread.sleep(1000);
                 //fitnessService.updateStepCount();
-                gfa.updateStepCount();
+                fs.updateStepCount();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
