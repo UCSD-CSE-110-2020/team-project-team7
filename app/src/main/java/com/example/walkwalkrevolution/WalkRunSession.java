@@ -3,10 +3,12 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.TimedMetaData;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,7 @@ public class WalkRunSession extends AppCompatActivity {
     private int minutes;
     private int seconds;
     private TextView timerText;
-
+    private TimeData timeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,31 @@ public class WalkRunSession extends AppCompatActivity {
                 launchRouteForm();
             }
         });
+
+
+        // Set up the time/mocktime
+        timeData = new TimeData();
+
+        // EditText to input time in milliseconds
+        EditText mockTimeEditText = (EditText) findViewById(R.id.mockTimeEditText);
+
+        // Button that submits mockTime
+        Button mockTimeButton = (Button) findViewById(R.id.submitMockTimeButton);
+        mockTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+                    long mockTime =  Long.parseLong(mockTimeEditText.getText().toString());
+                    timeData.setMockTime(mockTime);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+
+
+
     }
 
     /**
@@ -78,7 +105,7 @@ public class WalkRunSession extends AppCompatActivity {
 
 
             while(true){
-                long millis = System.currentTimeMillis() - startTime;
+                long millis = timeData.getTime() - startTime;
                 seconds = (int)(millis/1000);
                 minutes = seconds/60;
                 seconds %= 60;
@@ -113,5 +140,38 @@ public class WalkRunSession extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         Toast.makeText(this, "Please press the stop button to go stop", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Handles timing/mock timing.
+     */
+    private class TimeData  {
+
+        public long mockTime;
+        public long mockStartTime;
+
+        private boolean mockTimeSet = false;
+
+        /**
+         * Starts mock timing.
+         * @param mockTime - the new time to start at
+         */
+        private void setMockTime(long mockTime) {
+            this.mockTime = mockTime;
+            mockTimeSet = true;
+            mockStartTime = System.currentTimeMillis();
+        }
+
+        /**
+         * Returns the time or mocked time.
+         */
+        private long getTime() {
+            if (mockTimeSet) {
+                return mockTime + (System.currentTimeMillis() - mockStartTime);
+
+            } else {
+                return System.currentTimeMillis();
+            }
+        }
     }
 }
