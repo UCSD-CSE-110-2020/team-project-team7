@@ -27,6 +27,7 @@
 
             <Button
                 android:id="@+id/notesButton"
+                android:drawableLeft="@drawable/icons8_edit_30"
                 android:background="@drawable/routes_list_start_button_states"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
