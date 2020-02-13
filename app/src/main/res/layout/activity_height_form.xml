@@ -33,17 +33,17 @@
         android:text="ft."
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="@+id/height_input_in"
-        app:layout_constraintStart_toEndOf="@+id/height_input_in"
-        app:layout_constraintTop_toTopOf="@+id/height_input_in"
+        app:layout_constraintBottom_toBottomOf="@+id/height_input_ft"
+        app:layout_constraintStart_toEndOf="@+id/height_input_ft"
+        app:layout_constraintTop_toTopOf="@+id/height_input_ft"
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/height_input_in"
+        android:id="@+id/height_input_ft"
         android:layout_width="96dp"
         android:layout_height="65dp"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="344dp"
+        android:layout_marginBottom="332dp"
         android:fontFamily="casual"
         android:gravity="center"
         android:inputType="number"
@@ -57,7 +57,8 @@
         android:id="@+id/height_save_btn"
         android:layout_width="205dp"
         android:layout_height="62dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginBottom="164dp"
         android:background="@drawable/routes_list_start_button_states"
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/height_save_btn"
@@ -65,48 +66,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.216" />
-        app:layout_constraintTop_toBottomOf="@+id/height_input" />
+        app:layout_constraintTop_toBottomOf="@+id/height_input_in"
+        app:layout_constraintVertical_bias="0.932" />
 
     <EditText
-        android:id="@+id/height_input_ft"
+        android:id="@+id/height_input_in"
         android:layout_width="96dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginBottom="332dp"
         android:fontFamily="casual"
         android:gravity="center"
         android:inputType="numberSigned"
         android:maxLength="1"
         android:text="@string/default_feet"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/feet_txt"
-        app:layout_constraintEnd_toStartOf="@+id/inches_txt"
-        app:layout_constraintTop_toTopOf="@+id/feet_txt"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/inches_txt" />
 
     <TextView
         android:id="@+id/inches_txt"
         android:layout_width="66dp"
         android:layout_height="65dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="280dp"
         android:fontFamily="casual"
         android:gravity="center"
-        android:maxLength="2"
         android:inputType="numberSigned"
+        android:maxLength="2"
         android:text="in."
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="@+id/height_input_ft"
+        app:layout_constraintBottom_toBottomOf="@+id/height_input_in"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/height_input_ft"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintTop_toTopOf="@+id/height_input_in" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
