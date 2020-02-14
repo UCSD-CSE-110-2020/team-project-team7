@@ -35,23 +35,19 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_run_session);
 
-        // timer
+        // timer initialize
         timerText = findViewById(R.id.timer_text);
 
-
-        // steps and miles
+        // steps and miles initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
         stepCount = 0;
         milesCount = 0;
         googleApi = FitnessServiceFactory.create("GOOGLE_API");
         sc = new StepCountActivity(googleApi);
-        //sc.updateStep = this;
-        //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
-
         stopActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +84,9 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
 
     }
 
+    /**
+     * Run both timer and step/miles update in different threads
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -168,9 +167,6 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         protected void onProgressUpdate(String... text){
             timerText.setText(text[0]);
         }
-
-
-
     }
 
     /**
