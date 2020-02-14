@@ -25,15 +25,16 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... strings) {
         while(true) {
+            publishProgress(String.valueOf(updateStep.getStepCount()),
+                    String.valueOf(updateStep.getMiles()));
+            //gfa.updateStepCount();
+            // TODO DELETE LATER HARD CODE STEPS
+            updateStep.setStepCount(updateStep.getStepCount() + 10);
+            updateStep.setMiles((Math.floor(updateStep.getStepCount() / updateStep.getStepsPerMile()) * 100) / 100);
+            //updateStep.setMiles();
+            Log.d("steps", String.valueOf(updateStep.getStepCount()));
             try {
                 Thread.sleep(1000);
-                publishProgress(String.valueOf(updateStep.getStepCount()),
-                                String.valueOf(updateStep.getMiles()));
-                //gfa.updateStepCount();
-                // TODO DELETE LATER HARD CODE STEPS
-                updateStep.setStepCount(updateStep.getStepCount() + 10);
-                updateStep.setMiles(Math.floor((updateStep.getStepCount()
-                        / updateStep.getStepsPerMile()) * 100) / 100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
