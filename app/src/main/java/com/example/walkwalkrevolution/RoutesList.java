@@ -28,6 +28,8 @@ public class RoutesList extends AppCompatActivity {
     private static final String TAG = "RoutesList";
     public static final String ROUTE_CREATE_INTENT = "From_Routes_Creation";
 
+    RecyclerViewAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +56,14 @@ public class RoutesList extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void initRecyclerView(){
         Log.d(TAG, "Starting initRecyclerView ");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewRoutes);
         SharedPreferences sharedPreferences = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-        //RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, routes);
-        //replace with loadTreeSet instead of routes
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences, new TreeSetComparator()));
+
+        adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -71,12 +71,35 @@ public class RoutesList extends AppCompatActivity {
     }
 
     private void redirectToFormForRouteCreation(){
+        saveRoutes();
         Intent intent = new Intent(RoutesList.this, RoutesForm.class);
         intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
         startActivity(intent);
     }
 
     private void redirectToHomePage(){
+        saveRoutes();
         startActivity(new Intent(RoutesList.this, HomePage.class));
+    }
+
+    private void saveRoutes(){
+        SharedPreferences prefs = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+        TreeSetManipulation.saveTreeSet(prefs, adapter.routes);
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
+
+    @Override
+    protected void onDestroy() {
+        saveRoutes();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        saveRoutes();
+        super.onPause();
     }
 }

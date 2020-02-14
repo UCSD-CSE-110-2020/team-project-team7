@@ -19,13 +19,13 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/routes_list_start_button_style"
+        android:background="@drawable/routes_list_start_button_states"
         android:text="+"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/goToHomePage"
-        android:background="@drawable/routes_list_start_button_style"
+        android:background="@drawable/routes_list_start_button_states"
         android:drawableLeft="@drawable/icons8_home_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
