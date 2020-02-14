@@ -26,7 +26,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public TextView stepCountText;
     public TextView milesText;
     public long stepCount = 0;
-    public double milesCount = 0;
+    public double milesCount;
     public double stepsPerMile;
     public FitnessService fitnessService;
     // TODO TEST BUTTON
@@ -42,8 +42,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
-        int feet = getHeight.getInt("height_ft", 0);
-        int inches = getHeight.getInt("height_in", 0);
+        int feet = getHeight.getInt("height_ft", 5);
+        int inches = getHeight.getInt("height_in", 7);
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
