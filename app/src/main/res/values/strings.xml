@@ -19,7 +19,7 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="choose_route_date">Choose the date of your Route!</string>
-    <string name="flat">Flat</string>
+    <string name="flat"> <font color="#00ff00"> Flat </font> </string>
     <string name="hilly">Hilly</string>
     <string name="loop">Loop</string>
     <string name="out_back">Out Back</string>

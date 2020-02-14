@@ -1,68 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RoutesForm">
+    >
+
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="117dp"
-        android:layout_height="89dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="6dp"
+        android:id="@+id/linearLayoutFields"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/LinearLayout02"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.87"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout7"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.886">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/notesButton"
-                android:drawableLeft="@drawable/icons8_edit_30"
-                android:background="@drawable/routes_list_start_button_states"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/note"
-                android:textAllCaps="false" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="119dp"
-            android:layout_height="39dp"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/difficultySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="2dp"
-                android:entries="@array/difficulties"
-                android:spinnerMode="dropdown" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="286dp"
-        android:layout_height="266dp"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        >
 
         <LinearLayout
             android:layout_width="560dp"
@@ -342,20 +294,76 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/linearLayoutAdditionalInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutFields"
+        android:layout_centerHorizontal="true"
+        >
+
+            <org.honorato.multistatetogglebutton.MultiStateToggleButton
+                android:id="@+id/hillyToggle"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <org.honorato.multistatetogglebutton.MultiStateToggleButton
+                android:id="@+id/loopToggle"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <org.honorato.multistatetogglebutton.MultiStateToggleButton
+                android:id="@+id/surfaceToggle"
+                android:layout_below="@+id/hillyToggle"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <org.honorato.multistatetogglebutton.MultiStateToggleButton
+                android:id="@+id/streetToggle"
+                android:layout_below="@+id/loopToggle"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <org.honorato.multistatetogglebutton.MultiStateToggleButton
+                android:id="@+id/difficultyToggle"
+                android:layout_below="@+id/surfaceToggle"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/notesButton"
+            android:layout_below="@+id/difficultyToggle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/icons8_edit_30"
+            android:background="@drawable/routes_list_start_button_states"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
     <LinearLayout
-        android:id="@+id/LinearLayout02"
-        android:layout_width="318dp"
-        android:layout_height="46dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.913">
+        android:id="@+id/linearLayoutButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/linearLayoutAdditionalInfo"
+        android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/SaveButton"
@@ -363,7 +371,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/routes_list_start_button_states"
-            android:text="@string/save"></Button>
+            android:text="@string/save"/>
 
         <Button
             android:id="@+id/CancelButton"
@@ -371,117 +379,7 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/routes_list_start_button_states"
-            android:text="@string/cancel"></Button>
+            android:text="@string/cancel"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout7"
-        android:layout_width="179dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginBottom="2dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/LinearLayout02"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.872">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:orientation="horizontal">
-
-            <ToggleButton
-                android:id="@+id/flatOrHillyButton"
-                android:layout_width="104dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
-                android:background="#2196F3"
-                android:fontFamily="@font/actor"
-                android:text="ToggleButton"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textOff="@string/hilly"
-                android:textOn="@string/flat"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="10dp"
-                android:layout_height="73dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"></LinearLayout>
-
-            <ToggleButton
-                android:id="@+id/loopOrOutBackButton"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
-                android:background="#2196F3"
-                android:fontFamily="@font/actor"
-                android:text="ToggleButton"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textOff="@string/out_back"
-                android:textOn="@string/loop"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:orientation="horizontal">
-
-            <ToggleButton
-                android:id="@+id/streetOrTrailButton"
-                android:layout_width="104dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginRight="2dp"
-                android:layout_weight="1"
-                android:background="#2196F3"
-                android:fontFamily="@font/actor"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textOff="@string/trail"
-                android:textOn="@string/street"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="10dp"
-                android:layout_height="73dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"></LinearLayout>
-
-            <ToggleButton
-                android:id="@+id/evenOrUnevenButton"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="3dp"
-                android:layout_weight="1"
-                android:background="#2196F3"
-                android:fontFamily="@font/actor"
-                android:text="ToggleButton"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textOff="@string/uneven"
-                android:textOn="@string/even"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

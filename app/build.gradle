@@ -55,4 +55,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //Multi-State Toggle Buttons (Github)
+    implementation 'org.honorato.multistatetogglebutton:multistatetogglebutton:0.2.2'
+
 }

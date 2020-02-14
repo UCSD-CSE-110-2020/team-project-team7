@@ -21,6 +21,8 @@ import android.widget.ToggleButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.honorato.multistatetogglebutton.MultiStateToggleButton;
+
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,12 +35,9 @@ public class RoutesForm extends AppCompatActivity {
     // Edit Texts
     private EditText routeNameEditText, startingPEditText, minutesEditText, secondsEditText;
     private TextView dateDisplayTextView, stepsView, distanceView;
-
-    // Booleans for toggle Buttons for setting extra features and Toggle Buttons themselves
-    private boolean isFlat, isStreet, isLoop, isEven;
-    private ToggleButton flatOrHillyButton, streetOrTrailButton, loopOrOutBackButton,
-            evenOrUnevenButton;
-    private Spinner difficultySpinner;
+    private MultiStateToggleButton[] optionalInfo = new MultiStateToggleButton[5];
+    private int[] toggledButtons = new int[5];
+    private String[] toggledButtonsStr = new String[5];
 
     // Data obtained from Walk/Run session
     private int steps, minutes, seconds;
@@ -96,8 +95,64 @@ public class RoutesForm extends AppCompatActivity {
         stepsView = (TextView) findViewById(R.id.stepsNumView);
         distanceView = (TextView) findViewById(R.id.distanceNumView);
 
-        // Set up ToggleButton listeners
-        setUpToggleFeatures();
+        optionalInfo[0] = (MultiStateToggleButton) this.findViewById(R.id.hillyToggle);
+        optionalInfo[0].setElements(new CharSequence[]{"Hilly", "Flat"});
+        optionalInfo[1] = (MultiStateToggleButton) this.findViewById(R.id.loopToggle);
+        optionalInfo[1].setElements(new CharSequence[]{"Loop", "Out-Back"});
+        optionalInfo[2] = (MultiStateToggleButton) this.findViewById(R.id.surfaceToggle);
+        optionalInfo[2].setElements(new CharSequence[]{"Even", "Uneven"});
+        optionalInfo[3] = (MultiStateToggleButton) this.findViewById(R.id.streetToggle);
+        optionalInfo[3].setElements(new CharSequence[]{"Street", "Trails"});
+        optionalInfo[4] = (MultiStateToggleButton) this.findViewById(R.id.difficultyToggle);
+        optionalInfo[4].setElements(new CharSequence[]{"Easy", "Medium", "Hard"});
+
+        for(int i=0; i < optionalInfo.length; i++){
+            optionalInfo[i].enableMultipleChoice(false);
+        }
+
+        optionalInfo[0].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
+                toggledButtons[0] = value + 1;
+                toggledButtonsStr[0] = "" + optionalInfo[0].getTexts()[value];
+            }
+        });
+
+        optionalInfo[1].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
+                toggledButtons[1] = value + 1;
+                toggledButtonsStr[1] = "" + optionalInfo[1].getTexts()[value];
+            }
+        });
+
+        optionalInfo[2].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
+                toggledButtons[2] = value + 1;
+                toggledButtonsStr[2] = "" + optionalInfo[2].getTexts()[value];
+            }
+        });
+
+        optionalInfo[3].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
+                toggledButtons[3] = value + 1;
+                toggledButtonsStr[3] = "" + optionalInfo[3].getTexts()[value];
+            }
+        });
+
+        optionalInfo[4].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                toggledButtons[4] = value + 1;
+                toggledButtonsStr[4] = "" + optionalInfo[4].getTexts()[value];
+            }
+        });
 
         // Setting the date, automatically set it to the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -176,17 +231,24 @@ public class RoutesForm extends AppCompatActivity {
         stepsView.setEnabled(false);
         distanceView.setEnabled(false);
 
-        // Load extra features info and update buttons accordingly
-        isFlat = routeToDetail.isFlat;
-        isLoop = routeToDetail.isLoop;
-        isStreet = routeToDetail.isStreet;
-        isEven = routeToDetail.isEven;
-        updateToggleFeatures();
+        additionalInformationDisplay(routeToDetail);
+
 
         // Load notes
         notes = routeToDetail.notes;
-        // Load difficulty
-        loadDifficulty(routeToDetail);
+    }
+
+    private void additionalInformationDisplay(Route route){
+        try {
+            for (int i = 0; i < route.optionalFeatures.length; i++) {
+                int value = route.optionalFeatures[i];
+                //if button was toggled, set to toggled state
+                if (value != 0) {
+                    optionalInfo[i].setValue(value - 1);
+                }
+            }
+        }
+        catch(Exception e){}
     }
 
     /**
@@ -220,17 +282,11 @@ public class RoutesForm extends AppCompatActivity {
         routeNameEditText.setText(routeBeingWalked.name);
         startingPEditText.setText(routeBeingWalked.startingPoint);
 
-        // Load extra features info and update buttons accordingly
-        isFlat = routeBeingWalked.isFlat;
-        isLoop = routeBeingWalked.isLoop;
-        isStreet = routeBeingWalked.isStreet;
-        isEven = routeBeingWalked.isEven;
-        updateToggleFeatures();
 
         // Load notes
         notes = routeBeingWalked.notes;
-        // Load difficulty
-        loadDifficulty(routeBeingWalked);
+
+        additionalInformationDisplay(routeBeingWalked);
     }
 
     /**
@@ -288,13 +344,9 @@ public class RoutesForm extends AppCompatActivity {
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
 
-        // Save extra features
-        savedRoute.setIsFlat(isFlat);
-        savedRoute.setIsLoop(isLoop);
-        savedRoute.setIsStreet(isStreet);
-        savedRoute.setIsEven(isEven);
-        savedRoute.setNotes(notes);
-        savedRoute.setDifficulty(difficultySpinner.getSelectedItem().toString());
+        savedRoute.setOptionalFeatures(toggledButtons);
+        savedRoute.setOptionalFeaturesStr(toggledButtonsStr);
+
         return savedRoute;
     }
 
@@ -381,63 +433,5 @@ public class RoutesForm extends AppCompatActivity {
                 }
                 break;
         }
-    }
-
-    /**
-     * Set up the ToggleButtons and their onClickListeners.
-     */
-    private void setUpToggleFeatures() {
-        // Get ids of ToggleButtons
-        flatOrHillyButton = (ToggleButton) findViewById(R.id.flatOrHillyButton);
-        streetOrTrailButton = (ToggleButton) findViewById(R.id.streetOrTrailButton);
-        loopOrOutBackButton = (ToggleButton) findViewById(R.id.loopOrOutBackButton);
-        evenOrUnevenButton = (ToggleButton) findViewById(R.id.evenOrUnevenButton);
-
-        difficultySpinner = (Spinner) findViewById(R.id.difficultySpinner);
-
-        flatOrHillyButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isFlat = isChecked;
-            }
-        });
-        streetOrTrailButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isStreet = isChecked;
-            }
-        });
-        loopOrOutBackButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isLoop = isChecked;
-            }
-        });
-        evenOrUnevenButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isEven = isChecked;
-            }
-        });
-
-    }
-
-    /**
-     * Update ToggleButtons based on received data (current values of booleans).
-     */
-    private void updateToggleFeatures() {
-        flatOrHillyButton.setChecked(isFlat);
-        streetOrTrailButton.setChecked(isStreet);
-        loopOrOutBackButton.setChecked(isLoop);
-        evenOrUnevenButton.setChecked(isEven);
-    }
-
-    /**
-     * Updates the difficulty spinner based on the Route.
-     */
-    private void loadDifficulty(Route route) {
-        String difficulty = route.difficulty;
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.difficulties, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        difficultySpinner.setAdapter(adapter);
-        int spinnerPosition = adapter.getPosition(difficulty);
-        difficultySpinner.setSelection(spinnerPosition);
     }
 }

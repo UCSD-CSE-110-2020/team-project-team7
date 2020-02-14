@@ -36,7 +36,7 @@ public class RoutesListTest {
     }
 
 
-    // checks to see if the stop button moves to the routes form page
+    // checks to see if the "+" button moves to the routes form page
     @Test
     public void testAddButton(){
         try(ActivityScenario<RoutesList> scenario = ActivityScenario.launch(RoutesList.class)) {
@@ -47,6 +47,19 @@ public class RoutesListTest {
                 Intent intent = Shadows.shadowOf(activity).getNextStartedActivity();
                 assertThat(intent.getComponent()).isEqualTo(new ComponentName(activity, RoutesForm.class));
 
+            });
+        }
+    }
+
+    @Test
+    public void testHomeButton(){
+        try(ActivityScenario<RoutesList> scenario = ActivityScenario.launch(RoutesList.class)) {
+            scenario.onActivity(activity -> {
+                Button homeButton = activity.findViewById(R.id.goToHomePage);
+                homeButton.performClick();
+                assertThat(homeButton.isPressed());
+                Intent intent = Shadows.shadowOf(activity).getNextStartedActivity();
+                assertThat(intent.getComponent()).isEqualTo(new ComponentName(activity, HomePage.class));
             });
         }
     }

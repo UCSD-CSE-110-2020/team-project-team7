@@ -18,6 +18,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/infoLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/routeName"
@@ -123,5 +124,14 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/additionalInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/infoLayout"
+        android:layout_alignParentStart="true"
+        android:text="@string/flat"
+        android:textStyle="bold|italic" />
 
 </RelativeLayout>
