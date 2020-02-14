@@ -20,13 +20,15 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
+    public final String FITNESS_SERVICE_KEY = "GOOGLE_API";
     public final String TAG = "Home Page";
     public StepCountActivity sc;
     public TextView stepCountText;
     public TextView milesText;
-    public long stepCount;
+    public long stepCount = 0;
+    public double milesCount = 0;
     public double stepsPerMile;
-    public GoogleFitAdapter googleApi;
+    public FitnessService fitnessService;
     // TODO TEST BUTTON
     public Button incrementSteps;
 
@@ -41,22 +43,25 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 0);
-        Log.d("feet from home", String.valueOf(feet));
         int inches = getHeight.getInt("height_in", 0);
-        Log.d("inches from home", String.valueOf(inches));
-
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
-        // Create Fitness Service
-        stepCount = 0;
-        googleApi = new GoogleFitAdapter(this);
-        googleApi.setup();
+        // Add --> {key: "GOOGLE_FIT", value: new GoogleFitAdapter}
+        fitnessService = new GoogleFitAdapter(this);
+        FitnessServiceFactory.put(FITNESS_SERVICE_KEY, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create() {
+                return fitnessService;
+            }
+        });
+
+        fitnessService.setup();
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
         milesText = findViewById(R.id.distanceCountText);
-        sc = new StepCountActivity(googleApi);
+        sc = new StepCountActivity(fitnessService);
         sc.updateStep = this;
         sc.execute();
 
@@ -97,8 +102,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         //If authentication was required during google fit setup,
         // this will be called after the user authenticates
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == googleApi.getRequestCode()) {
-                googleApi.updateStepCount();
+            if (requestCode == fitnessService.getRequestCode()) {
+                fitnessService.updateStepCount();
             }
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
@@ -115,9 +120,13 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public void setStepCount(long sc) { stepCount = sc; }
 
-    public long getStepCount() { return this.stepCount; }
+    public long getStepCount() { return stepCount; }
 
     public void updatesMilesView(String str) { milesText.setText(str); }
+
+    public void setMiles(double mi) { milesCount = mi; }
+
+    public double getMiles() { return milesCount; }
 
     public double getStepsPerMile() { return this.stepsPerMile; }
 

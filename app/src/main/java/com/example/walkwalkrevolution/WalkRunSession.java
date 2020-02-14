@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.fitness.FitnessService;
+import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 import java.util.Timer;
@@ -26,7 +28,7 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     private int seconds;
     private TextView timerText;
     private TimeData timeData;
-
+    private FitnessService googleApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +41,12 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         String result = timerText.getText().toString();
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,result);
 
-        // steps
+        // steps and miles
         stepCountText = findViewById(R.id.activity_miles_number2);
+        milesText = findViewById(R.id.activity_miles_number);
         stepCount = 0;
-        GoogleFitAdapter googleApi = new GoogleFitAdapter(this);
+        milesCount = 0;
+        googleApi = FitnessServiceFactory.create("GOOGLE_FIT");
         sc = new StepCountActivity(googleApi);
         sc.updateStep = this;
 
@@ -52,6 +56,7 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         stopActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sc.cancel(true);
                 isCancelled = true;
                 finish();
                 launchRouteForm();
