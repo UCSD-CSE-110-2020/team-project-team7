@@ -23,13 +23,12 @@ public class HeightForm extends AppCompatActivity {
 
         TreeSetManipulation.initializeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
 
-        SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
+        /*SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("height", "175");
-        editor.apply();
+        editor.apply();*/
 
         Button saveBtn = (Button) findViewById(R.id.height_save_btn);
-
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,13 +37,12 @@ public class HeightForm extends AppCompatActivity {
                 EditText heightInfoFeet = findViewById(R.id.height_input_ft);
                 EditText heightInfoInches = findViewById(R.id.height_input_in);
                 editor.putInt("height_ft", Integer.parseInt(heightInfoFeet.getText().toString()));
-                Log.d("starting height in feet", heightInfoFeet.getText().toString());
                 editor.putInt("height_in", Integer.parseInt(heightInfoInches.getText().toString()));
-                Log.d("starting height in inces", heightInfoInches.getText().toString());
-
                 editor.apply();
 
-                Toast.makeText(HeightForm.this, "Saved Height:" + heightInfoFeet.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(HeightForm.this, "Saved Height:" +
+                        heightInfoFeet.getText().toString() + "'" +
+                        heightInfoInches.getText().toString() + "''", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

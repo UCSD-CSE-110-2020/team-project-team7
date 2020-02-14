@@ -70,7 +70,7 @@ public class HeightFormTest {
                 Button saveBtn = activity.findViewById(R.id.height_save_btn);
                 saveBtn.performClick();
                 String latestToast = ShadowToast.getTextOfLatestToast();
-                String example = "Saved Height:175";
+                String example = "Saved Height:5'7''";
                 assertThat(latestToast.equals(example));
             });
         }
