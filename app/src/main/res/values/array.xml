@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="additionalInfo0">
+    <item>Hilly</item>
+    <item>Flat</item>
+</string-array>
+
+<string-array name="additionalInfo1">
+    <item>Even</item>
+    <item>Uneven</item>
+</string-array>
+
+    <string-array name="additionalInfo2">
+        <item>Loop</item>
+        <item>Out-Back</item>
+    </string-array>
+
+    <string-array name="additionalInfo3">
+        <item>Street</item>
+        <item>Trails</item>
+    </string-array>
+
+    <string-array name="additionalInfo4">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+
+</resources>

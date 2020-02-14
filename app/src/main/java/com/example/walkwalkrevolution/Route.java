@@ -16,14 +16,12 @@ public class Route {
     public int minutes;
     public int seconds;
     public boolean isFavorited;
-    
-    // Optional vars
-    public boolean isFlat; //Flat or Hilly
-    public boolean isLoop; // Loop or OutBack
-    public boolean isStreet; // Street or Trail
-    public boolean isEven; // Even or Uneven
-    public String difficulty; // Easy, medium, or hard
     public String notes;
+
+    // Array staying optional vars
+    public String[] optionalFeaturesStr = new String[5];
+    public int[] optionalFeatures = new int[5];
+
 
     /**
      * Constructor for a Route object.
@@ -85,6 +83,14 @@ public class Route {
         this.steps = steps;
     }
 
+    public void setOptionalFeaturesStr(String[] optionalFeaturesStr){
+        this.optionalFeaturesStr = optionalFeaturesStr;
+    }
+
+    public void setOptionalFeatures(int[] optionalFeatures){
+        this.optionalFeatures = optionalFeatures;
+    }
+
     /**
      * Compares two Routes.
      */
@@ -95,30 +101,5 @@ public class Route {
         return false;
     }
 
-    /**
-     * Setter method for isFlat.
-     */
-    public void setIsFlat(boolean flatOrHilly) { this.isFlat = flatOrHilly; }
-    /**
-     * Setter method for isLoop.
-     */
-    public void setIsLoop(boolean loopOrOutBack) { this.isLoop = loopOrOutBack; }
-    /**
-     * Setter method for isStreet.
-     */
-    public void setIsStreet(boolean streetOrTrail) { this.isStreet = streetOrTrail; }
-    /**
-     * Setter method for isEven.
-     */
-    public void setIsEven(boolean evenOrUneven) { this.isEven = evenOrUneven; }
-    /**
-     * Setter method for difficulty.
-     */
-    public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
-    /**
-     * Setter method for note.
-     */
-    public void setNotes(String notes) { this.notes = notes; }
-
-
 }
+

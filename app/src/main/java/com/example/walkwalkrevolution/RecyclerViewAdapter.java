@@ -10,6 +10,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,9 +86,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Route routeSelected = routes.get(p);
                 routeSelected.toggleIsFavorited();
 
-//                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-//                routes = TreeSetManipulation.updateRoot(prefs, routeSelected);
-
                 notifyDataSetChanged();
 
                 if(routeSelected.getIsFavorited()){
@@ -103,14 +105,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .setMessage("Are you sure you want to delete this entry? This is an irreversible action.")
                 .setCancelable(false)
 
-                .setNegativeButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         routes.remove(position);
                         notifyDataSetChanged();
                         Toast.makeText(context, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
@@ -129,6 +131,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
+        holder.additionalInformation.setText(renderOptionalInfo(route));
 
         if(route.getIsFavorited()){
             holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.favorite_button_states));
@@ -136,6 +139,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         else{
             holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.routes_list_start_button_states));
         }
+    }
+
+    private String renderOptionalInfo(Route route){
+        StringBuffer builder = new StringBuffer();
+        try {
+            //For every Toggled button, display it on the Route Screen
+            for (String extra : route.optionalFeaturesStr) {
+                if (extra != null) {
+                    builder.append(extra + " ");
+                }
+            }
+        }
+        catch(Exception e){}
+        return builder.toString();
     }
 
 
@@ -175,7 +192,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount");
+        Log.d(TAG, "getItemCount: " + routes.size());
         return routes.size();
     }
 
@@ -192,6 +209,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Button startRoute;
         ImageButton deleteRoute;
         ImageButton favoriteRoute;
+        TextView additionalInformation;
 
         public interface MyClickListener{
             void onStartWalkRunSession(int p);
@@ -214,6 +232,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             startRoute = itemView.findViewById(R.id.startRoute);
             deleteRoute = itemView.findViewById(R.id.deleteRoute);
             favoriteRoute = itemView.findViewById(R.id.favoriteRoute);
+            additionalInformation = itemView.findViewById(R.id.additionalInfo);
 
             this.listener = listener;
 

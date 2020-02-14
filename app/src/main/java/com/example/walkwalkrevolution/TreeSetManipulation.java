@@ -47,33 +47,6 @@ public class TreeSetManipulation {
         return gson.fromJson(json, type);
     }
 
-//    public static TreeSet<Route> updateRoot(SharedPreferences sharedPreferences, Route route){
-//        TreeSet<Route> treeSet = new TreeSet<Route>(comparator);
-//        treeSet.addAll(loadTreeSet(sharedPreferences));
-//        treeSet.remove(route);
-//        treeSet.add(route);
-//        TreeSetManipulation.saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
-//        return treeSet;
-//    }
-
-//    public static TreeSet<Route> deleteRouteInTreeSet(SharedPreferences sharedPreferences,  Route route){
-//        TreeSet<Route> treeSet = loadTreeSet(sharedPreferences);
-//        treeSet.remove(route);
-//        saveTreeSet(sharedPreferences, new ArrayList<Route>(treeSet));
-//        return treeSet;
-//    }
-
-//    public static TreeSet<Route> loadTreeSet(SharedPreferences sharedPreferences){
-//        Gson gson = new Gson();
-//        String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
-//        Type type = new TypeToken<List<Route>>() {}.getType();
-//        Log.d("create", json);
-//        List<Route> list = gson.fromJson(json, type);
-//        TreeSet<Route> treeSet = new TreeSet<Route>(comparator);
-//        treeSet.addAll(list);
-//        return treeSet;
-//    }
-
     public static boolean updateRouteInTreeSet(SharedPreferences sharedPreferences, Route updatedRoute){
         TreeSet<Route> treeSet = new TreeSet<Route>(comparator);
         treeSet.addAll(loadTreeSet(sharedPreferences));
