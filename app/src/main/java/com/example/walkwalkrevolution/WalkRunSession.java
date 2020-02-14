@@ -46,8 +46,8 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         milesCount = 0;
         googleApi = FitnessServiceFactory.create("GOOGLE_API");
         sc = new StepCountActivity(googleApi);
-        sc.updateStep = this;
-        sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //sc.updateStep = this;
+        //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
@@ -88,7 +88,7 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
 
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         TimerCount runner = new TimerCount();
@@ -99,7 +99,7 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         sc = new StepCountActivity(googleApi);
         sc.updateStep = this;
         sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }*/
+    }
 
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
@@ -125,8 +125,8 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         intent.putExtra("minutes", minutes);
         intent.putExtra("minutes", minutes);
         intent.putExtra("seconds", seconds);
-        intent.putExtra("steps", stepCount);
-        intent.putExtra("distance", stepCount / stepsPerMile);
+        intent.putExtra("steps", this.stepCount);
+        intent.putExtra("distance", this.stepCount / this.stepsPerMile);
         startActivity(intent);
     }
 

@@ -10,8 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b0223e2-90dd-427c-8dfd-d0339f6ffd9c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/StepCountActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/StepCountActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,8 +35,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="47" column="50" lean-forward="true" selection-start-line="47" selection-start-column="50" selection-end-line="47" selection-end-column="50" />
+            <state relative-caret-position="480">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
             </state>
           </provider>
         </entry>
@@ -45,7 +44,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/fitness/GoogleFitAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-517">
+            <state relative-caret-position="-588">
               <caret line="36" column="80" selection-start-line="36" selection-start-column="80" selection-end-line="36" selection-end-column="80" />
               <folding>
                 <element signature="e#2248#2249#0" expanded="true" />
@@ -60,8 +59,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="647">
-              <caret line="146" column="61" lean-forward="true" selection-start-line="146" selection-start-column="61" selection-end-line="146" selection-end-column="61" />
+            <state relative-caret-position="100">
+              <caret line="49" column="10" selection-start-line="49" selection-start-column="10" selection-end-line="49" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -78,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/StepCountActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="40" column="69" selection-start-line="40" selection-start-column="69" selection-end-line="40" selection-end-column="69" />
+            <state relative-caret-position="195">
+              <caret line="38" column="39" selection-start-line="38" selection-start-column="39" selection-end-line="38" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -137,9 +136,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/fitness/FitnessServiceFactory.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/UpdateStepTextView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/fitness/GoogleFitAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/StepCountActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java" />
       </list>
     </option>
   </component>
@@ -266,7 +265,7 @@
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" weight="0.32977968" />
       <window_info id="Favorites" order="8" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Logcat" order="0" visible="true" weight="0.32833788" />
+      <window_info anchor="bottom" id="Logcat" order="0" weight="0.32833788" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Android Profiler" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
@@ -424,13 +423,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="647">
-          <caret line="146" column="61" lean-forward="true" selection-start-line="146" selection-start-column="61" selection-end-line="146" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home_page.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor" />
@@ -451,14 +443,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/StepCountActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="40" column="69" selection-start-line="40" selection-start-column="69" selection-end-line="40" selection-end-column="69" />
+        <state relative-caret-position="195">
+          <caret line="38" column="39" selection-start-line="38" selection-start-column="39" selection-end-line="38" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/fitness/GoogleFitAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-517">
+        <state relative-caret-position="-588">
           <caret line="36" column="80" selection-start-line="36" selection-start-column="80" selection-end-line="36" selection-end-column="80" />
           <folding>
             <element signature="e#2248#2249#0" expanded="true" />
@@ -469,10 +461,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/WalkRunSession.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="49" column="10" selection-start-line="49" selection-start-column="10" selection-end-line="49" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="47" column="50" lean-forward="true" selection-start-line="47" selection-start-column="50" selection-end-line="47" selection-end-column="50" />
+        <state relative-caret-position="480">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
         </state>
       </provider>
     </entry>
