@@ -10,8 +10,8 @@ public class Route {
     // Required vars
     public String name;
     public String startingPoint;
-    public int steps;
-    public float distance;
+    public long steps;
+    public double distance;
     public String date;
     public int minutes;
     public int seconds;
@@ -31,7 +31,7 @@ public class Route {
      * @param steps         - int, num of steps
      * @param distance      - float, distance traveled
      */
-    public Route(String name, String startingPoint, int steps, float distance) {
+    public Route(String name, String startingPoint, long steps, double distance) {
         this.name = name.trim();
         this.startingPoint = startingPoint.trim();
         this.steps = steps;

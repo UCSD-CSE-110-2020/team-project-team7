@@ -178,11 +178,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return "Date: " + date;
     }
 
-    private String formatSteps(int steps){
+    private String formatSteps(long steps){
         return "Steps: " + steps;
     }
 
-    private String formatMiles(float miles){
+    private String formatMiles(double miles){
         return "Miles: " + miles;
     }
 

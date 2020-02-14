@@ -40,8 +40,9 @@ public class RoutesForm extends AppCompatActivity {
     private String[] toggledButtonsStr = new String[5];
 
     // Data obtained from Walk/Run session
-    private int steps, minutes, seconds;
-    private float distance;
+    private long steps;
+    private int minutes, seconds;
+    private double distance;
 
     // NOtes taken for the Route
     private String notes = "";
@@ -256,8 +257,8 @@ public class RoutesForm extends AppCompatActivity {
      */
     private void intentFromWalkRunSession(Intent fromIntent){
         // Get data from walk/run session
-        steps = fromIntent.getIntExtra("steps", 0);
-        distance = fromIntent.getFloatExtra("distance", 0);
+        steps = fromIntent.getLongExtra("steps", 0);
+        distance = fromIntent.getDoubleExtra("distance", 0);
         minutes = fromIntent.getIntExtra("minutes", 0);
         seconds = fromIntent.getIntExtra("seconds", 0);
 

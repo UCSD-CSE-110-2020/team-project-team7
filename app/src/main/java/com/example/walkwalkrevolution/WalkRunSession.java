@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.TimedMetaData;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -119,13 +120,15 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     public void launchRouteForm(){
         Intent intent = new Intent(this, RoutesForm.class);
 
+        Log.d("passed steps", String.valueOf(stepCount));
+        Log.d("passed miles", String.valueOf(milesCount));
         // Push data to RouteForm
         intent.putExtra("From_Intent", WALK_RUN_INTENT);
         intent.putExtra("minutes", minutes);
         intent.putExtra("minutes", minutes);
         intent.putExtra("seconds", seconds);
-        intent.putExtra("steps", this.stepCount);
-        intent.putExtra("distance", this.stepCount / this.stepsPerMile);
+        intent.putExtra("steps", stepCount);
+        intent.putExtra("distance", milesCount);
         startActivity(intent);
     }
 
