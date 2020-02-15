@@ -20,17 +20,23 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
-    public final String FITNESS_SERVICE_KEY = "GOOGLE_API";
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+
     public final String TAG = "Home Page";
-    public StepCountActivity sc;
-    public TextView stepCountText;
+
+    public Button incrementSteps;
     public TextView milesText;
     public long stepCount = 0;
     public double milesCount;
     public double stepsPerMile;
+
     public FitnessService fitnessService;
+    private String fitnessServiceKey = "GOOGLE_FIT";
+    private boolean testStep = true;
+    public StepCountActivity sc;
+    public TextView stepCountText;
     // TODO TEST BUTTON
-    public Button incrementSteps;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +53,40 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
+        System.out.print("steps count = ");
+        System.out.println(stepCount);
+
         // Add --> {key: "GOOGLE_FIT", value: new GoogleFitAdapter}
         fitnessService = new GoogleFitAdapter(this);
+        //FitnessServiceFactory.put(FITNESS_SERVICE_KEY, fitnessService);
+
+        /*
         FitnessServiceFactory.put(FITNESS_SERVICE_KEY, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create() {
                 return fitnessService;
             }
         });
+         */
 
-        fitnessService.setup();
+        // Check from String extra if a test FitnessService is being passed
+        fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        if(fitnessServiceKey == null) {
+            fitnessServiceKey = "GOOGLE_FIT";
+            testStep = false;
+        }
+
+        // Creates specified FitnessService adapter depending on key
+        FitnessServiceFactory.put(fitnessServiceKey, FitnessServiceFactory.create(fitnessServiceKey, this));
+        System.out.println("created fitnessservice");
+        // Get specified FitnessService using fitnessServiceKey from Blueprint
+        fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
+        //fitnessService.setup();
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
         milesText = findViewById(R.id.distanceCountText);
-        sc = new StepCountActivity(fitnessService);
+        sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
         sc.execute();
 

@@ -44,8 +44,10 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         milesText = findViewById(R.id.activity_miles_number);
         stepCount = 0;
         milesCount = 0;
-        googleApi = FitnessServiceFactory.create("GOOGLE_API");
-        sc = new StepCountActivity(googleApi);
+
+        //googleApi = FitnessServiceFactory.create("GOOGLE_API");
+        googleApi = FitnessServiceFactory.getFS("GOOGLE_FIT");
+        sc = new StepCountActivity(googleApi, false);
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
@@ -96,7 +98,7 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
 
         String resultSteps = stepCountText.getText().toString();
-        sc = new StepCountActivity(googleApi);
+        sc = new StepCountActivity(googleApi, false);
         sc.updateStep = this;
         sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

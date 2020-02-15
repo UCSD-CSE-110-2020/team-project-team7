@@ -14,20 +14,24 @@ import java.text.DecimalFormat;
 public class StepCountActivity extends AsyncTask<String, String, String> {
 
     public UpdateStepTextView updateStep;
-    private FitnessService gfa;
+    private FitnessService fs;
+    private  boolean testStep;
     double miles;
 
-    public StepCountActivity(FitnessService gfa) {
-        this.gfa = gfa;
+    public StepCountActivity(FitnessService fs, boolean testStep) {
+        this.fs = fs;
+        this.testStep = testStep;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        fs.setup();
     }
 
     @Override
     protected String doInBackground(String... strings) {
+        /*
         while(true) {
             publishProgress(String.valueOf(updateStep.getStepCount()),
                     String.valueOf(updateStep.getMiles()));
@@ -43,6 +47,28 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
                 e.printStackTrace();
             }
         }
+        */
+
+        do {
+            // Don't update step count from publish if testing
+            if(!testStep) {
+                //fs.updateStepCount();
+                publishProgress(String.valueOf(updateStep.getStepCount()), String.valueOf(updateStep.getMiles()));
+                updateStep.setStepCount(updateStep.getStepCount() + 100);
+                double stepCountdouble = (double)updateStep.getStepCount();
+                miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
+                updateStep.setMiles(miles);
+            }
+
+            try {
+                Thread.sleep(1000);
+                fs.updateStepCount();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while(!testStep);
+
+        return null;
     }
 
     @Override
