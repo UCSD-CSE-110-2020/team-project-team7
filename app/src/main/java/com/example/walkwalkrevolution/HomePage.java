@@ -120,6 +120,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
