@@ -10,20 +10,32 @@ import com.example.walkwalkrevolution.StepCountActivity;
 
 public class FitnessServiceFactory {
 
+    private static final String google_fit = "GOOGLE_FIT";
+    private static final String test_fs = "TEST_SERVICE";
     private static final String TAG = "[FitnessServiceFactory]";
 
-    private static Map<String, BluePrint> blueprints = new HashMap<>();
+    private static Map<String, FitnessService> blueprints = new HashMap<>();
 
-    public static void put(String key, BluePrint bluePrint) {
-        blueprints.put(key, bluePrint);
+    public static void put(String key, FitnessService fs) {
+        blueprints.put(key, fs);
     }
 
-    public static FitnessService create(String key) {
-        Log.i(TAG, String.format("creating FitnessService with key %s", key));
-        return blueprints.get(key).create();
+    public static FitnessService getFS(String key) {
+        Log.i(TAG, String.format("getting FitnessService with key %s", key));
+        return blueprints.get(key);
     }
 
+
+    public static FitnessService create(String key, HomePage hp) {
+        if(key == google_fit) {
+            return new GoogleFitAdapter(hp);
+        } else if(key == test_fs) {
+            return new TestFitnessServiceAdapter(hp);
+        } else return null;
+    }
+/*
     public interface BluePrint {
         FitnessService create();
     }
+     */
 }
