@@ -31,6 +31,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
         while(true) {
             publishProgress(String.valueOf(updateStep.getStepCount()),
                     String.valueOf(updateStep.getMiles()));
+            // TODO actual line used for googefit api
             //gfa.updateStepCount();
             // TODO DELETE LATER HARD CODE STEPS
             updateStep.setStepCount(updateStep.getStepCount() + 100);
