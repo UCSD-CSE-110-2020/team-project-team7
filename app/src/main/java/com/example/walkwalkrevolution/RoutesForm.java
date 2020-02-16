@@ -25,7 +25,9 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TreeSet;
 
 
@@ -58,6 +60,7 @@ public class RoutesForm extends AppCompatActivity {
 
 
     // SETTING UP GENERAL UI ELEMENTS AND BEHAVIOR -------------------------------------------------
+    private boolean intentFromWalkRunSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +179,7 @@ public class RoutesForm extends AppCompatActivity {
                 case WalkRunSession.WALK_RUN_INTENT:
                     intentFromWalkRunSession(fromIntent);
                     Log.d(TAG, "Intent Found: Walk/Run Session");
+                    intentFromWalkRunSession = true;
                     break;
                 case RecyclerViewAdapter.PREVIEW_DETAILS_INTENT:
                     intentFromRoutesDetails();
@@ -321,6 +325,7 @@ public class RoutesForm extends AppCompatActivity {
             //updatedEntry is not a duplicate entry (other than the one it was modifying)
             if(wasUpdated) {
                 Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
+                lastIntentionalWalkUpdate();
                 Toast.makeText(this, "Route Successfully Modified", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 return;
@@ -329,6 +334,7 @@ public class RoutesForm extends AppCompatActivity {
         //Start button from Home page was pressed & routes entry is not a duplicate
         else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)){
             Log.d(TAG, "Entry Successfully Created - Not a duplicate");
+            lastIntentionalWalkUpdate();
             Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
             startActivity(intent);
             return;
@@ -336,6 +342,22 @@ public class RoutesForm extends AppCompatActivity {
         Log.d(TAG, "Entry Rejected - Duplicate");
         //Any instance of duplicates entries from either Start buttons
         Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
+    }
+
+    private void lastIntentionalWalkUpdate(){
+        if(intentFromWalkRunSession){
+            SharedPreferences prefs = getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE);
+            List<String> list = new ArrayList<>();
+            list.add(""+steps);
+            list.add(""+distance);
+            if(seconds < 10){
+                list.add(minutes + ":0" +  seconds);
+            }
+            else{
+                list.add(minutes + ":" + seconds);
+            }
+            LastIntentionalWalk.saveLastWalk(prefs, list);
+        }
     }
 
     /**

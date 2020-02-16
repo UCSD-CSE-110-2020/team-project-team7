@@ -1,95 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomePage">
 
-    <TextView
-        android:id="@+id/stepsTitleText"
-        android:layout_width="259dp"
-        android:layout_height="77dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:text="Daily Steps"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085" />
+    <LinearLayout
+        android:id="@+id/linearLayoutSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/distanceTitleText"
-        android:layout_width="259dp"
-        android:layout_height="77dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:text="Distance"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.383" />
+        <TextView
+            android:id="@+id/stepsTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:gravity="center"
+            android:text="Daily Steps"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="36sp" />
 
-    <Button
-        android:id="@+id/startButt"
-        android:layout_width="205dp"
-        android:layout_height="62dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="START"
-        android:textSize="20sp"
-        android:background="@drawable/routes_list_start_button_states"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.792" />
+        <TextView
+            android:id="@+id/stepCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:layout_gravity="center"
+            android:text="0 s"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/routesButt"
-        android:layout_width="205dp"
-        android:layout_height="62dp"
-        android:background="@drawable/routes_list_start_button_states"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="ROUTES"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.941" />
+    <LinearLayout
+        android:id="@+id/linearlayoutDistance"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/linearLayoutSteps"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/stepCountText"
-        android:layout_width="239dp"
-        android:layout_height="52dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:text="0 s"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.225" />
+        <TextView
+            android:id="@+id/distanceTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:gravity="center"
+            android:text="Distance"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="36sp" />
 
-    <TextView
-        android:id="@+id/distanceCountText"
-        android:layout_width="239dp"
-        android:layout_height="52dp"
-        android:fontFamily="casual"
-        android:gravity="center"
-        android:text="0 mi"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.515" />
+        <TextView
+            android:id="@+id/distanceCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:layout_gravity="center"
+            android:text="0 mi"
+            android:textSize="20sp" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="133dp"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <Button
+            android:id="@+id/startButt"
+            android:layout_width="205dp"
+            android:layout_height="62dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/routes_list_start_button_states"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="START"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.792" />
+
+        <Button
+            android:id="@+id/routesButt"
+            android:layout_width="205dp"
+            android:layout_height="62dp"
+            android:background="@drawable/routes_list_start_button_states"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="ROUTES"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.941" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayoutDistance"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/latestWalk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"
+            android:text="Latest Walk"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/steps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Steps"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/stepsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="0"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/distanceLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/distanceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="0.0"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/timeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="12:39"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

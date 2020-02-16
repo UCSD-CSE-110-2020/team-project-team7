@@ -18,6 +18,9 @@ import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomePage extends AppCompatActivity {
 
     private TextView stepCountText;
@@ -31,6 +34,14 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        firstLogin(settings);
+
+
+        //launchFirstSession();
+
+        displayLastWalk();
 
         // Create Fitness Service
         stepCount = 0;
@@ -60,9 +71,21 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-        firstLogin(settings);
+
+        //firstLogin(settings);
+
     }
+
+    private void displayLastWalk(){
+        TextView stepValue = (TextView) findViewById(R.id.stepsValue);
+        TextView distanceValue = (TextView) findViewById(R.id.distanceValue);
+        TextView timeValue = (TextView) findViewById(R.id.timeValue);
+        List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
+        stepValue.setText(list.get(0));
+        distanceValue.setText(list.get(1));
+        timeValue.setText(list.get(2));
+    }
+
 
     /**
      * used to launch the walk/run session
