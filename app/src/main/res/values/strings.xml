@@ -38,4 +38,11 @@
         <item>Hard</item>
     </string-array>
 
+    <!--Mock Page-->
+    <string name="mock">Mock</string>
+    <string name="mock_time">Mock Time</string>
+    <string name="mock_steps">Add 500 Steps</string>
+    <string name="add">Add</string>
+    <string name="done">Done</string>
+
 </resources>

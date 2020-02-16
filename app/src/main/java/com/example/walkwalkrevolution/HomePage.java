@@ -36,6 +36,9 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+
+        //settings.edit().putBoolean("my_first_time", true).commit();
+
         firstLogin(settings);
 
         //launchFirstSession();
@@ -73,6 +76,14 @@ public class HomePage extends AppCompatActivity {
 
         //firstLogin(settings);
 
+        // Button that opens mockPage
+        Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
+        mockPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchMockPage();
+            }
+        });
     }
 
     private void displayLastWalk(){
@@ -112,7 +123,6 @@ public class HomePage extends AppCompatActivity {
      * first time the user opens the app
      */
     public void firstLogin(SharedPreferences pref){
-        //pref.edit().putBoolean("my_first_time", true).commit();
         if (pref.getBoolean("my_first_time", true)) {
             //the app is being launched for first time
             launchFirstSession();
@@ -130,5 +140,12 @@ public class HomePage extends AppCompatActivity {
         return this.stepCount;
     }
 
+    /**
+     * launches the mock page
+     */
+    private void launchMockPage() {
+        Intent intent = new Intent(this, MockPage.class);
+        startActivity(intent);
+    }
 }
 
