@@ -85,9 +85,9 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
             public void onClick(View view) {
                 sc.cancel(true);
                 isCancelled = true;
-                //finish();
-                launchRouteForm();
                 finish();
+                launchRouteForm();
+                //finish();
             }
         });
         // Button that opens mockPage

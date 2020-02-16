@@ -18,7 +18,7 @@
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".MockPage" />
-        <activity android:name=".HomePage">
+        <activity android:name=".HomePage" android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

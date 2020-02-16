@@ -80,7 +80,7 @@ public class RoutesList extends AppCompatActivity {
     private void redirectToHomePage(){
         saveRoutes();
         // TODO TESTING
-        //startActivity(new Intent(RoutesList.this, HomePage.class));
+        startActivity(new Intent(RoutesList.this, HomePage.class));
         finish();
     }
 
