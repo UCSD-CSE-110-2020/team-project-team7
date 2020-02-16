@@ -38,7 +38,6 @@ public class HomePage extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
 
-
         //launchFirstSession();
 
         displayLastWalk();
