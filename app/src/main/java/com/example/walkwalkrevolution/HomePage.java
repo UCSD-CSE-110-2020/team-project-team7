@@ -50,7 +50,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         //settings.edit().putBoolean("my_first_time", true).commit();
 
         firstLogin(settings);
-
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 5);
@@ -130,6 +129,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     @Override
     protected void onStart() {
         super.onStart();
+        displayLastWalk();
         Log.d("HOMEPAGE ON RESUME", "resume called");
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
