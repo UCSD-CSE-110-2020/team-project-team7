@@ -78,16 +78,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         milesText = findViewById(R.id.distanceCountText);
 
 
-        // TODO TEST BUTTON FUNCTION
-        incrementSteps = findViewById(R.id.testbutton);
-        incrementSteps.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if(!sc.turnOffAPI) sc.turnOffAPI = true;
-                setStepCount(getStepCount() + 500);
-            }
-        });
-
         // used to start the walk/run activity
         Button launchActivity = (Button) findViewById(R.id.startButt);
         launchActivity.setOnClickListener(new View.OnClickListener(){
@@ -103,6 +93,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             @Override
             public void onClick(View view){
                 routesSession();
+            }
+        });
+
+        // Button that opens mockPage
+        Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
+        mockPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchMockPage();
             }
         });
     }
@@ -123,7 +122,17 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ON RESUME", "resume called");
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
-        //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
+        long stepsFromMock = sf.getLong("getsteps", -1);
+        if(stepsFromMock != -1) {
+            //long stepsFromMock = getIntent().getLongExtra("StepsFromMock", -1);
+            Log.d("INSIDE GETINTENT OF ONSTART", String.valueOf(stepsFromMock));
+            setStepCount(stepsFromMock);
+            setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
+            updateStepView(String.valueOf(getStepCount()));
+            updatesMilesView(String.valueOf(getMiles()));
+            sc.turnOffAPI = true;
+        }
         sc.execute();
     }
 
@@ -150,13 +159,13 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
         // Button that opens mockPage
-        Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
+        /*Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
         mockPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchMockPage();
             }
-        });
+        });*/
     }
 
     private void displayLastWalk(){
@@ -205,6 +214,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE LAUNCH WALK SESSION", "launching walkrunsession");
         Intent intent = new Intent(this, WalkRunSession.class);
         intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+        intent.putExtra(FITNESS_SERVICE_KEY, fitnessServiceKey);
         startActivity(intent);
     }
 
@@ -237,7 +247,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * launches the mock page
      */
     private void launchMockPage() {
+        Log.d("IN LAUNCHMOCKPAGE", "launcing");
         Intent intent = new Intent(this, MockPage.class);
+        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
         startActivity(intent);
     }
 }

@@ -56,17 +56,16 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             // Don't update step count from publish if testing
             if(!testStep) {
                 // TODO uncomment below for google api
-                if(!turnOffAPI) fs.updateStepCount();
-                else updateStep.setStepCount(updateStep.getStepCount() + 100);
-
-                publishProgress(String.valueOf(updateStep.getStepCount()), String.valueOf(updateStep.getMiles()));
-                Log.d("steps tracker", String.valueOf(updateStep.getStepCount()));
-                // TODO comment below line out if you want to use google api
-                double stepCountdouble = (double)updateStep.getStepCount();
-                miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
-                updateStep.setMiles(miles);
+                if(!turnOffAPI) {
+                    fs.updateStepCount();
+                    publishProgress(String.valueOf(updateStep.getStepCount()), String.valueOf(updateStep.getMiles()));
+                    Log.d("steps tracker", String.valueOf(updateStep.getStepCount()));
+                    // TODO comment below line out if you want to use google api
+                    double stepCountdouble = (double) updateStep.getStepCount();
+                    miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
+                    updateStep.setMiles(miles);
+                }
             }
-
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

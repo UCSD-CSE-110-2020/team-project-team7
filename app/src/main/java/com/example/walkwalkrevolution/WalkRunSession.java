@@ -136,9 +136,27 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         runner = new TimerCount();
         resultTime = timerText.getText().toString();
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
+        // Make a new TimeData object based on what's in shared prefs
+        timeData = new TimeData();
+        timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
+        Log.d(TAG, "Get time: " + timeData.getTime());
+        //sc = new StepCountActivity(fitnessService, testStep);
+        //sc.updateStep = this;
+        //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
-        sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
+        long stepsFromMock = sf.getLong("getsteps", -1);
+        if(stepsFromMock != -1) {
+            //long stepsFromMock = getIntent().getLongExtra("StepsFromMock", -1);
+            Log.d("INSIDE GETINTENT OF ONSTART", String.valueOf(stepsFromMock));
+            setStepCount(stepsFromMock);
+            setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
+            updateStepView(String.valueOf(getStepCount()));
+            updatesMilesView(String.valueOf(getMiles()));
+            sc.turnOffAPI = true;
+        }
+        sc.execute();
 
     }
 
@@ -147,7 +165,8 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         super.onStop();
         Log.d("WALK RUN SESSION ONSTOP", "in onstop");
         sc.cancel(true);
-        runner.cancel(true);
+        //runner.cancel(true);
+
     }
 
     /**
