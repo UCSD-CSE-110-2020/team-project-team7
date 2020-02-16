@@ -50,6 +50,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         //settings.edit().putBoolean("my_first_time", true).commit();
 
         firstLogin(settings);
+
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 5);
@@ -57,18 +58,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
-        // Add --> {key: "GOOGLE_FIT", value: new GoogleFitAdapter}
-        //fitnessService = new GoogleFitAdapter(this);
-        //FitnessServiceFactory.put(FITNESS_SERVICE_KEY, fitnessService);
-
-        /*
-        FitnessServiceFactory.put(FITNESS_SERVICE_KEY, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create() {
-                return fitnessService;
-            }
-        });
-         */
 
         // Check from String extra if a test FitnessService is being passed
         fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
@@ -94,6 +83,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         incrementSteps.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                if(!sc.turnOffAPI) sc.turnOffAPI = true;
                 setStepCount(getStepCount() + 500);
             }
         });
