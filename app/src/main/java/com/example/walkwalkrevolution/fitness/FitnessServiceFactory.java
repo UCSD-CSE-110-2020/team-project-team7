@@ -27,9 +27,10 @@ public class FitnessServiceFactory {
 
 
     public static FitnessService create(String key, HomePage hp) {
-        if(key == google_fit) {
+        Log.d("IN FITNESS CREATE", key);
+        if(key.equals(google_fit)) {
             return new GoogleFitAdapter(hp);
-        } else if(key == test_fs) {
+        } else if(key.equals(test_fs)) {
             return new TestFitnessServiceAdapter(hp);
         } else return null;
     }

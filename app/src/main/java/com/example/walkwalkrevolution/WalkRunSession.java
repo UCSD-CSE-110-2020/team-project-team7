@@ -2,6 +2,7 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.TimedMetaData;
 import android.os.AsyncTask;
@@ -19,19 +20,26 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 import java.util.Timer;
 
-public class WalkRunSession extends HomePage implements UpdateStepTextView {
+public class WalkRunSession extends AppCompatActivity implements UpdateStepTextView {
 
     public static final String WALK_RUN_INTENT = "From_Walk/Run";
-
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private boolean isCancelled = false;
     private long startTime = System.currentTimeMillis();
     private int minutes;
     private int seconds;
+    private long stepCount;
+    private double stepsPerMile;
+    private double milesCount;
     private TextView timerText;
+    private TextView stepCountText;
+    private TextView milesText;
     private TimeData timeData;
-    private FitnessService googleApi;
+    private FitnessService fitnessService;
+    private StepCountActivity sc;
     private TimerCount runner;
     private String resultTime;
+    public boolean testStep = true;
 
 
     @Override
@@ -46,8 +54,15 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         // steps and miles initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
+        stepsPerMile = getIntent().getDoubleExtra("stepsPerMileFromHome", 1);
 
-        googleApi = FitnessServiceFactory.getFS("GOOGLE_FIT");
+        // Check from String extra if a test FitnessService is being passed
+        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        if(fitnessServiceKey == null) {
+            fitnessServiceKey = "GOOGLE_FIT";
+            testStep = false;
+        }
+        fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
@@ -56,8 +71,9 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
             public void onClick(View view) {
                 sc.cancel(true);
                 isCancelled = true;
-                finish();
+                //finish();
                 launchRouteForm();
+                finish();
             }
         });
 
@@ -85,19 +101,50 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     }
 
     /**
+     * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
+     * setStepCount is called within GoogleFitAdapter.java --> updates stepCount to amount of steps
+     * getStepCount is called within StepCountActivity.java --> get stepCount
+     * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
+     */
+    public void updateStepView(String str) { stepCountText.setText(str); }
+
+    public void setStepCount(long sc) { stepCount = sc; }
+
+    public long getStepCount() { return stepCount; }
+
+    public void updatesMilesView(String str) { milesText.setText(str); }
+
+    public void setMiles(double mi) { milesCount = mi; }
+
+    public double getMiles() { return milesCount; }
+
+    public double getStepsPerMile() { return this.stepsPerMile; }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
      * Run both timer and step/miles update in different threads
      */
     @Override
     protected void onResume() {
+        Log.d("WALK RUN SESSION ONRESUME", "in onresume");
         super.onResume();
         runner = new TimerCount();
         resultTime = timerText.getText().toString();
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
+        sc = new StepCountActivity(fitnessService, testStep);
+        sc.updateStep = this;
+        sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("WALK RUN SESSION ONSTOP", "in onstop");
         sc.cancel(true);
         runner.cancel(true);
     }

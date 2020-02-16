@@ -75,6 +75,12 @@
         android:paddingBottom="20dp">
 
         <Button
+            android:id="@+id/testbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ 500 steps" />
+
+        <Button
             android:id="@+id/startButt"
             android:layout_width="205dp"
             android:layout_height="62dp"

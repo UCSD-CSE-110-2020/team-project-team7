@@ -34,7 +34,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public FitnessService fitnessService;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    private boolean testStep = true;
+    public boolean testStep = true;
     public StepCountActivity sc;
     public TextView stepCountText;
     // TODO TEST BUTTON
@@ -44,7 +44,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
+        Log.d("HOMEPAGE ONCREATE", "creating homepage");
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
 
@@ -55,11 +55,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
-        System.out.print("steps count = ");
-        System.out.println(stepCount);
-
         // Add --> {key: "GOOGLE_FIT", value: new GoogleFitAdapter}
-        fitnessService = new GoogleFitAdapter(this);
+        //fitnessService = new GoogleFitAdapter(this);
         //FitnessServiceFactory.put(FITNESS_SERVICE_KEY, fitnessService);
 
         /*
@@ -123,24 +120,27 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onStop();
         // TODO temp below
         sc.cancel(true);
-        Log.d("call onStop", "stopped called");
-        Log.d("call onStop", String.valueOf(stepCount));
+        Log.d("HOMEPAGE ONSTOP", "stopped called");
+        Log.d("HOMEPAGE ONSTOP", String.valueOf(stepCount));
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("call onStart", "start called");
-        // TODO temp below
+        Log.d("HOMEPAGE ON RESUME", "resume called");
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
+        //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         sc.execute();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        sc.cancel(true);
+        Log.d("HOMEPAGE ONDESTROY", "being destroy");
+        if(!sc.isCancelled()) {
+            sc.cancel(true);
+        }
     }
 
     @Override
@@ -156,8 +156,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
-
-        //firstLogin(settings);
     }
 
     private void displayLastWalk(){
@@ -203,7 +201,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * used to launch the walk/run session
      */
     public void launchSession(){
+        Log.d("HOMEPAGE LAUNCH WALK SESSION", "launching walkrunsession");
         Intent intent = new Intent(this, WalkRunSession.class);
+        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
         startActivity(intent);
     }
 
@@ -214,7 +214,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Intent intent = new Intent(this, HeightForm.class);
         startActivity(intent);
     }
-    
+
     /**
      * first time the user opens the app
      */
