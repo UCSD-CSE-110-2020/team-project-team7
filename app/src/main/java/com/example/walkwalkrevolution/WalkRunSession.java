@@ -30,11 +30,14 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     private TextView timerText;
     private TimeData timeData;
     private FitnessService googleApi;
+    private TimerCount runner;
+    private String resultTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_run_session);
+        Log.d("in walk/run", "in walk run session");
 
         // timer initialize
         timerText = findViewById(R.id.timer_text);
@@ -42,12 +45,8 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         // steps and miles initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
-        stepCount = 0;
-        milesCount = 0;
 
-        //googleApi = FitnessServiceFactory.create("GOOGLE_API");
         googleApi = FitnessServiceFactory.getFS("GOOGLE_FIT");
-        sc = new StepCountActivity(googleApi, false);
 
         // button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
@@ -82,9 +81,6 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
                 }
             }
         });
-
-
-
     }
 
     /**
@@ -93,14 +89,16 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     @Override
     protected void onResume() {
         super.onResume();
-        TimerCount runner = new TimerCount();
-        String resultTime = timerText.getText().toString();
+        runner = new TimerCount();
+        resultTime = timerText.getText().toString();
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
+    }
 
-        String resultSteps = stepCountText.getText().toString();
-        sc = new StepCountActivity(googleApi, false);
-        sc.updateStep = this;
-        sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sc.cancel(true);
+        runner.cancel(true);
     }
 
     /**

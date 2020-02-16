@@ -79,7 +79,9 @@ public class RoutesList extends AppCompatActivity {
 
     private void redirectToHomePage(){
         saveRoutes();
-        startActivity(new Intent(RoutesList.this, HomePage.class));
+        // TODO TESTING
+        //startActivity(new Intent(RoutesList.this, HomePage.class));
+        finish();
     }
 
     private void saveRoutes(){

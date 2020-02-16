@@ -26,7 +26,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public Button incrementSteps;
     public TextView milesText;
-    public long stepCount = 0;
+    public long stepCount;
     public double milesCount;
     public double stepsPerMile;
 
@@ -81,14 +81,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         System.out.println("created fitnessservice");
         // Get specified FitnessService using fitnessServiceKey from Blueprint
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
-        //fitnessService.setup();
+        fitnessService.setup();
 
         // Starts AsyncTask for step counter
         stepCountText = findViewById(R.id.stepCountText);
         milesText = findViewById(R.id.distanceCountText);
-        sc = new StepCountActivity(fitnessService, testStep);
-        sc.updateStep = this;
-        sc.execute();
+
 
         // TODO TEST BUTTON FUNCTION
         incrementSteps = findViewById(R.id.testbutton);
@@ -120,6 +118,30 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // TODO temp below
+        sc.cancel(true);
+        Log.d("call onStop", "stopped called");
+        Log.d("call onStop", String.valueOf(stepCount));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("call onStart", "start called");
+        // TODO temp below
+        sc = new StepCountActivity(fitnessService, testStep);
+        sc.updateStep = this;
+        sc.execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sc.cancel(true);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

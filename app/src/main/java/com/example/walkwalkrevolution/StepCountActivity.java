@@ -16,7 +16,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     public UpdateStepTextView updateStep;
     private FitnessService fs;
     private  boolean testStep;
-    double miles;
+    private double miles;
 
     public StepCountActivity(FitnessService fs, boolean testStep) {
         this.fs = fs;
@@ -26,7 +26,8 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        fs.setup();
+        // TODO commented this out bc we dont want to setup a new google API
+        //fs.setup();
     }
 
     @Override
@@ -55,6 +56,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
             if(!testStep) {
                 //fs.updateStepCount();
                 publishProgress(String.valueOf(updateStep.getStepCount()), String.valueOf(updateStep.getMiles()));
+                Log.d("steps tracker", String.valueOf(updateStep.getStepCount()));
                 updateStep.setStepCount(updateStep.getStepCount() + 100);
                 double stepCountdouble = (double)updateStep.getStepCount();
                 miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
@@ -63,7 +65,7 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
 
             try {
                 Thread.sleep(1000);
-                fs.updateStepCount();
+                //fs.updateStepCount();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
