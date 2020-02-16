@@ -3,8 +3,12 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 public class Route {
+
+    // Constant for logging
+    private static final String TAG = "Route.class";
 
     // Public instance variables
     // Required vars
@@ -18,7 +22,7 @@ public class Route {
     public boolean isFavorited;
     public String notes;
 
-    // Array staying optional vars
+    // Array saving optional vars (Flat/Hilly, etc.)
     public String[] optionalFeaturesStr = new String[5];
     public int[] optionalFeatures = new int[5];
 
@@ -36,11 +40,15 @@ public class Route {
         this.startingPoint = startingPoint.trim();
         this.steps = steps;
         this.distance = distance;
+        // Initializes other vars
         this.date = "date";
         this.minutes = 0;
         this.seconds = 0;
         this.isFavorited = false;
+
+        Log.d(TAG, "Creating a route class named: " + name);
     }
+
 
     // Setter methods
     /**
@@ -56,6 +64,12 @@ public class Route {
      */
     public void setStartingPoint(String startingPoint) {
         this.startingPoint = startingPoint.trim();
+
+        // if starting point is empty string, set it to null
+        if (startingPoint == "") {
+            Log.d(TAG, "Starting point set to null since its empty.");
+            this.startingPoint = null;
+        }
     }
     /**
      * Setter method for date instance var.
@@ -71,25 +85,23 @@ public class Route {
      */
     public void setDuration(int minutes, int seconds) { this.minutes = minutes; this.seconds = seconds; }
 
-    public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
 
+    // Favoriting
+    public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
     public boolean getIsFavorited() { return this.isFavorited; }
 
-    public void setDistance(float distance){
-        this.distance = distance;
-    }
 
-    public void setSteps(int steps){
-        this.steps = steps;
-    }
-
+    // Other (optional) features
     public void setOptionalFeaturesStr(String[] optionalFeaturesStr){
         this.optionalFeaturesStr = optionalFeaturesStr;
     }
-
     public void setOptionalFeatures(int[] optionalFeatures){
         this.optionalFeatures = optionalFeatures;
     }
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 
     /**
      * Compares two Routes.

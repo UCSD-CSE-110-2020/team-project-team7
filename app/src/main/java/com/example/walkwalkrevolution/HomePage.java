@@ -18,10 +18,12 @@ import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-
     public final String TAG = "Home Page";
 
     public Button incrementSteps;
@@ -114,8 +116,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 routesSession();
             }
         });
-
-
     }
 
     @Override
@@ -156,7 +156,20 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
+
+        //firstLogin(settings);
     }
+
+    private void displayLastWalk(){
+        TextView stepValue = (TextView) findViewById(R.id.stepsValue);
+        TextView distanceValue = (TextView) findViewById(R.id.distanceValue);
+        TextView timeValue = (TextView) findViewById(R.id.timeValue);
+        List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
+        stepValue.setText(list.get(0));
+        distanceValue.setText(list.get(1));
+        timeValue.setText(list.get(2));
+    }
+
 
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
