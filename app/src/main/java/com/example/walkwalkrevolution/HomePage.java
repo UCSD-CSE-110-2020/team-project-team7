@@ -122,7 +122,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         long stepsFromMock = sf.getLong("getsteps", -1);
         // if steps were modified from mock page change steps to static mock steps
         if(stepsFromMock != -1) {
+            Log.d("INSIDE STEPS FROM WALK != -1", String.valueOf(stepsFromMock));
             setStepCount(stepsFromMock);
+            Log.d("INSIDE STEPS FROM WALK != -1", String.valueOf(stepCount));
             setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
             updateStepView(String.valueOf(getStepCount()));
             updatesMilesView(String.valueOf(getMiles()));
@@ -240,7 +242,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * launches the mock page
      */
     private void launchMockPage() {
-        Log.d("IN LAUNCH MOCKPAGE", "launching");
+        Log.d("IN LAUNCH MOCKPAGE", String.valueOf(stepCount));
         Intent intent = new Intent(this, MockPage.class);
         intent.putExtra("stepCountFromHome", stepCount);
         startActivity(intent);
