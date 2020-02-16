@@ -31,6 +31,7 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
     private TimeData timeData;
     private FitnessService googleApi;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,36 +183,4 @@ public class WalkRunSession extends HomePage implements UpdateStepTextView {
         Toast.makeText(this, "Please press the stop button to go stop", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Handles timing/mock timing.
-     */
-    private class TimeData  {
-
-        public long mockTime;
-        public long mockStartTime;
-
-        private boolean mockTimeSet = false;
-
-        /**
-         * Starts mock timing.
-         * @param mockTime - the new time to start at
-         */
-        private void setMockTime(long mockTime) {
-            this.mockTime = mockTime;
-            mockTimeSet = true;
-            mockStartTime = System.currentTimeMillis();
-        }
-
-        /**
-         * Returns the time or mocked time.
-         */
-        private long getTime() {
-            if (mockTimeSet) {
-                return mockTime + (System.currentTimeMillis() - mockStartTime);
-
-            } else {
-                return System.currentTimeMillis();
-            }
-        }
-    }
 }
