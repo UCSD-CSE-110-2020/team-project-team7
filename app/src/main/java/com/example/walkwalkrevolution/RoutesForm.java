@@ -28,14 +28,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TreeSet;
 
+
+/**
+ * Handles interactions with editing details of and saving a
+ * Routes entry on the Routes Form Activity.
+ */
 public class RoutesForm extends AppCompatActivity {
 
+    // Constant for logging
     private static final String TAG = "RoutesForm";
+    // Request code constants
+    private final int REQUEST_DATE = 1;
+    private final int REQUEST_NOTES = 2;
 
-    // Edit Texts
+    // Edit Texts and Xml Objects
     private EditText routeNameEditText, startingPEditText, minutesEditText, secondsEditText;
     private TextView dateDisplayTextView, stepsView, distanceView;
     private MultiStateToggleButton[] optionalInfo = new MultiStateToggleButton[5];
+
     private int[] toggledButtons = new int[5];
     private String[] toggledButtonsStr = new String[5];
 
@@ -46,19 +56,24 @@ public class RoutesForm extends AppCompatActivity {
     // NOtes taken for the Route
     private String notes = "";
 
-    // Request code constants
-    private final int REQUEST_DATE = 1;
-    private final int REQUEST_NOTES = 2;
 
+    // SETTING UP GENERAL UI ELEMENTS AND BEHAVIOR -------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_form);
 
-        Log.d(TAG, "Starting Form SetUp");
+        Log.d(TAG, "Starting formSetUp");
         formSetUp();
+        Log.d(TAG, "Finished formSetup");
+    }
 
+    /**
+     * Initialize instance vars for most Activity objects. Set up the date. Find out which
+     * intent called this Activity.
+     */
+    private void formSetUp(){
         // Handle onClickListeners for Buttons
         Button saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -79,13 +94,6 @@ public class RoutesForm extends AppCompatActivity {
             }
         });
 
-    }
-
-    /**
-     * Initalize instance vars for most Activity objects. Set up the date. Find out which
-     * intent called this Activity.
-     */
-    private void formSetUp(){
         // Get ids of EditTexts and TextViews
         routeNameEditText = (EditText) findViewById(R.id.routeNameEditText);
         startingPEditText = (EditText) findViewById(R.id.startingPEditText);
@@ -95,6 +103,7 @@ public class RoutesForm extends AppCompatActivity {
         stepsView = (TextView) findViewById(R.id.stepsNumView);
         distanceView = (TextView) findViewById(R.id.distanceNumView);
 
+        // Set up ids for MultiState toggles in optional info list and display text
         optionalInfo[0] = (MultiStateToggleButton) this.findViewById(R.id.hillyToggle);
         optionalInfo[0].setElements(new CharSequence[]{"Hilly", "Flat"});
         optionalInfo[1] = (MultiStateToggleButton) this.findViewById(R.id.loopToggle);
@@ -106,53 +115,20 @@ public class RoutesForm extends AppCompatActivity {
         optionalInfo[4] = (MultiStateToggleButton) this.findViewById(R.id.difficultyToggle);
         optionalInfo[4].setElements(new CharSequence[]{"Easy", "Medium", "Hard"});
 
+        // Set up listeners for all toggle buttons to update information in the toggleButtons array
         for(int i=0; i < optionalInfo.length; i++){
+            // Only allow one choice per toggle button
             optionalInfo[i].enableMultipleChoice(false);
+
+            final int j = i;
+            optionalInfo[i].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
+                @Override
+                public void onValueChanged(int value) {
+                    Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
+                    setToggledButtonInfo(j, value);
+                }
+            });
         }
-
-        optionalInfo[0].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
-                toggledButtons[0] = value + 1;
-                toggledButtonsStr[0] = "" + optionalInfo[0].getTexts()[value];
-            }
-        });
-
-        optionalInfo[1].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
-                toggledButtons[1] = value + 1;
-                toggledButtonsStr[1] = "" + optionalInfo[1].getTexts()[value];
-            }
-        });
-
-        optionalInfo[2].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
-                toggledButtons[2] = value + 1;
-                toggledButtonsStr[2] = "" + optionalInfo[2].getTexts()[value];
-            }
-        });
-
-        optionalInfo[3].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
-                toggledButtons[3] = value + 1;
-                toggledButtonsStr[3] = "" + optionalInfo[3].getTexts()[value];
-            }
-        });
-
-        optionalInfo[4].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                toggledButtons[4] = value + 1;
-                toggledButtonsStr[4] = "" + optionalInfo[4].getTexts()[value];
-            }
-        });
 
         // Setting the date, automatically set it to the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -160,8 +136,21 @@ public class RoutesForm extends AppCompatActivity {
         String date = dateFormat.format(currentTime);
         dateDisplayTextView.setText(date);
 
+        // Find out which intent we are from
         checkIntent();
     }
+
+    /**
+     * Set up one toggle button to update information in the toggleButtons array
+     * every time it is toggled. The toggle button is specified by its index in the array.
+     */
+    private void setToggledButtonInfo(int toggleIndex, int value) {
+        toggledButtons[toggleIndex] = value + 1;
+        toggledButtonsStr[toggleIndex] = "" + optionalInfo[toggleIndex].getTexts()[value];
+    }
+
+
+    // HANDLING BEHAVIORS FOR COMING FROM INTENTS --------------------------------------------------
 
     /**
      * Find on which intent opened this Activity and fill up the page correspondingly.
@@ -203,7 +192,7 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     /**
-     * Currently creating a new Route.
+     * Currently creating a brand new Route (from the plus button on Routes page).
      */
     private void intentFromRoutesCreation(){
         stepsView.setText(steps + " s");
@@ -216,14 +205,22 @@ public class RoutesForm extends AppCompatActivity {
     private void intentFromRoutesDetails(){
         Route routeToDetail = TreeSetManipulation.getSelectedRoute();
 
-        //prefill all required information
+        // Extract steps, distance, time into instance vars and display them
+        steps = routeToDetail.steps;
+        distance = routeToDetail.distance;
+        minutes = routeToDetail.minutes;
+        seconds = routeToDetail.seconds;
+        displayStepsDistanceTime();
+
+        // prefill route name, starting point, and date
         routeNameEditText.setText(routeToDetail.name);
-        startingPEditText.setText(routeToDetail.startingPoint);
-        minutesEditText.setText(String.format("%02d", routeToDetail.minutes));
-        secondsEditText.setText(String.format("%02d", routeToDetail.seconds));
-        stepsView.setText(routeToDetail.steps + " s");
-        distanceView.setText(routeToDetail.distance + " mi");
+        if (routeToDetail.startingPoint != null) {
+            startingPEditText.setText(routeToDetail.startingPoint);
+        }
         dateDisplayTextView.setText(routeToDetail.date);
+
+        // Load notes
+        notes = routeToDetail.notes;
 
         //disable editing for minutes, steps, and distance
         minutesEditText.setEnabled(false);
@@ -231,24 +228,34 @@ public class RoutesForm extends AppCompatActivity {
         stepsView.setEnabled(false);
         distanceView.setEnabled(false);
 
-        additionalInformationDisplay(routeToDetail);
-
-
-        // Load notes
-        notes = routeToDetail.notes;
+        displayToggleInfo(routeToDetail);
     }
 
-    private void additionalInformationDisplay(Route route){
+    /**
+     * Display toggle button information.
+     */
+    private void displayToggleInfo(Route route){
         try {
             for (int i = 0; i < route.optionalFeatures.length; i++) {
                 int value = route.optionalFeatures[i];
-                //if button was toggled, set to toggled state
+
+                // if button was toggled, set to toggled state
                 if (value != 0) {
                     optionalInfo[i].setValue(value - 1);
                 }
             }
         }
         catch(Exception e){}
+    }
+
+    /**
+     * Based on instance vars, display steps, distance, and time.
+     */
+    private void displayStepsDistanceTime() {
+        stepsView.setText(steps + " steps");
+        distanceView.setText(distance + " miles");
+        minutesEditText.setText(String.format("%02d", minutes));
+        secondsEditText.setText(String.format("%02d", seconds));
     }
 
     /**
@@ -261,33 +268,32 @@ public class RoutesForm extends AppCompatActivity {
         minutes = fromIntent.getIntExtra("minutes", 0);
         seconds = fromIntent.getIntExtra("seconds", 0);
 
-        // Display data from walk/run session
-        //String.format("%d:%02d", minutes, seconds);
-        minutesEditText.setText(String.format("%02d", minutes));
-        secondsEditText.setText(String.format("%02d", seconds));
-        stepsView.setText(steps + " steps");
-        distanceView.setText(distance + " miles");
+        displayStepsDistanceTime();
 
-        //Walk/Run Session started from Routes page
-       if(TreeSetManipulation.getSelectedRoute() != null){
-           intentFromRoutesStartButton();
-       }
+        // Walk/Run Session started from Routes page, not from Home page
+        if(TreeSetManipulation.getSelectedRoute() != null) {
+            intentFromRoutesStartButton();
+        }
 
     }
 
+    /**
+     * Prefilling some information for a session that is started from the Routes page.
+     */
     private void intentFromRoutesStartButton(){
         Route routeBeingWalked = TreeSetManipulation.getSelectedRoute();
 
-        //prefill information for everything but Steps, Distance, and Time
+        // Prefill information for everything but Steps, Distance, and Time
         routeNameEditText.setText(routeBeingWalked.name);
         startingPEditText.setText(routeBeingWalked.startingPoint);
 
-
-        // Load notes
+        // Load notes and display toggle info
         notes = routeBeingWalked.notes;
-
-        additionalInformationDisplay(routeBeingWalked);
+        displayToggleInfo(routeBeingWalked);
     }
+
+
+    // BEHAVIOR FOR TRYING TO SAVE THE ROUTES ENTRY ------------------------------------------------
 
     /**
      * Save button behavior. If routeName or startingPoint are empty,
@@ -308,7 +314,6 @@ public class RoutesForm extends AppCompatActivity {
         Intent intent = new Intent(this, RoutesList.class);
         SharedPreferences sharedPreferences =
                 getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-
 
         //Anything involving the Routes Page executes here
         if(TreeSetManipulation.getSelectedRoute() != null){
@@ -334,35 +339,36 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     /**
-     * Get the filled in entries and returns a newly created Route object bsaed on entries.
+     * Get the filled in entries and returns a newly created Route object based on form entries.
      */
     private Route entriesAsRouteObject(){
         String routeName = routeNameEditText.getText().toString();
         String startingPoint = startingPEditText.getText().toString();
 
         Route savedRoute = new Route(routeName, startingPoint, steps, distance);
+
         savedRoute.setDate(dateDisplayTextView.getText().toString());
         savedRoute.setDuration(minutes, seconds);
-
         savedRoute.setOptionalFeatures(toggledButtons);
         savedRoute.setOptionalFeaturesStr(toggledButtonsStr);
+        savedRoute.setNotes(notes);
 
         return savedRoute;
     }
 
     /**
-     * Error checking for required feels, such as routeName and startingPoint.
+     * Error checking and formatting for required feels, such as routeName and startingPoint.
      */
     private boolean errorCheckingRequiredFields(){
         // Get fields in EditTexts and TextViews
         String routeName = routeNameEditText.getText().toString();
-        String startingPoint = startingPEditText.getText().toString();
-
         String inputMinutes = minutesEditText.getText().toString();
+        String inputSeconds = secondsEditText.getText().toString();
+
+        // If minutes and seconds are not empty, parse them into integers
         if (!inputMinutes.equals(""))  {
             minutes = Integer.parseInt(inputMinutes);
         }
-        String inputSeconds = secondsEditText.getText().toString();
         if (!inputSeconds.equals("")) {
             seconds = Integer.parseInt(inputSeconds);
         }
@@ -374,11 +380,6 @@ public class RoutesForm extends AppCompatActivity {
             routeNameEditText.setError("Required field");
             error = true;
         }
-        if (startingPoint.matches("")) {
-            // Display error for required field
-            startingPEditText.setError("Required field");
-            error = true;
-        }
         if (seconds > 60) {
             // Display error for incorrectly filled field
             secondsEditText.setError("Specified seconds must be within range 0-60");
@@ -387,6 +388,9 @@ public class RoutesForm extends AppCompatActivity {
         }
         return error;
     }
+
+
+    // BEHAVIOR FOR STARTING NEW INTENTS FROM THE ROUTES FORM --------------------------------------
 
     /**
      * Cancel button behavior. Go to Routes List Activity without saving data.
@@ -403,6 +407,7 @@ public class RoutesForm extends AppCompatActivity {
     public void openSetDate(View view) {
         Intent intent = new Intent(this, SetDate.class);
         intent.putExtra("date", dateDisplayTextView.getText().toString());
+        Log.d(TAG, "Opening SetDate activity...");
         startActivityForResult(intent, REQUEST_DATE);
     }
 
@@ -412,6 +417,7 @@ public class RoutesForm extends AppCompatActivity {
     public void openNotesActivity(View view) {
         Intent intent = new Intent(this, NotesPage.class);
         intent.putExtra("notes", notes);
+        Log.d(TAG, "Opening NotesPage activity...");
         startActivityForResult(intent, REQUEST_NOTES);
     }
 
@@ -425,11 +431,13 @@ public class RoutesForm extends AppCompatActivity {
                 if(resultCode == RESULT_OK) {
                     String dateStr = data.getStringExtra("newDate");
                     dateDisplayTextView.setText(dateStr);
+                    Log.d(TAG, "Saved data from the SetData activity");
                 }
                 break;
             case REQUEST_NOTES:
                 if(resultCode == RESULT_OK) {
                     notes = data.getStringExtra("newNotes");
+                    Log.d(TAG, "Saved data from the NotesPage activity");
                 }
                 break;
         }
