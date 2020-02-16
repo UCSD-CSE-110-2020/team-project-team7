@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.TimedMetaData;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,10 +23,13 @@ import java.util.Timer;
 
 public class WalkRunSession extends AppCompatActivity implements UpdateStepTextView {
 
+    // Constant for logging
+    private static final String TAG = "WalkRunSession";
+
     public static final String WALK_RUN_INTENT = "From_Walk/Run";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private boolean isCancelled = false;
-    private long startTime = System.currentTimeMillis();
+    private long startTime;
     private int minutes;
     private int seconds;
     private long stepCount;
@@ -49,6 +53,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         Log.d("in walk/run", "in walk run session");
 
         // timer initialize
+        Log.d(TAG, "Creating time counter.");
         timerText = findViewById(R.id.timer_text);
 
         // steps and miles initialize
@@ -64,7 +69,16 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         }
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
 
-        // button that stops the activity
+
+        // Make a new TimeData object based on what's in shared prefs
+        timeData = new TimeData();
+        timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
+        Log.d(TAG, "Get time: " + timeData.getTime());
+        // Initialize timeData
+        startTime = timeData.getTime();
+
+
+        // Button that stops the activity
         Button stopActivity = (Button) findViewById(R.id.stop_btn);
         stopActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,26 +90,12 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
                 finish();
             }
         });
-
-
-        // Set up the time/mocktime
-        timeData = new TimeData();
-
-        // EditText to input time in milliseconds
-        EditText mockTimeEditText = (EditText) findViewById(R.id.mockTimeEditText);
-
-        // Button that submits mockTime
-        Button mockTimeButton = (Button) findViewById(R.id.submitMockTimeButton);
-        mockTimeButton.setOnClickListener(new View.OnClickListener() {
+        // Button that opens mockPage
+        Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
+        mockPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                try {
-                    long mockTime =  Long.parseLong(mockTimeEditText.getText().toString());
-                    timeData.setMockTime(mockTime);
-                } catch (Exception e) {
-
-                }
+                launchMockPage();
             }
         });
     }
@@ -119,6 +119,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     public double getMiles() { return milesCount; }
 
     public double getStepsPerMile() { return this.stepsPerMile; }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -162,11 +163,15 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     @Override
     public long getStepCount() { return this.stepCount; }*/
 
-    /**
-     * launches to the routes form
+
+    // ONCLICK EVENTS FOR BUTTONS ------------------------------------------------------------------
+
+     /**
+     * launches routes form
      */
     public void launchRouteForm(){
         Intent intent = new Intent(this, RoutesForm.class);
+        Log.d(TAG, "Stop button pressed. Launching the Route Form.");
 
         Log.d("passed steps", String.valueOf(stepCount));
         Log.d("passed miles", String.valueOf(milesCount));
@@ -180,6 +185,20 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         startActivity(intent);
     }
 
+    /**
+     * launches the mock page
+     */
+    private void launchMockPage() {
+        Intent intent = new Intent(this, MockPage.class);
+        Log.d(TAG, "Mock button pressed. Launching the Mock Page.");
+        startActivity(intent);
+
+        // Get the new time data
+        Log.d(TAG, "New current time: " + timeData.getTime());
+    }
+
+
+    // ASYNC TASK, TIMER ---------------------------------------------------------------------------
 
     /**
      * timer that the runner uses
@@ -194,6 +213,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
 
 
             while(true){
+                timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
                 long millis = timeData.getTime() - startTime;
                 seconds = (int)(millis/1000);
                 minutes = seconds/60;

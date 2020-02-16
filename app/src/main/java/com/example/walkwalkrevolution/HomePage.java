@@ -46,6 +46,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         setContentView(R.layout.activity_home_page);
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+
+        //settings.edit().putBoolean("my_first_time", true).commit();
+
         firstLogin(settings);
 
         // retrieve height;
@@ -156,6 +159,14 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
+        // Button that opens mockPage
+        Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
+        mockPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchMockPage();
+            }
+        });
     }
 
     private void displayLastWalk(){
@@ -219,7 +230,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * first time the user opens the app
      */
     public void firstLogin(SharedPreferences pref){
-        //pref.edit().putBoolean("my_first_time", true).commit();
         if (pref.getBoolean("my_first_time", true)) {
             //the app is being launched for first time
             launchFirstSession();
@@ -233,5 +243,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         return (int)(5280 / strideLengthFeet);
     }
 
+    /**
+     * launches the mock page
+     */
+    private void launchMockPage() {
+        Intent intent = new Intent(this, MockPage.class);
+        startActivity(intent);
+    }
 }
 

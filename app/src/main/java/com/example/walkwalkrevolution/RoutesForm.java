@@ -128,7 +128,7 @@ public class RoutesForm extends AppCompatActivity {
             optionalInfo[i].setOnValueChangedListener(new org.honorato.multistatetogglebutton.ToggleButton.OnValueChangedListener() {
                 @Override
                 public void onValueChanged(int value) {
-                    Toast.makeText(getApplicationContext(), "ValueChanged: " + value, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Value for toggle changed to: " + value);
                     setToggledButtonInfo(j, value);
                 }
             });

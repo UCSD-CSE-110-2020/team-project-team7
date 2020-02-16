@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".HomePage">
 
+    <Button
+        android:id="@+id/mockPageButton"
+        android:layout_width="67dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="51dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/mock"
+        app:layout_constraintVertical_bias="0.648" />
+
     <LinearLayout
         android:id="@+id/linearLayoutSteps"
         android:layout_width="wrap_content"
