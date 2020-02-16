@@ -81,6 +81,9 @@ public class HomePage extends AppCompatActivity {
         TextView distanceValue = (TextView) findViewById(R.id.distanceValue);
         TextView timeValue = (TextView) findViewById(R.id.timeValue);
         List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
+        if(list == null){
+            list = LastIntentionalWalk.initializeLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
+        }
         stepValue.setText(list.get(0));
         distanceValue.setText(list.get(1));
         timeValue.setText(list.get(2));

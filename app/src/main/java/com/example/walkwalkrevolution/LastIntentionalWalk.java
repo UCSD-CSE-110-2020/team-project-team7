@@ -14,16 +14,16 @@ import java.util.List;
 public class LastIntentionalWalk {
 
     public final static String SHARED_PREFS_INTENTIONAL_WALK = "lastWalk";
-    //private static final String TAG = "LastIntentionalWalk";
     private static final String TAG = "LastIntentionalWalk";
 
-    public static void initializeLastWalk(SharedPreferences sharedPreferences){
+    public static List<String> initializeLastWalk(SharedPreferences sharedPreferences){
         List<String> list = new ArrayList<>();
         list.add("0");
         list.add("0.0");
         list.add("0:00");
         saveLastWalk(sharedPreferences, list);
         Log.d(TAG, "Last Walk Initialized");
+        return list;
     }
 
     public static void saveLastWalk(SharedPreferences sharedPreferences, List<String> list){
