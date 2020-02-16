@@ -3,8 +3,12 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 public class Route {
+
+    // Constant for logging
+    private static final String TAG = "Route.class";
 
     // Public instance variables
     // Required vars
@@ -41,7 +45,10 @@ public class Route {
         this.minutes = 0;
         this.seconds = 0;
         this.isFavorited = false;
+
+        Log.d(TAG, "Creating a route class named: " + name);
     }
+
 
     // Setter methods
     /**
@@ -60,6 +67,7 @@ public class Route {
 
         // if starting point is empty string, set it to null
         if (startingPoint == "") {
+            Log.d(TAG, "Starting point set to null since its empty.");
             this.startingPoint = null;
         }
     }
@@ -93,6 +101,7 @@ public class Route {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
 
     /**
      * Compares two Routes.

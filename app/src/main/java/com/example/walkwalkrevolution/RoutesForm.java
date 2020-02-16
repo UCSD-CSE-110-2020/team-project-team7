@@ -260,6 +260,7 @@ public class RoutesForm extends AppCompatActivity {
         distanceView.setText(distance + " miles");
         minutesEditText.setText(String.format("%02d", minutes));
         secondsEditText.setText(String.format("%02d", seconds));
+        Log.d(TAG, "Updating the display for steps, distance, and time.");
     }
 
     /**
@@ -345,6 +346,7 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     private void lastIntentionalWalkUpdate(){
+        Log.d(TAG, "Updating the last intentional walk.");
         if(intentFromWalkRunSession){
             SharedPreferences prefs = getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE);
             List<String> list = new ArrayList<>();
@@ -364,6 +366,8 @@ public class RoutesForm extends AppCompatActivity {
      * Get the filled in entries and returns a newly created Route object based on form entries.
      */
     private Route entriesAsRouteObject(){
+        Log.d(TAG, "Successfully passed error checking. Now saving this Route.");
+
         String routeName = routeNameEditText.getText().toString();
         String startingPoint = startingPEditText.getText().toString();
 
@@ -382,6 +386,8 @@ public class RoutesForm extends AppCompatActivity {
      * Error checking and formatting for required feels, such as routeName and startingPoint.
      */
     private boolean errorCheckingRequiredFields(){
+        Log.d(TAG, "Checking entry fields for errors...");
+
         // Get fields in EditTexts and TextViews
         String routeName = routeNameEditText.getText().toString();
         String inputMinutes = minutesEditText.getText().toString();
