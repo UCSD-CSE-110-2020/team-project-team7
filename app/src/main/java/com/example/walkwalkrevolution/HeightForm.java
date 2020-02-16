@@ -45,6 +45,9 @@ public class HeightForm extends AppCompatActivity {
     private void initializationSetUp(){
         TreeSetManipulation.initializeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
         LastIntentionalWalk.initializeLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
+
+        // initialize time data fields
+        TimeData.initTimeData(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
     }
 
     /**
