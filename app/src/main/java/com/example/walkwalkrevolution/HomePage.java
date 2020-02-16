@@ -26,7 +26,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public final String TAG = "Home Page";
 
-    public Button incrementSteps;
     public TextView milesText;
     public long stepCount;
     public double milesCount;
@@ -44,8 +43,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        Log.d("HOMEPAGE ONCREATE", "creating homepage");
-
+        Log.d("HOMEPAGE ON CREATE", "creating homepage");
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -53,7 +51,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         int inches = getHeight.getInt("height_in", 7);
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
-
 
         // Check from String extra if a test FitnessService is being passed
         fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
@@ -104,27 +101,27 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     @Override
     protected void onStop() {
+        Log.d("HOMEPAGE ON STOP", "stopped called");
         super.onStop();
-        // TODO temp below
+        // stop async task
         sc.cancel(true);
-        Log.d("HOMEPAGE ONSTOP", "stopped called");
-        Log.d("HOMEPAGE ONSTOP", String.valueOf(stepCount));
     }
 
     @Override
     protected void onStart() {
+        Log.d("HOMEPAGE ON START", "start called");
         super.onStart();
         displayLastWalk();
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
-        Log.d("HOMEPAGE ON RESUME", "resume called");
+
+        // Create async task
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
         SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
         long stepsFromMock = sf.getLong("getsteps", -1);
+        // if steps were modified from mock page change steps to static mock steps
         if(stepsFromMock != -1) {
-            //long stepsFromMock = getIntent().getLongExtra("StepsFromMock", -1);
-            Log.d("INSIDE GETINTENT OF ONSTART", String.valueOf(stepsFromMock));
             setStepCount(stepsFromMock);
             setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
             updateStepView(String.valueOf(getStepCount()));
@@ -136,8 +133,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     @Override
     protected void onDestroy() {
+        Log.d("HOMEPAGE ON DESTROY", "being destroy");
         super.onDestroy();
-        Log.d("HOMEPAGE ONDESTROY", "being destroy");
         if(!sc.isCancelled()) {
             sc.cancel(true);
         }
@@ -156,14 +153,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
-        // Button that opens mockPage
-        /*Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
-        mockPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchMockPage();
-            }
-        });*/
     }
 
     private void displayLastWalk(){
@@ -171,9 +160,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         TextView distanceValue = (TextView) findViewById(R.id.distanceValue);
         TextView timeValue = (TextView) findViewById(R.id.timeValue);
         List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
-        stepValue.setText(list.get(0));
-        distanceValue.setText(list.get(1));
-        timeValue.setText(list.get(2));
+        if(list == null) {
+            stepValue.setText("0");
+            distanceValue.setText("0");
+            timeValue.setText("0");
+        } else {
+            stepValue.setText(list.get(0));
+            distanceValue.setText(list.get(1));
+            timeValue.setText(list.get(2));
+        }
     }
 
 
@@ -245,9 +240,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * launches the mock page
      */
     private void launchMockPage() {
-        Log.d("IN LAUNCHMOCKPAGE", "launcing");
+        Log.d("IN LAUNCH MOCKPAGE", "launching");
         Intent intent = new Intent(this, MockPage.class);
-        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+        intent.putExtra("stepCountFromHome", stepCount);
         startActivity(intent);
     }
 }

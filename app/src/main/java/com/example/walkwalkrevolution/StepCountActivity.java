@@ -55,7 +55,6 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
         do {
             // Don't update step count from publish if testing
             if(!testStep) {
-                // TODO uncomment below for google api
                 if(!turnOffAPI) {
                     fs.updateStepCount();
                     publishProgress(String.valueOf(updateStep.getStepCount()), String.valueOf(updateStep.getMiles()));

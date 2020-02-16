@@ -49,6 +49,8 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
 
         stepCountText = findViewById(R.id.steps);
         stepCount = getIntent().getLongExtra("stepCountFromHome", 0);
+        stepCountText.setText(String.valueOf(stepCount));
+
         // Make a new TimeData object based on data in shared prefs
         timeData = new TimeData();
         timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
@@ -78,7 +80,7 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
             @Override
             public void onClick(View view) {
                 try {
-                    stepCount += stepCount + 500;
+                    stepCount += 500;
                     stepCountText.setText(String.valueOf(stepCount));
                 } catch (Exception e) {
                     Log.d(TAG, "step count button failed");
