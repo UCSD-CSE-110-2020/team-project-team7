@@ -32,23 +32,25 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
     private long stepCount;
     private double milesCount;
 
+    private boolean isFromHome = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mock_page);
 
-        // button that leaves the activity
-        Button doneButton = (Button) findViewById(R.id.doneButton);
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveSteps();
-            }
-        });
-
         stepCountText = findViewById(R.id.steps);
-        stepCount = getIntent().getLongExtra("stepCountFromHome", 0);
+        // mock page called from home
+        stepCount = getIntent().getLongExtra("stepCountFromHome", -1);
+        // mock page called from walk run session
+        if (stepCount == -1) {
+            isFromHome = false;
+            stepCount = getIntent().getLongExtra("stepCountFromSession", 0);
+        }
+        stepCountText.setText(String.valueOf(stepCount));
+
+
         // Make a new TimeData object based on data in shared prefs
         timeData = new TimeData();
         timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
@@ -57,6 +59,8 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
         mockTimeEditText = (EditText) findViewById(R.id.mockTimeEditText);
         // Set the text to be the current time or the mock time
         mockTimeEditText.setText(timeData.getTime() + "");
+
+        // BUTTONS ---------------------------------------------------------------------------------
 
         // Button that submits mockTime
         Button mockTimeButton = (Button) findViewById(R.id.submitMockTimeButton);
@@ -71,7 +75,6 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
                 }
             }
         });
-
         // Button that resets mockTime to current time
         Button resetTimeButton = (Button) findViewById(R.id.resetTimeButton);
         resetTimeButton.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +87,6 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
                 Log.d(TAG, "Mock time reset.");
             }
         });
-
         // Button that increments steps by 500
         Button mockStepsButton = (Button) findViewById(R.id.addStepsButton);
         mockStepsButton.setOnClickListener(new View.OnClickListener() {
@@ -93,9 +95,27 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
                 try {
                     stepCount += 500;
                     stepCountText.setText(String.valueOf(stepCount));
+
                 } catch (Exception e) {
                     Log.d(TAG, "step count button failed");
                 }
+            }
+        });
+        // button that leaves the activity
+        Button doneButton = (Button) findViewById(R.id.doneButton);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isFromHome) {
+                    saveSteps();
+                    finish();
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("stepCount", stepCount);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
             }
         });
 
@@ -121,6 +141,10 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
     public double getMiles() { return milesCount; }
 
     public double getStepsPerMile() { return this.stepsPerMile; }
+
+
+    // SAVING STEPS/TIME ---------------------------------------------------------------------------
+
     /**
      * Saves the mock time in the Edit Text to shared prefs.
      */
@@ -135,14 +159,16 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
     }
 
     private void saveSteps() {
-        /*Intent intent = new Intent(this, HomePage.class);
-        intent.putExtra("StepsFromMock", stepCount);
-        startActivity(intent);*/
-        SharedPreferences sf = getSharedPreferences("MockSteps", 0);
-        SharedPreferences.Editor editor = sf.edit();
+        SharedPreferences prefs = getSharedPreferences("MockSteps", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putLong("getsteps", stepCount);
         editor.apply();
-        finish();
+    }
+
+    public static void saveInputtedSteps(SharedPreferences prefs, long stepCount) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("getsteps", stepCount);
+        editor.apply();
     }
 
 }

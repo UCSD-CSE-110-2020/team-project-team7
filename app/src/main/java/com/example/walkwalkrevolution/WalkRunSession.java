@@ -28,10 +28,12 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
 
     public static final String WALK_RUN_INTENT = "From_Walk/Run";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-    private boolean isCancelled = false;
+    public static final int REQUEST_MOCK_SESSION = 3;
+
+    private boolean isCancelled;
     private long startTime;
     private int minutes, seconds;
-    private long stepCount;
+    private long stepCount, stepsFromMock;
     private double stepsPerMile, milesCount;
     private TextView timerText, stepCountText, milesText;
     private TimeData timeData;
@@ -48,11 +50,16 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         setContentView(R.layout.activity_walk_run_session);
         Log.d("in walk/run", "in walk run session");
 
-        // timer initialize
+        // timer text initialize
         Log.d(TAG, "Creating time counter.");
         timerText = findViewById(R.id.timer_text);
 
-        // steps and miles initialize
+        // timer counter initialize
+        runner = new TimerCount();
+        resultTime = timerText.getText().toString();
+        runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
+
+        // steps and miles views initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
         stepsPerMile = getIntent().getDoubleExtra("stepsPerMileFromHome", 1);
@@ -72,6 +79,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         Log.d(TAG, "Get time: " + timeData.getTime());
         // Initialize startTime, the time we started the session
         startTime = timeData.getTime();
+        Log.d(TAG, "Session START TIME: " + startTime);
 
 
         // Button that stops the activity
@@ -83,7 +91,6 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
                 isCancelled = true;
                 finish();
                 launchRouteForm();
-                //finish();
             }
         });
         // Button that opens mockPage
@@ -94,8 +101,18 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
                 launchMockPage();
             }
         });
+
+        // Check if steps were mocked before this activity
+        SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
+        long stepsFromMock = sf.getLong("getsteps", -1);
+        if(stepsFromMock != -1) {
+            this.stepsFromMock = stepsFromMock;
+            stepCount = 0;
+        }
     }
 
+
+    // INTERFACE METHODS FOR STEPS/DISTANCE --------------------------------------------------------
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
      * setStepCount is called within GoogleFitAdapter.java --> updates stepCount to amount of steps
@@ -117,10 +134,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     public double getStepsPerMile() { return this.stepsPerMile; }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+    // METHODS FOR HANDLING INFORMATION FROM MOVING BETWEEN ACTIVITIES -----------------------------
 
     /**
      * Run both timer and step/miles update in different threads
@@ -129,30 +143,20 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     protected void onResume() {
         Log.d("WALK RUN SESSION ONRESUME", "in onresume");
         super.onResume();
-        runner = new TimerCount();
-        resultTime = timerText.getText().toString();
-        runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
 
-        // Update timeData in case mock time set
+        // Update timeData and timerText in case mock time set
         timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
+        timerText.setText(makeTimeString());
         Log.d(TAG, "Get time: " + timeData.getTime());
 
-        //sc = new StepCountActivity(fitnessService, testStep);
-        //sc.updateStep = this;
-        //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
-        SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
-        long stepsFromMock = sf.getLong("getsteps", -1);
-        if(stepsFromMock != -1) {
-            //long stepsFromMock = getIntent().getLongExtra("StepsFromMock", -1);
-            Log.d("INSIDE GETINTENT OF ONSTART", String.valueOf(stepsFromMock));
-            setStepCount(stepsFromMock);
-            setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
-            updateStepView(String.valueOf(getStepCount()));
-            updatesMilesView(String.valueOf(getMiles()));
-            sc.turnOffAPI = true;
+
+        // Mock time is set
+        if(stepsFromMock != 0) {
+            mockStepsSet();
         }
+
         sc.execute();
     }
 
@@ -161,7 +165,19 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         super.onStop();
         Log.d("WALK RUN SESSION ONSTOP", "in onstop");
         sc.cancel(true);
-        //runner.cancel(true);
+
+        // Save into shared prefs
+        long savedSteps = stepsFromMock + stepCount;
+        SharedPreferences prefs = getSharedPreferences("MockSteps", MODE_PRIVATE);
+        MockPage.saveInputtedSteps(prefs, savedSteps);
+    }
+
+    // Helper method for handling display when a mock is set
+    private void mockStepsSet() {
+        setMiles((Math.floor((stepCount / stepsPerMile) * 100)) / 100);
+        updateStepView(String.valueOf(getStepCount()));
+        updatesMilesView(String.valueOf(getMiles()));
+        sc.turnOffAPI = true;
     }
 
 
@@ -191,15 +207,44 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
      */
     private void launchMockPage() {
         Intent intent = new Intent(this, MockPage.class);
+        intent.putExtra("stepCountFromSession", stepCount);
         Log.d(TAG, "Mock button pressed. Launching the Mock Page.");
-        startActivity(intent);
+
+        startActivityForResult(intent, REQUEST_MOCK_SESSION);
 
         // Get the new time data
         Log.d(TAG, "New current time: " + timeData.getTime());
     }
 
+    /**
+     * Handles coming back from the Mock Page activity.
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_MOCK_SESSION:
+                if(resultCode == RESULT_OK) {
+                    stepCount = data.getLongExtra("stepCount", 0);
+                    Log.d(TAG, "Saved data from the mock activity");
+                }
+        }
+    }
+
 
     // ASYNC TASK, TIMER ---------------------------------------------------------------------------
+
+    private String makeTimeString() {
+        if (timeData == null) {
+            timeData = new TimeData();
+        }
+        timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
+        long millis = timeData.getTime() - startTime;
+        seconds = (int)(millis/1000);
+        minutes = seconds/60;
+        seconds %= 60;
+        return String.format("%d:%02d", minutes, seconds);
+    }
+
 
     /**
      * timer that the runner uses
@@ -214,13 +259,13 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
 
 
             while(true){
-                timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
-                long millis = timeData.getTime() - startTime;
-                seconds = (int)(millis/1000);
-                minutes = seconds/60;
-                seconds %= 60;
-                toReturn = String.format("%d:%02d", minutes, seconds);
+                toReturn = makeTimeString();
+                Log.d(TAG , "DISPLAYED TIME IS: " + toReturn);
                 publishProgress(toReturn);
+                if (!isCancelled) {
+                    Log.d(TAG , "NOT CANCELLED");
+                }
+
                 if(isCancelled) {
                     this.cancel(true);
                     break;

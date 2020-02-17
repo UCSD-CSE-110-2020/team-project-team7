@@ -15,7 +15,7 @@
             android:exported="true" />
         <activity android:name=".SetDate" />
         <activity android:name=".NotesPage" />
-        <activity android:name=".RoutesList" />
+        <activity android:name=".RoutesList" android:launchMode="singleInstance" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".MockPage" />
         <activity android:name=".HomePage" android:launchMode="singleInstance">
