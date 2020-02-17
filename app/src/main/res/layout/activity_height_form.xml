@@ -48,7 +48,7 @@
         android:gravity="center"
         android:inputType="number"
         android:maxLength="3"
-        android:text="@string/default_inches"
+        android:text="@string/default_feet"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -78,7 +78,7 @@
         android:gravity="center"
         android:inputType="numberSigned"
         android:maxLength="1"
-        android:text="@string/default_feet"
+        android:text="@string/default_inches"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/inches_txt" />

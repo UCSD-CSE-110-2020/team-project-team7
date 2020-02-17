@@ -34,7 +34,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-
+/**
+ * Espresso UI Tester that tests to see if the user inputs multiple
+ * options to the routes feature page.
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class RouteFeatureTest {

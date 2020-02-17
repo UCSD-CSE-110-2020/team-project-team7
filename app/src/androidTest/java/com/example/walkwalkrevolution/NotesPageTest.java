@@ -35,6 +35,10 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * Espresso UI Tester that tests to see if the user inputs notes on the
+ * notes page. Does various checks as well.
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class NotesPageTest {

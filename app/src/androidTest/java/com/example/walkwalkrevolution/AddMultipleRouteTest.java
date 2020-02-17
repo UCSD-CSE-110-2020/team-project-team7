@@ -35,6 +35,11 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+
+/**
+ * Espresso UI Tester that tests to see if the user can add multiple routes to the screen.
+ * Checks to see if user has a second route added to the routesList
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddMultipleRouteTest {
