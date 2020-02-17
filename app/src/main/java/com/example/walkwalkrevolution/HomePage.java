@@ -36,8 +36,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public boolean testStep = true;
     public StepCountActivity sc;
     public TextView stepCountText;
-    // TODO TEST BUTTON
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +60,14 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Creates specified FitnessService adapter depending on key
         FitnessServiceFactory.put(fitnessServiceKey, FitnessServiceFactory.create(fitnessServiceKey, this));
-        System.out.println("created fitnessservice");
+
         // Get specified FitnessService using fitnessServiceKey from Blueprint
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         fitnessService.setup();
 
-        // Starts AsyncTask for step counter
+        // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
         milesText = findViewById(R.id.distanceCountText);
-
 
         // used to start the walk/run activity
         Button launchActivity = (Button) findViewById(R.id.startButt);
@@ -104,6 +101,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     protected void onStop() {
         Log.d("HOMEPAGE ON STOP", "stopped called");
         super.onStop();
+
         // stop async task
         sc.cancel(true);
     }
@@ -112,25 +110,28 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     protected void onStart() {
         Log.d("HOMEPAGE ON START", "start called");
         super.onStart();
+
+        // check to see if user is new
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
 
+        // get latest walk
         displayLastWalk();
-        Log.d("HOMEPAGE ON RESUME", "resume called");
 
         // Create async task
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
-        SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
-        long stepsFromMock = sf.getLong("getsteps", -1);
+
         // if steps were modified from mock page change steps to static mock steps
+        SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
+
+        long stepsFromMock = sf.getLong("getsteps", -1);
         if(stepsFromMock != -1) {
-            Log.d("INSIDE STEPS FROM WALK != -1", String.valueOf(stepsFromMock));
             setStepCount(stepsFromMock);
             setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
             updateStepView(String.valueOf(getStepCount()));
             updatesMilesView(String.valueOf(getMiles()));
-            sc.turnOffAPI = true;
+            sc.turnOffAPI = true;   // turn off google api if doing mock
         }
         sc.execute();
     }
@@ -147,7 +148,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         //If authentication was required during google fit setup,
         // this will be called after the user authenticates
         if (resultCode == Activity.RESULT_OK) {
