@@ -10,9 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b0223e2-90dd-427c-8dfd-d0339f6ffd9c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetComparatorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetManipulationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/LastIntentionalWalkTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,10 +34,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java">
+        <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/LastIntentionalWalkTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="57" column="56" lean-forward="true" selection-start-line="57" selection-start-column="56" selection-end-line="57" selection-end-column="56" />
+            <state relative-caret-position="596">
+              <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="735">
+              <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,8 +60,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetManipulationTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3450">
-              <caret line="230" column="7" lean-forward="true" selection-start-line="230" selection-start-column="7" selection-end-line="230" selection-end-column="7" />
+            <state relative-caret-position="420">
+              <caret line="28" selection-start-line="28" selection-end-line="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -61,8 +72,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetComparatorTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1395">
-              <caret line="93" column="5" lean-forward="true" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
+            <state relative-caret-position="285">
+              <caret line="19" column="36" lean-forward="true" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -82,8 +93,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/HeightFormTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="251">
-              <caret line="47" column="5" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="47" selection-end-column="5" />
+            <state relative-caret-position="720">
+              <caret line="64" column="9" lean-forward="true" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -125,7 +136,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesForm.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HeightForm.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/HomePage.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/Route.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RoutesList.java" />
@@ -137,6 +147,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/StepCountActivity.java" />
         <option value="$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetManipulationTest.java" />
         <option value="$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetComparatorTest.java" />
+        <option value="$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/LastIntentionalWalkTest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java" />
       </list>
     </option>
   </component>
@@ -235,7 +247,73 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Android JUnit.TreeSetManipulationTest">
+  <component name="RunManager" selected="Android JUnit.TreeSetComparatorTest">
+    <configuration name="LastIntentionalWalkTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
+      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.LastIntentionalWalkTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LastIntentionalWalkTest.TestForLoadingAndSavingForEmptyList" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
+      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.LastIntentionalWalkTest" />
+      <option name="METHOD_NAME" value="TestForLoadingAndSavingForEmptyList" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LastIntentionalWalkTest.TestForLoadingAndSavingPositiveElements" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
+      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.LastIntentionalWalkTest" />
+      <option name="METHOD_NAME" value="TestForLoadingAndSavingPositiveElements" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TreeSetComparatorTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
+      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.TreeSetComparatorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TreeSetManipulationTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
       <module name="app" />
       <extension name="coverage">
@@ -247,74 +325,6 @@
       <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
       <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.TreeSetManipulationTest" />
       <option name="TEST_OBJECT" value="class" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicate" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
-      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.TreeSetManipulationTest" />
-      <option name="METHOD_NAME" value="testForAddingElementNotDuplicate" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicateOrderChanged" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
-      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.TreeSetManipulationTest" />
-      <option name="METHOD_NAME" value="testForAddingElementNotDuplicateOrderChanged" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TreeSetManipulationTest.testForUpdatingElementToNonPreExistingElement" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
-      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.TreeSetManipulationTest" />
-      <option name="METHOD_NAME" value="testForUpdatingElementToNonPreExistingElement" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TreeSetManipulationTest.testForUpdatingElementWithNoChange" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
-      <module name="app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.walkwalkrevolution.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.walkwalkrevolution" />
-      <option name="MAIN_CLASS_NAME" value="com.example.walkwalkrevolution.TreeSetManipulationTest" />
-      <option name="METHOD_NAME" value="testForUpdatingElementWithNoChange" />
-      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
@@ -382,11 +392,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Android JUnit.TreeSetComparatorTest" />
         <item itemvalue="Android JUnit.TreeSetManipulationTest" />
-        <item itemvalue="Android JUnit.TreeSetManipulationTest.testForAddingElementNotDuplicateOrderChanged" />
-        <item itemvalue="Android JUnit.TreeSetManipulationTest.testForAddingElementNotDuplicate" />
-        <item itemvalue="Android JUnit.TreeSetManipulationTest.testForUpdatingElementToNonPreExistingElement" />
-        <item itemvalue="Android JUnit.TreeSetManipulationTest.testForUpdatingElementWithNoChange" />
+        <item itemvalue="Android JUnit.LastIntentionalWalkTest" />
+        <item itemvalue="Android JUnit.LastIntentionalWalkTest.TestForLoadingAndSavingForEmptyList" />
+        <item itemvalue="Android JUnit.LastIntentionalWalkTest.TestForLoadingAndSavingPositiveElements" />
       </list>
     </recent_temporary>
   </component>
@@ -404,35 +414,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TreeSetManipulationTest_testForUpdatingElementToNonPreExistingElement - 2020.02.16 at 19h 30m 32s.xml">
-      <configuration name="TreeSetManipulationTest.testForUpdatingElementToNonPreExistingElement" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest - 2020.02.16 at 19h 31m 55s.xml">
-      <configuration name="TreeSetManipulationTest" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest_testForAddingElementNotDuplicate - 2020.02.16 at 19h 32m 32s.xml">
-      <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicate" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest_testForAddingElementNotDuplicate - 2020.02.16 at 19h 32m 53s.xml">
-      <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicate" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest_testForAddingElementNotDuplicate - 2020.02.16 at 19h 33m 31s.xml">
-      <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicate" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest_testForAddingElementNotDuplicate - 2020.02.16 at 19h 33m 55s.xml">
-      <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicate" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest_testForAddingElementNotDuplicate - 2020.02.16 at 19h 34m 17s.xml">
-      <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicate" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest_testForAddingElementNotDuplicateOrderChanged - 2020.02.16 at 19h 35m 19s.xml">
-      <configuration name="TreeSetManipulationTest.testForAddingElementNotDuplicateOrderChanged" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="TreeSetManipulationTest - 2020.02.16 at 19h 35m 44s.xml">
-      <configuration name="TreeSetManipulationTest" configurationId="AndroidJUnit" />
-    </history-entry>
     <history-entry file="TreeSetManipulationTest - 2020.02.16 at 19h 39m 55s.xml">
       <configuration name="TreeSetManipulationTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest_initializationTestForDefaultList - 2020.02.16 at 19h 53m 23s.xml">
+      <configuration name="LastIntentionalWalkTest.initializationTestForDefaultList" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest_initializationTestForDefaultList - 2020.02.16 at 19h 55m 01s.xml">
+      <configuration name="LastIntentionalWalkTest.initializationTestForDefaultList" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest_initializationTestForPositiveElements - 2020.02.16 at 19h 56m 58s.xml">
+      <configuration name="LastIntentionalWalkTest.initializationTestForPositiveElements" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest_TestForLoadingAndSavingPositiveElements - 2020.02.16 at 19h 58m 10s.xml">
+      <configuration name="LastIntentionalWalkTest.TestForLoadingAndSavingPositiveElements" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest_TestForLoadingAndSavingForEmptyList - 2020.02.16 at 20h 01m 12s.xml">
+      <configuration name="LastIntentionalWalkTest.TestForLoadingAndSavingForEmptyList" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest_TestForLoadingAndSavingForEmptyList - 2020.02.16 at 20h 02m 09s.xml">
+      <configuration name="LastIntentionalWalkTest.TestForLoadingAndSavingForEmptyList" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="LastIntentionalWalkTest - 2020.02.16 at 20h 04m 43s.xml">
+      <configuration name="LastIntentionalWalkTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="TreeSetManipulationTest - 2020.02.16 at 20h 05m 13s.xml">
+      <configuration name="TreeSetManipulationTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="TreeSetComparatorTest - 2020.02.16 at 20h 05m 22s.xml">
+      <configuration name="TreeSetComparatorTest" configurationId="AndroidJUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -450,7 +460,7 @@
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info id="Capture Tool" order="1" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.251242" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.251242" />
       <window_info id="Structure" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
       <window_info id="Image Layers" order="5" />
@@ -462,7 +472,7 @@
       <window_info anchor="bottom" id="TODO" order="1" weight="0.32970026" />
       <window_info anchor="bottom" id="Android Profiler" order="2" weight="0.32833788" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.32970026" />
-      <window_info anchor="bottom" id="Run" order="4" visible="true" weight="0.14986376" />
+      <window_info active="true" anchor="bottom" id="Run" order="4" visible="true" weight="0.14986376" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.32833788" />
       <window_info anchor="bottom" id="Build" order="7" weight="0.32833788" />
@@ -549,16 +559,6 @@
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="37" column="5" lean-forward="true" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/RecyclerViewAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -713,20 +713,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/HeightFormTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="47" column="5" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="47" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/RoutesListTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/TreeSetManipulation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -737,10 +723,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/HeightFormTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="64" column="9" lean-forward="true" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/RoutesListTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="17" column="19" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/walkwalkrevolution/LastIntentionalWalk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/LastIntentionalWalkTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="596">
+          <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetManipulationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3450">
-          <caret line="230" column="7" lean-forward="true" selection-start-line="230" selection-start-column="7" selection-end-line="230" selection-end-column="7" />
+        <state relative-caret-position="420">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -749,8 +769,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/test/java/com/example/walkwalkrevolution/TreeSetComparatorTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1395">
-          <caret line="93" column="5" lean-forward="true" selection-start-line="93" selection-start-column="5" selection-end-line="93" selection-end-column="5" />
+        <state relative-caret-position="285">
+          <caret line="19" column="36" lean-forward="true" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -46,7 +46,8 @@ public class LastIntentionalWalk {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(list);
-        Log.d(TAG, "Last Walk Saved: Steps " + list.get(0) + " Distance " + list.get(1) + " Time " + list.get(2));
+        //Log.d(TAG, "Last Walk Saved: Steps " + list.get(0) + " Distance " + list.get(1) + " Time " + list.get(2));
+        Log.d(TAG, "Last Walk Saved");
         editor.putString(SHARED_PREFS_INTENTIONAL_WALK, json);
         editor.apply();
     }
