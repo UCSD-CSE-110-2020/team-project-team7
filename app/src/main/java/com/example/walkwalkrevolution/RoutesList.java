@@ -77,6 +77,7 @@ public class RoutesList extends AppCompatActivity {
         Intent intent = new Intent(RoutesList.this, RoutesForm.class);
         intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -86,6 +87,7 @@ public class RoutesList extends AppCompatActivity {
         saveRoutes();
         Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
         startActivity(new Intent(RoutesList.this, HomePage.class));
+        finish();
     }
 
     /**

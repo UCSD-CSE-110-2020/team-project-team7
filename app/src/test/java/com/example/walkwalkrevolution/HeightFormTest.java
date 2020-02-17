@@ -25,27 +25,27 @@ public class HeightFormTest {
 
     // checks to see if default height is 175
     @Test
-    public void testDefaultHeight(){
+    public void testDefaultHeightFeet(){
         try(ActivityScenario<HeightForm> scenario = ActivityScenario.launch(HeightForm.class)) {
             scenario.onActivity(activity -> {
 
-                EditText height_btn = activity.findViewById(R.id.height_input);
-                assertThat(height_btn.getText().toString().equals("175"));
+                EditText height_ft = activity.findViewById(R.id.height_input_ft);
+                assertThat(height_ft.getText().toString().equals("5"));
             });
         }
     }
 
-    // checks to see if the start height is set to 175 as height
     @Test
-    public void testStartHeight() {
-        try (ActivityScenario<HeightForm> scenario = ActivityScenario.launch(HeightForm.class)) {
+    public void testDefaultHeightInch(){
+        try(ActivityScenario<HeightForm> scenario = ActivityScenario.launch(HeightForm.class)) {
             scenario.onActivity(activity -> {
-                SharedPreferences sharedPreferences = activity.getSharedPreferences("height",MODE_PRIVATE);
-                String startingHeight = sharedPreferences.getString("height","");
-                assertThat(startingHeight.equals("175"));
+
+               EditText height_in = activity.findViewById(R.id.height_input_in);
+               assertThat(height_in.getText().toString().equals("7"));
             });
         }
     }
+
 
     // checks to see if backpress brings up the right toast method
     @Test
@@ -70,7 +70,7 @@ public class HeightFormTest {
                 Button saveBtn = activity.findViewById(R.id.height_save_btn);
                 saveBtn.performClick();
                 String latestToast = ShadowToast.getTextOfLatestToast();
-                String example = "Saved Height:175";
+                String example = "Saved Height:5'7''";
                 assertThat(latestToast.equals(example));
             });
         }

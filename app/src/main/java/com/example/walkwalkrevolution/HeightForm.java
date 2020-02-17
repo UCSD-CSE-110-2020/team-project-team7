@@ -2,6 +2,7 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,6 +17,7 @@ import android.widget.Toast;
  */
 public class HeightForm extends AppCompatActivity {
 
+    public static final String HEIGHT_FORM_INTENT = "From_Height_Form";
     private static final String TAG = "HeightForm";
 
     @Override
@@ -25,26 +27,26 @@ public class HeightForm extends AppCompatActivity {
 
         initializationSetUp();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
+        /*SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("height", "175");
-        editor.apply();
+        editor.apply();*/
 
         Button saveBtn = (Button) findViewById(R.id.height_save_btn);
-
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                EditText heightInfo = findViewById(R.id.height_input);
-                editor.putString("height", heightInfo.getText().toString());
+                EditText heightInfoFeet = findViewById(R.id.height_input_ft);
+                EditText heightInfoInches = findViewById(R.id.height_input_in);
+                editor.putInt("height_ft", Integer.parseInt(heightInfoFeet.getText().toString()));
+                editor.putInt("height_in", Integer.parseInt(heightInfoInches.getText().toString()));
                 editor.apply();
 
-                Log.d(TAG, "Height Saved - " + heightInfo.getText().toString());
-
-                Toast.makeText(HeightForm.this, "Saved Height:" + heightInfo.getText().toString(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(HeightForm.this, "Saved Height:" +
+                        heightInfoFeet.getText().toString() + "'" +
+                        heightInfoInches.getText().toString() + "''", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

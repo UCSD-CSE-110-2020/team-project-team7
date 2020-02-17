@@ -245,21 +245,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return "Date: " + date;
     }
 
-    /**
-     * Formats steps to Route's screen.
-     * @param steps
-     * @return
-     */
-    private String formatSteps(int steps){
+    private String formatSteps(long steps){
         return "Steps: " + steps;
     }
 
-    /**
-     * Formats miles to Route's screen.
-     * @param miles
-     * @return
-     */
-    private String formatMiles(float miles){
+    private String formatMiles(double miles){
         return "Miles: " + miles;
     }
 

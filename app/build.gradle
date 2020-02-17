@@ -31,6 +31,13 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
+
+    signingConfigs {
+        debug {
+            storeFile file("keystore/debug.keystore")
+        }
+    }
 }
 
 dependencies {
@@ -59,3 +66,4 @@ dependencies {
     implementation 'org.honorato.multistatetogglebutton:multistatetogglebutton:0.2.2'
 
 }
+

@@ -52,8 +52,9 @@ public class RoutesForm extends AppCompatActivity {
     private String[] toggledButtonsStr = new String[5];
 
     // Data obtained from Walk/Run session
-    private int steps, minutes, seconds;
-    private float distance;
+    private long steps;
+    private int minutes, seconds;
+    private double distance;
 
     // NOtes taken for the Route
     private String notes = "";
@@ -268,8 +269,8 @@ public class RoutesForm extends AppCompatActivity {
      */
     private void intentFromWalkRunSession(Intent fromIntent){
         // Get data from walk/run session
-        steps = fromIntent.getIntExtra("steps", 0);
-        distance = fromIntent.getFloatExtra("distance", 0);
+        steps = fromIntent.getLongExtra("steps", 0);
+        distance = fromIntent.getDoubleExtra("distance", 0);
         minutes = fromIntent.getIntExtra("minutes", 0);
         seconds = fromIntent.getIntExtra("seconds", 0);
 
@@ -328,7 +329,9 @@ public class RoutesForm extends AppCompatActivity {
                 Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
                 lastIntentionalWalkUpdate();
                 Toast.makeText(this, "Route Successfully Modified", Toast.LENGTH_SHORT).show();
+                // TODO TEST TO KEEP HOME AS CALLER
                 startActivity(intent);
+                finish();
                 return;
             }
         }
@@ -337,7 +340,9 @@ public class RoutesForm extends AppCompatActivity {
             Log.d(TAG, "Entry Successfully Created - Not a duplicate");
             lastIntentionalWalkUpdate();
             Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
+            // TODO TEST TO KEEP HOME AS CALLER
             startActivity(intent);
+            finish();
             return;
         }
         Log.d(TAG, "Entry Rejected - Duplicate");
@@ -425,7 +430,9 @@ public class RoutesForm extends AppCompatActivity {
     private void cancel() {
         Log.d(TAG, "Cancel Button clicked --> Redirected to Routes Page");
         Intent intent = new Intent(this, RoutesList.class);
+        // TODO TEST TO KEEP HOME AS CALLER
         startActivity(intent);
+        finish();
     }
 
     /**

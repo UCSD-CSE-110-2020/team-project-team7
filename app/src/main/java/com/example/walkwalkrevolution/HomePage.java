@@ -21,51 +21,59 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Displays HomePage at app launch, which displays cumulative steps/distance for the day + last Intentional Walk stats.
- */
-public class HomePage extends AppCompatActivity {
+public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
-    private TextView stepCountText;
-    private StepCountActivity sc;
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    public final String TAG = "Home Page";
 
-    private FitnessService fitnessService;
+    public TextView milesText;
+    public long stepCount;
+    public double milesCount;
+    public double stepsPerMile;
+
+    public FitnessService fitnessService;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    private long stepCount;
+    public boolean testStep = true;
+    public StepCountActivity sc;
+    public TextView stepCountText;
 
-    private static final String TAG = "HomePage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
-        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-
-        //settings.edit().putBoolean("my_first_time", true).commit();
-
-        firstLogin(settings);
-
+        Log.d("HOMEPAGE ONCREATE", "creating homepage");
         //launchFirstSession();
 
-        displayLastWalk();
+        // retrieve height;
+        final SharedPreferences getHeight = getSharedPreferences("height", 0);
+        int feet = getHeight.getInt("height_ft", 5);
+        int inches = getHeight.getInt("height_in", 7);
+        int heightInInches = (feet * 12) + inches;
+        stepsPerMile = calculateStepsPerMile(heightInInches);
 
-        // Create Fitness Service
-        stepCount = 0;
-        GoogleFitAdapter g = new GoogleFitAdapter(this);
-        g.setup();
+        // Check from String extra if a test FitnessService is being passed
+        fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        if(fitnessServiceKey == null) {
+            fitnessServiceKey = "GOOGLE_FIT";
+            testStep = false;
+        }
 
-        Log.d(TAG, "Finished creating Fitness Service");
+        // Creates specified FitnessService adapter depending on key
+        FitnessServiceFactory.put(fitnessServiceKey, FitnessServiceFactory.create(fitnessServiceKey, this));
 
-        // Starts AsyncTask for step counter
+        // Get specified FitnessService using fitnessServiceKey from Blueprint
+        fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
+        fitnessService.setup();
+
+        // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
-        sc = new StepCountActivity(stepCountText, g, this);
-        sc.execute();
+        milesText = findViewById(R.id.distanceCountText);
 
+        // used to start the walk/run activity
         Log.d(TAG, "Started AsyncTask for step counter");
 
         Button launchActivity = (Button) findViewById(R.id.startButt);
-        // used to start the walk/run activity
         launchActivity.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -73,17 +81,14 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        // used to go to the routes page
         Button routesPage = findViewById(R.id.routesButt);
-
         routesPage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 routesSession();
             }
         });
-
-
-        //firstLogin(settings);
 
         // Button that opens mockPage
         Button mockPageButton = (Button) findViewById(R.id.mockPageButton);
@@ -93,6 +98,68 @@ public class HomePage extends AppCompatActivity {
                 launchMockPage();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("HOMEPAGE ON STOP", "stopped called");
+        super.onStop();
+
+        // stop async task
+        sc.cancel(true);
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d("HOMEPAGE ON START", "start called");
+        super.onStart();
+
+        // check to see if user is new
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        firstLogin(settings);
+
+        // get latest walk
+        displayLastWalk();
+
+        // Create async task
+        sc = new StepCountActivity(fitnessService, testStep);
+        sc.updateStep = this;
+
+        // if steps were modified from mock page change steps to static mock steps
+        SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
+
+        long stepsFromMock = sf.getLong("getsteps", -1);
+        if(stepsFromMock != -1) {
+            setStepCount(stepsFromMock);
+            setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
+            updateStepView(String.valueOf(getStepCount()));
+            updatesMilesView(String.valueOf(getMiles()));
+            sc.turnOffAPI = true;   // turn off google api if doing mock
+        }
+        sc.execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("HOMEPAGE ON DESTROY", "being destroy");
+        super.onDestroy();
+        if(!sc.isCancelled()) {
+            sc.cancel(true);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //If authentication was required during google fit setup,
+        // this will be called after the user authenticates
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == fitnessService.getRequestCode()) {
+                fitnessService.updateStepCount();
+            }
+        } else {
+            Log.e(TAG, "ERROR, google fit result code: " + resultCode);
+        }
     }
 
     /**
@@ -106,19 +173,37 @@ public class HomePage extends AppCompatActivity {
 
         //gets last walk via sharedPreferences
         List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
-        //initializes if not already done so
-        if(list == null){
-            list = LastIntentionalWalk.initializeLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
-            Log.d(TAG, "LastIntentionalWalk was initialzed --> called initialzeLastWalk()");
+        if(list == null) {
+            stepValue.setText("0");
+            distanceValue.setText("0");
+            timeValue.setText("0");
+        } else {
+            stepValue.setText(list.get(0));
+            distanceValue.setText(list.get(1));
+            timeValue.setText(list.get(2));
         }
-
-        //set values to HomeScreen
-        stepValue.setText(list.get(0));
-        distanceValue.setText(list.get(1));
-        timeValue.setText(list.get(2));
-        Log.d(TAG, "Last Walk Displayed");
     }
 
+
+    /**
+     * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
+     * setStepCount is called within GoogleFitAdapter.java --> updates stepCount to amount of steps
+     * getStepCount is called within StepCountActivity.java --> get stepCount
+     * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
+     */
+    public void updateStepView(String str) { stepCountText.setText(str); }
+
+    public void setStepCount(long sc) { stepCount = sc; }
+
+    public long getStepCount() { return stepCount; }
+
+    public void updatesMilesView(String str) { milesText.setText(str); }
+
+    public void setMiles(double mi) { milesCount = mi; }
+
+    public double getMiles() { return milesCount; }
+
+    public double getStepsPerMile() { return this.stepsPerMile; }
 
     /**
      * used to launch the Routes Screen
@@ -133,17 +218,23 @@ public class HomePage extends AppCompatActivity {
      * used to launch the walk/run session
      */
     public void launchSession(){
-        Log.d(TAG, "Launching Walk/Run Session");
+        Log.d("HOMEPAGE LAUNCH WALK SESSION", "launching walkrunsession");
         Intent intent = new Intent(this, WalkRunSession.class);
+        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+        intent.putExtra(FITNESS_SERVICE_KEY, fitnessServiceKey);
+        SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
+        //sf.edit().putLong("getsteps", -1).apply();
         startActivity(intent);
     }
 
+    /**
+     * launched only once, when the app is opened for the first time
+     */
     public void launchFirstSession(){
         Log.d(TAG, "Launching HeightForm");
         Intent intent = new Intent(this, HeightForm.class);
         startActivity(intent);
     }
-
 
     /**
      * first time the user opens the app calls HeightForm
@@ -153,26 +244,23 @@ public class HomePage extends AppCompatActivity {
             Log.d(TAG, "First Time Launch");
             //the app is being launched for first time
             launchFirstSession();
-
             // record the fact that the app has been started at least once
             pref.edit().putBoolean("my_first_time", false).commit();
         }
     }
 
-    public void setStepCount(long sc) {
-        stepCount = sc;
-    }
-
-    public long getStepCount() {
-        return this.stepCount;
+    public int calculateStepsPerMile(int heightInInches) {
+        double strideLengthFeet = (heightInInches * 0.413) / 12;
+        return (int)(5280 / strideLengthFeet);
     }
 
     /**
      * launches the mock page
      */
     private void launchMockPage() {
-        Log.d(TAG, "Launching Mock Page");
+        Log.d("IN LAUNCH MOCKPAGE", String.valueOf(stepCount));
         Intent intent = new Intent(this, MockPage.class);
+        intent.putExtra("stepCountFromHome", stepCount);
         startActivity(intent);
     }
 }
