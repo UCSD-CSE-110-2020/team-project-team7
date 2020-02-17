@@ -30,14 +30,10 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private boolean isCancelled = false;
     private long startTime;
-    private int minutes;
-    private int seconds;
+    private int minutes, seconds;
     private long stepCount;
-    private double stepsPerMile;
-    private double milesCount;
-    private TextView timerText;
-    private TextView stepCountText;
-    private TextView milesText;
+    private double stepsPerMile, milesCount;
+    private TextView timerText, stepCountText, milesText;
     private TimeData timeData;
     private FitnessService fitnessService;
     private StepCountActivity sc;
@@ -74,7 +70,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         timeData = new TimeData();
         timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
         Log.d(TAG, "Get time: " + timeData.getTime());
-        // Initialize timeData
+        // Initialize startTime, the time we started the session
         startTime = timeData.getTime();
 
 
@@ -136,10 +132,11 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         runner = new TimerCount();
         resultTime = timerText.getText().toString();
         runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
-        // Make a new TimeData object based on what's in shared prefs
-        timeData = new TimeData();
+
+        // Update timeData in case mock time set
         timeData.update(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
         Log.d(TAG, "Get time: " + timeData.getTime());
+
         //sc = new StepCountActivity(fitnessService, testStep);
         //sc.updateStep = this;
         //sc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -157,7 +154,6 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
             sc.turnOffAPI = true;
         }
         sc.execute();
-
     }
 
     @Override
@@ -166,21 +162,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         Log.d("WALK RUN SESSION ONSTOP", "in onstop");
         sc.cancel(true);
         //runner.cancel(true);
-
     }
-
-    /**
-     * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
-     * setStepCount is called within GoogleFitAdapter.java --> updates stepCount to amount of steps
-     * getStepCount is called within StepCountActivity.java --> get stepCount
-     * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
-     */
-    /*@Override
-    public void updateStepView(String str) { stepCountText.setText(str); }
-    @Override
-    public void setStepCount(long sc) { stepCount = sc; }
-    @Override
-    public long getStepCount() { return this.stepCount; }*/
 
 
     // ONCLICK EVENTS FOR BUTTONS ------------------------------------------------------------------

@@ -52,9 +52,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="314dp"
-        android:layout_height="54dp"
+        android:layout_width="313dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/activity_distance_text"
@@ -66,16 +68,23 @@
 
         <EditText
             android:id="@+id/mockTimeEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="159dp"
+            android:layout_height="match_parent"
             android:ems="10"
             android:inputType="number" />
 
         <Button
             android:id="@+id/submitMockTimeButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="43dp"
             android:text="Submit" />
+
+        <Button
+            android:id="@+id/resetTimeButton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reset" />
     </LinearLayout>
 
     <Button

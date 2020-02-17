@@ -65,10 +65,23 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
             public void onClick(View view) {
                 try {
                     saveMockTime();
-                    Log.d(TAG, "Successfully saved mock time failed.");
+                    Log.d(TAG, "Successfully saved mock time.");
                 } catch (Exception e) {
                     Log.d(TAG, "Saving mock time failed.");
                 }
+            }
+        });
+
+        // Button that resets mockTime to current time
+        Button resetTimeButton = (Button) findViewById(R.id.resetTimeButton);
+        resetTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // save the mock time
+                timeData.setMockTime(-1);
+                timeData.saveTimeData(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
+                mockTimeEditText.setText(timeData.getTime() + "");
+                Log.d(TAG, "Mock time reset.");
             }
         });
 
@@ -78,7 +91,7 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
             @Override
             public void onClick(View view) {
                 try {
-                    stepCount += stepCount + 500;
+                    stepCount += 500;
                     stepCountText.setText(String.valueOf(stepCount));
                 } catch (Exception e) {
                     Log.d(TAG, "step count button failed");

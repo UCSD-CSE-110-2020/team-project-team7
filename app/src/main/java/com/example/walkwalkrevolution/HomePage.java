@@ -45,6 +45,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
+        launchFirstSession();
 
 
         // retrieve height;
@@ -114,9 +115,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     @Override
     protected void onStart() {
         super.onStart();
-        displayLastWalk();
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
+        displayLastWalk();
         Log.d("HOMEPAGE ON RESUME", "resume called");
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
@@ -171,9 +172,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         TextView distanceValue = (TextView) findViewById(R.id.distanceValue);
         TextView timeValue = (TextView) findViewById(R.id.timeValue);
         List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
-        stepValue.setText(list.get(0));
-        distanceValue.setText(list.get(1));
-        timeValue.setText(list.get(2));
+        if(list == null) {
+            stepValue.setText("0");
+            distanceValue.setText("0");
+            timeValue.setText("0");
+        } else {
+            stepValue.setText(list.get(0));
+            distanceValue.setText(list.get(1));
+            timeValue.setText(list.get(2));
+        }
     }
 
 
