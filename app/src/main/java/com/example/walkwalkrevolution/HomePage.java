@@ -110,12 +110,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ON START", "start called");
         super.onStart();
 
-        // get latest walk
-        displayLastWalk();
-
         // check to see if user is new
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
+
+        // get latest walk
+        displayLastWalk();
 
         // Create async task
         sc = new StepCountActivity(fitnessService, testStep);
