@@ -124,9 +124,6 @@ public class MockPage extends AppCompatActivity implements UpdateStepTextView {
     }
 
     private void saveSteps() {
-        /*Intent intent = new Intent(this, HomePage.class);
-        intent.putExtra("StepsFromMock", stepCount);
-        startActivity(intent);*/
         SharedPreferences sf = getSharedPreferences("MockSteps", 0);
         SharedPreferences.Editor editor = sf.edit();
         editor.putLong("getsteps", stepCount);

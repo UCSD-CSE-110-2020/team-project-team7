@@ -210,6 +210,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Intent intent = new Intent(this, WalkRunSession.class);
         intent.putExtra("stepsPerMileFromHome", stepsPerMile);
         intent.putExtra(FITNESS_SERVICE_KEY, fitnessServiceKey);
+        SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
+        sf.edit().putLong("getsteps", -1).apply();
         startActivity(intent);
     }
 

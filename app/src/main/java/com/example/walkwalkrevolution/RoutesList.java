@@ -81,7 +81,6 @@ public class RoutesList extends AppCompatActivity {
         saveRoutes();
         // TODO TESTING
         startActivity(new Intent(RoutesList.this, HomePage.class));
-        finish();
     }
 
     private void saveRoutes(){
