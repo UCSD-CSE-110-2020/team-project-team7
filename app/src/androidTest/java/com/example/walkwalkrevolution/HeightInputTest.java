@@ -32,9 +32,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
-/**
- * Espresso UI Tester that tests to see if the user inputs a height.
- */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class HeightInputTest {
@@ -58,55 +56,73 @@ public class HeightInputTest {
                 getSharedPreferences("MyPrefsFile", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("my_first_time", true).commit();
     }
-
-
     @Test
     public void heightInputTest() {
         mActivityTestRule.launchActivity(intent);
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.height_input_ft), withText("7"),
+                allOf(withId(R.id.height_input_ft), withText("5"),
                         isDisplayed()));
         appCompatEditText.perform(click());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.height_input_ft), withText("7"),
+                allOf(withId(R.id.height_input_ft), withText("5"),
+
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("5"));
+        appCompatEditText2.perform(replaceText("6"));
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.height_input_ft), withText("5"),
+                allOf(withId(R.id.height_input_ft), withText("6"),
+
                         isDisplayed()));
         appCompatEditText3.perform(closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.height_input_ft), withText("5"),
+                allOf(withId(R.id.height_input_in), withText("7"),
+
                         isDisplayed()));
-        appCompatEditText4.perform(pressImeActionButton());
+        appCompatEditText4.perform(replaceText("0"));
 
         ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.height_input_in), withText("5"),
+                allOf(withId(R.id.height_input_in), withText("0"),
+
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("6"));
+        appCompatEditText5.perform(closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.height_input_in), withText("6"),
-                        isDisplayed()));
-        appCompatEditText6.perform(closeSoftKeyboard());
+                allOf(withId(R.id.height_input_in), withText("0"),
 
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.height_input_in), withText("6"),
                         isDisplayed()));
-        appCompatEditText7.perform(pressImeActionButton());
+        appCompatEditText6.perform(pressImeActionButton());
 
         ViewInteraction editText = onView(
-                allOf(withId(R.id.height_input_ft), withText("5"),
+                allOf(withId(R.id.height_input_ft), withText("6"),
+
                         isDisplayed()));
-        editText.check(matches(withText("5")));
+        editText.check(matches(withText("6")));
 
         ViewInteraction editText2 = onView(
-                allOf(withId(R.id.height_input_in), withText("6"),
+                allOf(withId(R.id.height_input_in), withText("0"),
+
                         isDisplayed()));
-        editText2.check(matches(withText("6")));
+        editText2.check(matches(withText("0")));
     }
 
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
 }

@@ -34,13 +34,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-/**
- * Espresso UI Tester that tests to see if one route is added successfully to the screen
- * interactions with various buttons
- */
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddOneRouteTest {
+public class OneRouteTest {
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
@@ -62,7 +59,7 @@ public class AddOneRouteTest {
         sharedPreferences.edit().putBoolean("my_first_time", true).commit();
     }
     @Test
-    public void addButtonTest() {
+    public void oneRouteTest() {
         mActivityTestRule.launchActivity(intent);
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.height_save_btn), withText("Save"),
@@ -103,7 +100,7 @@ public class AddOneRouteTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("3"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("1"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.startingPEditText),
@@ -113,7 +110,8 @@ public class AddOneRouteTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("3"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard());
+
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.SaveButton), withText("Save"),
@@ -127,7 +125,7 @@ public class AddOneRouteTest {
         appCompatButton4.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.routeName), withText("3"),
+                allOf(withId(R.id.routeName), withText("1"),
                         childAtPosition(
                                 allOf(withId(R.id.parentLayout),
                                         childAtPosition(
@@ -135,7 +133,18 @@ public class AddOneRouteTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("3")));
+        textView.check(matches(withText("1")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.startingPoint), withText("Start: 1"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayoutInfo),
+                                        childAtPosition(
+                                                withId(R.id.infoLayout),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        textView2.check(matches(withText("Start: 1")));
     }
 
     private static Matcher<View> childAtPosition(
