@@ -42,7 +42,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
-        //launchFirstSession();
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -126,6 +125,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
 
         long stepsFromMock = sf.getLong("getsteps", -1);
+        Log.d("STEPFROMMOCK", "THIS: " + stepsFromMock);
         if(stepsFromMock != -1) {
             setStepCount(stepsFromMock);
             setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);

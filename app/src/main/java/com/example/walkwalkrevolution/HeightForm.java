@@ -12,9 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Handles the Activity for inputting the user's height. Evoked only once from the Home Page
+ * upon first time starting up the app.
+ */
 public class HeightForm extends AppCompatActivity {
 
+    // Constant for logging
+    private static final String TAG = "HeightForm";
+    // Constant for tracking intents
     public static final String HEIGHT_FORM_INTENT = "From_Height_Form";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +31,7 @@ public class HeightForm extends AppCompatActivity {
 
         initializationSetUp();
 
-        /*SharedPreferences sharedPreferences = getSharedPreferences("height", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("height", "175");
-        editor.apply();*/
-
+        // Button for saving the height
         Button saveBtn = (Button) findViewById(R.id.height_save_btn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,12 +52,18 @@ public class HeightForm extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method called only once in the entire running of the app (upon first startup).
+     * Used to set up data structure for Routes and Last Intentional Walk as well as time/mock time.
+     */
     private void initializationSetUp(){
         TreeSetManipulation.initializeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
         LastIntentionalWalk.initializeLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
 
         // initialize time data fields
         TimeData.initTimeData(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
+
+        Log.d(TAG, "Finished initalizationSetUp()");
     }
 
     /**

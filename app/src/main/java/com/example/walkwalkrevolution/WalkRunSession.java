@@ -168,8 +168,12 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
 
         // Save into shared prefs
         long savedSteps = stepsFromMock + stepCount;
-        SharedPreferences prefs = getSharedPreferences("MockSteps", MODE_PRIVATE);
-        MockPage.saveInputtedSteps(prefs, savedSteps);
+        // Mock was set, save this into prefs
+        if (stepsFromMock != 0) {
+            SharedPreferences prefs = getSharedPreferences("MockSteps", MODE_PRIVATE);
+            MockPage.saveInputtedSteps(prefs, savedSteps);
+        }
+
     }
 
     // Helper method for handling display when a mock is set

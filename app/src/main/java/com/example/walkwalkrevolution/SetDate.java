@@ -3,6 +3,7 @@ package com.example.walkwalkrevolution;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,12 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Handles the separate Activity accessed from the Routes
+ * Form for editing the date of a Route entry.
+ */
 public class SetDate extends AppCompatActivity {
+
+    // Constant for logging
+    private static final String TAG = "SetData";
 
     // Activity objects
     private Button saveButton;
     private Button cancelButton;
     private DatePicker datePicker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +92,13 @@ public class SetDate extends AppCompatActivity {
         }
 
         String date = monthStr + "/" + dayStr + "/" + year;
+        Log.d(TAG, "date chosen is: " + date);
 
         // Pass the new date back to the RoutesForm
         Intent intent = new Intent();
         intent.putExtra("newDate", date);
         setResult(RESULT_OK, intent);
+        Log.d(TAG, "Date successfully saved to intent. Now returning to Routes Form.");
         finish();
     }
 

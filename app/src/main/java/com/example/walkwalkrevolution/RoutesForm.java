@@ -350,6 +350,9 @@ public class RoutesForm extends AppCompatActivity {
         Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * When ending a Route, save the info into last intentional walk to display on Home Page.
+     */
     private void lastIntentionalWalkUpdate(){
         Log.d(TAG, "Updating the last intentional walk.");
         if(intentFromWalkRunSession){

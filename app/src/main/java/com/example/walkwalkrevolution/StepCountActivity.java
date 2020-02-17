@@ -11,6 +11,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 
+/**
+ * Handles async for Google Fit API.
+ */
 public class StepCountActivity extends AsyncTask<String, String, String> {
 
     public UpdateStepTextView updateStep;
@@ -27,30 +30,10 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        // TODO commented this out bc we dont want to setup a new google API
-        //fs.setup();
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        /*
-        while(true) {
-            publishProgress(String.valueOf(updateStep.getStepCount()),
-                    String.valueOf(updateStep.getMiles()));
-            // TODO actual line used for googefit api
-            //gfa.updateStepCount();
-            // TODO DELETE LATER HARD CODE STEPS
-            updateStep.setStepCount(updateStep.getStepCount() + 100);
-            double stepCountdouble = (double)updateStep.getStepCount();
-            miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
-            updateStep.setMiles(miles);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        */
 
         do {
             // Don't update step count from publish if testing
