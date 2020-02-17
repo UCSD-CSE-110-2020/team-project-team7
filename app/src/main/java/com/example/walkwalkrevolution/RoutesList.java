@@ -15,7 +15,13 @@ import android.widget.Button;
 import java.util.TreeSet;
 
 /**
- * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
+ * TO-DO: Add function for "save" button on details - JUST for tree set
+ * Add button on Routes page - link to Titan's Details page
+ *
+ *
+ * Eventually....
+ * Functionality in Adapter.java for Start button, Favorite Button, Delete Button ("Are you sure?" Dialogue)
+ * Needed Toast when additional entry added in Routes page
  */
 public class RoutesList extends AppCompatActivity {
 
@@ -52,15 +58,11 @@ public class RoutesList extends AppCompatActivity {
 
     }
 
-    /**
-     * Calls the RecyclerViewAdapter class to create and display all routes to screen.
-     */
     private void initRecyclerView(){
         Log.d(TAG, "Starting initRecyclerView ");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewRoutes);
         SharedPreferences sharedPreferences = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
 
-        //create the adapter and set the recylerview to update the screen
         adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,43 +70,28 @@ public class RoutesList extends AppCompatActivity {
         Log.d(TAG, "Finished initRecyclerView ");
     }
 
-    /**
-     * Add button clicked, so redirects to RouteForm. Saves routes before switching pages.
-     */
     private void redirectToFormForRouteCreation(){
         saveRoutes();
-        Log.d(TAG, "+ Clicked --> Going to RoutesForm");
         Intent intent = new Intent(RoutesList.this, RoutesForm.class);
         intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
         startActivity(intent);
         finish();
     }
 
-    /**
-     * Home button clicked, so redirects to HomePage. Saves routes before switching pages.
-     */
     private void redirectToHomePage(){
         saveRoutes();
-        Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
+        // TODO TESTING
         startActivity(new Intent(RoutesList.this, HomePage.class));
         finish();
     }
 
-    /**
-     * Saves routes from adapter to SharedPreferences.
-     */
     private void saveRoutes(){
-        Log.d(TAG, "All Routes from Recycler Saved to SharedPreferences");
         SharedPreferences prefs = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         TreeSetManipulation.saveTreeSet(prefs, adapter.routes);
     }
 
-    /**
-     * Doesn't allow any back presses, so user naviages page from available buttons.
-     */
     @Override
     public void onBackPressed() {
-        Log.d(TAG, "User clicked onBackButton");
     }
 
     @Override
@@ -113,12 +100,8 @@ public class RoutesList extends AppCompatActivity {
         super.onDestroy();
     }
 
-    /**
-     * User leaves the app while on this page, so makes sure to save the routes.
-     */
     @Override
     protected void onPause() {
-        Log.d(TAG, "User left the app");
         saveRoutes();
         super.onPause();
     }

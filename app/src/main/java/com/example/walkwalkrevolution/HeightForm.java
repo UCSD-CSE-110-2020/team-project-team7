@@ -12,13 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * Displays the Height form at FIRST time app launch (once). Also initializes all SharedPreferencess entries.
- */
 public class HeightForm extends AppCompatActivity {
 
     public static final String HEIGHT_FORM_INTENT = "From_Height_Form";
-    private static final String TAG = "HeightForm";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +48,12 @@ public class HeightForm extends AppCompatActivity {
         });
     }
 
-    /**
-     * Initializes all entries in SharedPreferences at first time launch.
-     */
     private void initializationSetUp(){
-        //initialize TreeSet for all Routes created (RoutesPage)
         TreeSetManipulation.initializeTreeSet(getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE));
-        //initialize entry for Last Intentional Walk (HomePage)
         LastIntentionalWalk.initializeLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
 
         // initialize time data fields
         TimeData.initTimeData(getSharedPreferences(TimeData.TIME_DATA, MODE_PRIVATE));
-        Log.d(TAG, "Initialization Setup Finished ");
     }
 
     /**
@@ -72,7 +62,6 @@ public class HeightForm extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         Toast.makeText(HeightForm.this, "Please press the save button to go back", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Back Button Pressed");
     }
 
 }

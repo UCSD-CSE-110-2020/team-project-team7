@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-/**
- * Creates a Route object, and wraps up all information associated with it.
- */
 public class Route {
 
     // Constant for logging
@@ -26,8 +23,8 @@ public class Route {
     public String notes;
 
     // Array saving optional vars (Flat/Hilly, etc.)
-    public String[] optionalFeaturesStr = new String[5]; //Strings chosen from optionals
-    public int[] optionalFeatures = new int[5];//States of optionals chosen
+    public String[] optionalFeaturesStr = new String[5];
+    public int[] optionalFeatures = new int[5];
 
 
     /**
@@ -40,7 +37,7 @@ public class Route {
      */
     public Route(String name, String startingPoint, long steps, double distance) {
         this.name = name.trim();
-        setStartingPoint(startingPoint);
+        this.startingPoint = startingPoint.trim();
         this.steps = steps;
         this.distance = distance;
         // Initializes other vars
@@ -69,7 +66,7 @@ public class Route {
         this.startingPoint = startingPoint.trim();
 
         // if starting point is empty string, set it to null
-        if (this.startingPoint.equals("")) {
+        if (startingPoint == "") {
             Log.d(TAG, "Starting point set to null since its empty.");
             this.startingPoint = null;
         }
@@ -107,15 +104,12 @@ public class Route {
 
 
     /**
-     * Compares two Routes. They are the same if they have the same name.
+     * Compares two Routes.
      */
     public boolean compareRoute(Route route){
-        Log.d(TAG, "Comparing routes..." + this.name + " vs. " + route.name);
         if(this.name.equals(route.name)){
-            Log.d(TAG, "Routes are the same");
             return true;
         }
-        Log.d(TAG, "Routes are Different");
         return false;
     }
 

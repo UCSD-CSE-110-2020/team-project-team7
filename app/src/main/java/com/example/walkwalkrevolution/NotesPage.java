@@ -3,7 +3,6 @@ package com.example.walkwalkrevolution;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,9 +11,6 @@ import android.widget.Scroller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-/**
- * Allows users to write notes for Route entry.
- */
 public class NotesPage extends AppCompatActivity {
 
     // Activity objects
@@ -22,14 +18,10 @@ public class NotesPage extends AppCompatActivity {
     private Button cancelButton;
     private EditText notesEditText;
 
-    private static final String TAG = "NotesPage";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notes_page);
-
-        Log.d(TAG, "Notes Feature Called...");
 
         notesEditText = (EditText) findViewById(R.id.notesEditText);
 
@@ -79,7 +71,6 @@ public class NotesPage extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("newNotes", notes);
         setResult(RESULT_OK, intent);
-        Log.d(TAG, "Notes Saved...");
         finish();
     }
 
@@ -87,7 +78,6 @@ public class NotesPage extends AppCompatActivity {
      * Cancel button behavior. Go to Routes Form Activity without saving data.
      */
     private void cancel() {
-        Log.d(TAG, "Cancel Clicked -> Notes Not Saved...");
         finish();
     }
 
