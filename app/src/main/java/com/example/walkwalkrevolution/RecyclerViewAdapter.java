@@ -32,16 +32,24 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * Fills up RoutesPage with saved Routes.
+ */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
     public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
-    private static final int MAX_LENGTH_NAME = 25;
-    private static final int MAX_LENGTH_SP = 15;
+    private static final int MAX_LENGTH_NAME = 25; //max display length for any route name
+    private static final int MAX_LENGTH_SP = 15; //max display length for any route starting point
 
     public List<Route> routes;
     private Context mContext;
 
+    /**
+     * Initializes the adapter.
+     * @param mContext The page that it will be updating
+     * @param routes Routes that need to be displayed
+     */
     public RecyclerViewAdapter(Context mContext, List<Route> routes) {
         this.mContext = mContext;
         this.routes = routes;
@@ -49,11 +57,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
+    /**
+     * Inflates all the views to fit the screen, and attaches functionality to buttons.
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, final int viewType) {
         Log.d(TAG, "onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_route_item, parent, false);
         final ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
+            /**
+             * Start button on a Route clicked, so launches Walk/Run Session Screen.
+             * @param p
+             */
             @Override
             public void onStartWalkRunSession(int p) {
                 Log.d(TAG, "Button Clicked --> onStartWalkRunSession Called ");
@@ -64,6 +82,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 mContext.startActivity(new Intent(mContext, WalkRunSession.class));
             }
 
+            /**
+             * Route button clicked, so launches prefilled RoutesForm (editable).
+             * @param p
+             */
             @Override
             public void onPreviewDetailsPage(int p) {
                 Log.d(TAG, "Button Clicked --> onPreviewDetailsPage Called ");
@@ -74,12 +96,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 mContext.startActivity(intent);
             }
 
+            /**
+             * Delete button of route clicked, so deletes that route and updates page.
+             * @param p
+             */
             @Override
             public void onDeleteCurrentRoute(int p) {
                 Log.d(TAG, "Button Clicked --> onDeleteCurrentRoute Called ");
                 displayRouteDeletionDialogue(mContext, p);
             }
 
+            /**
+             * Favorite button of route clicked, so favorites route if star is grey or
+             * unfavorites route if star is orange.
+             * @param p
+             */
             @Override
             public void onFavoriteCurrentRoute(int p) {
                 Log.d(TAG, "Button Clicked --> onFavoriteCurrentRoute Called ");
@@ -99,7 +130,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return holder;
     }
 
+    /**
+     * Helper dialogue to delete button, confirms with user they want to delete the route.
+     * @param context
+     * @param position
+     */
     private void displayRouteDeletionDialogue(final Context context, final int position){
+        Log.d(TAG, "Delete Button - Dialogue Popped Up");
         new AlertDialog.Builder(context)
                 .setTitle("Delete Route")
                 .setMessage("Are you sure you want to delete this entry? This is an irreversible action.")
@@ -110,29 +147,40 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         routes.remove(position);
                         notifyDataSetChanged();
                         Toast.makeText(context, "Route Successfully Deleted", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Delete Dialogue - Chose to delete");
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        Log.d(TAG, "Delete Dialogue - Chose to cancel");
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
 
+    /**
+     * Binds each route's information to the correlated places on their view.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Route route = routes.get(position);
         Log.d(TAG, "onBindViewHolder: Position" + position + " Route Null: " + (route == null));
 
+        //sets text for all editTexts
         holder.routeName.setText(trimmedRouteValue(route.name, MAX_LENGTH_NAME));
         holder.startingPoint.setText(formatStartingPoint(trimmedRouteValue(route.startingPoint, MAX_LENGTH_SP)));
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
+
+        //updates for any additional information clicked (Toggle Buttons + Notes)
         holder.additionalInformation.setText(renderOptionalInfo(route));
 
+        //renders star state for route's favorited state
         if(route.getIsFavorited()){
             holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.favorite_button_states));
         }
@@ -141,10 +189,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    /**
+     * Displays any additional information (Toggle Buttons) that were cliked for the route onto the route's view.
+     * @param route
+     * @return
+     */
     private String renderOptionalInfo(Route route){
+        //Buffer is thread safe
         StringBuffer builder = new StringBuffer();
         try {
-            //For every Toggled button, display it on the Route Screen
+            //For every Toggled button, display its text on the Route Screen
             for (String extra : route.optionalFeaturesStr) {
                 if (extra != null) {
                     builder.append(extra + " ");
@@ -155,8 +209,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return builder.toString();
     }
 
-
+    /**
+     * Trims both Route name and Route starting point so they fit within the screen, and no words are cut off.
+     * @param name
+     * @param maxLimit
+     * @return
+     */
     private String trimmedRouteValue(String name, int maxLimit){
+        if (name == null){
+            return null;
+        }
         if(name.length() < maxLimit){
             return name;
         }
@@ -174,28 +236,60 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return trimmedName;
     }
 
+    /**
+     * Formats date to Route's screen.
+     * @param date
+     * @return
+     */
     private String formatDate(String date){
         return "Date: " + date;
     }
 
+    /**
+     * Formats steps to Route's screen.
+     * @param steps
+     * @return
+     */
     private String formatSteps(int steps){
         return "Steps: " + steps;
     }
 
+    /**
+     * Formats miles to Route's screen.
+     * @param miles
+     * @return
+     */
     private String formatMiles(float miles){
         return "Miles: " + miles;
     }
 
+    /**
+     * Formats starting point to Route's screen. Doesn't show starting point if no value
+     * was put for it in the RouteForm (null).
+     *
+     * @param startingPoint
+     * @return
+     */
     private String formatStartingPoint(String startingPoint){
+        if(startingPoint == null){
+            return null;
+        }
         return "Start: " + startingPoint;
     }
 
+    /**
+     * Tells the adapter the number of views the screen will make/hold.
+     * @return
+     */
     @Override
     public int getItemCount() {
         Log.d(TAG, "getItemCount: " + routes.size());
         return routes.size();
     }
 
+    /**
+     * Generalize the Holder so each route's information can be generalized to a specific part of the screen.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         MyClickListener listener;
@@ -211,6 +305,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ImageButton favoriteRoute;
         TextView additionalInformation;
 
+        /**
+         * Informs RecyclerViewAdapter of every onClickFunctionality it needs to implement
+         */
         public interface MyClickListener{
             void onStartWalkRunSession(int p);
 
@@ -221,8 +318,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             void onFavoriteCurrentRoute(int p);
         }
 
+        /**
+         * Provides a reference to the holder of all parts of the layout that are subject to change (modifiable
+         * by the Adapter).
+         * @param itemView
+         * @param listener
+         */
         public ViewHolder(@NonNull View itemView, MyClickListener listener) {
             super(itemView);
+
+            //attaches variables to all layout ids
             routeName = itemView.findViewById(R.id.routeName);
             startingPoint = itemView.findViewById(R.id.startingPoint);
             routeDate = itemView.findViewById(R.id.routeDate);
@@ -236,24 +341,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             this.listener = listener;
 
+            //sets listener functionalities for all buttons for each route view
             startRoute.setOnClickListener(this);
             deleteRoute.setOnClickListener(this);
             parentLayout.setOnClickListener(this);
             favoriteRoute.setOnClickListener(this);
         }
 
+        /**
+         * Determines which clickFunction should be executes when a Route is clicked, dependent on
+         * which part was touched.
+         * @param view
+         */
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                //Start Route Clicked
                 case R.id.startRoute:
                     listener.onStartWalkRunSession(this.getLayoutPosition());
                     break;
+                //Route Clicked (Details)
                 case R.id.parentLayout:
                     listener.onPreviewDetailsPage(this.getLayoutPosition());
                     break;
+                //Delete Button Clicked
                 case R.id.deleteRoute:
                     listener.onDeleteCurrentRoute(this.getLayoutPosition());
                     break;
+                //Favorite Button Clicked
                 case R.id.favoriteRoute:
                     listener.onFavoriteCurrentRoute(this.getLayoutPosition());
                     break;
