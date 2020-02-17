@@ -20,7 +20,9 @@ import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 import java.util.Timer;
-
+/**
+ * Displays Walk/Run session screen, updating steps/distance user has taken and ticking timer.
+ */
 public class WalkRunSession extends AppCompatActivity implements UpdateStepTextView {
 
     // Constant for logging

@@ -351,8 +351,8 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     private void lastIntentionalWalkUpdate(){
-        Log.d(TAG, "Updating the last intentional walk.");
-        if(intentFromWalkRunSession){
+
+        //add in if statement for intentionalWalk to do walk/run sessions walks that are saved
             SharedPreferences prefs = getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE);
             List<String> list = new ArrayList<>();
             list.add(""+steps);
@@ -364,7 +364,6 @@ public class RoutesForm extends AppCompatActivity {
                 list.add(minutes + ":" + seconds);
             }
             LastIntentionalWalk.saveLastWalk(prefs, list);
-        }
     }
 
     /**

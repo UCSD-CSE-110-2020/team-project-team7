@@ -37,6 +37,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public StepCountActivity sc;
     public TextView stepCountText;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         milesText = findViewById(R.id.distanceCountText);
 
         // used to start the walk/run activity
+        Log.d(TAG, "Started AsyncTask for step counter");
+
         Button launchActivity = (Button) findViewById(R.id.startButt);
         launchActivity.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -159,10 +162,16 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         }
     }
 
+    /**
+     * Displays the last intentional (saved) walk taken by the user on the HomeScreen.
+     */
     private void displayLastWalk(){
+        //get references to HomeScreen Views
         TextView stepValue = (TextView) findViewById(R.id.stepsValue);
         TextView distanceValue = (TextView) findViewById(R.id.distanceValue);
         TextView timeValue = (TextView) findViewById(R.id.timeValue);
+
+        //gets last walk via sharedPreferences
         List<String> list = LastIntentionalWalk.loadLastWalk(getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE));
         if(list == null) {
             stepValue.setText("0");
@@ -197,9 +206,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public double getStepsPerMile() { return this.stepsPerMile; }
 
     /**
-     * used to launch the walk/run session
+     * used to launch the Routes Screen
      */
     public void routesSession(){
+        Log.d(TAG, "Launching Routes Screen");
         Intent intent = new Intent(this, RoutesList.class);
         startActivity(intent);
     }
@@ -221,15 +231,17 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * launched only once, when the app is opened for the first time
      */
     public void launchFirstSession(){
+        Log.d(TAG, "Launching HeightForm");
         Intent intent = new Intent(this, HeightForm.class);
         startActivity(intent);
     }
 
     /**
-     * first time the user opens the app
+     * first time the user opens the app calls HeightForm
      */
     public void firstLogin(SharedPreferences pref){
         if (pref.getBoolean("my_first_time", true)) {
+            Log.d(TAG, "First Time Launch");
             //the app is being launched for first time
             launchFirstSession();
             // record the fact that the app has been started at least once
