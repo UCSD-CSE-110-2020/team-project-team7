@@ -75,12 +75,14 @@ public class RoutesList extends AppCompatActivity {
         Intent intent = new Intent(RoutesList.this, RoutesForm.class);
         intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
         startActivity(intent);
+        finish();
     }
 
     private void redirectToHomePage(){
         saveRoutes();
         // TODO TESTING
         startActivity(new Intent(RoutesList.this, HomePage.class));
+        finish();
     }
 
     private void saveRoutes(){
