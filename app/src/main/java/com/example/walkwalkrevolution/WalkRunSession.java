@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import java.util.Timer;
 
+/**
+ * Displays Walk/Run session screen, updating steps/distance user has taken and ticking timer.
+ */
 public class WalkRunSession extends AppCompatActivity {
 
     // Constant for logging

@@ -3,6 +3,7 @@ package com.example.walkwalkrevolution;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Opens up Date Feature on RoutesForm, allowing user to choose a date.
+ */
 public class SetDate extends AppCompatActivity {
 
     // Activity objects
@@ -21,10 +25,14 @@ public class SetDate extends AppCompatActivity {
     private Button cancelButton;
     private DatePicker datePicker;
 
+    private static final String TAG = "SetDate";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_date);
+
+        Log.d(TAG, "Date Setter Called...");
 
         datePicker = (DatePicker)findViewById(R.id.datePicker);
 
@@ -88,6 +96,7 @@ public class SetDate extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("newDate", date);
         setResult(RESULT_OK, intent);
+        Log.d(TAG, "Date Saved: " + date);
         finish();
     }
 
@@ -95,6 +104,7 @@ public class SetDate extends AppCompatActivity {
      * Cancel button behavior. Go to Routes Form Activity without saving data.
      */
     private void cancel() {
+        Log.d(TAG, "Date Not Saved");
         finish();
     }
 
