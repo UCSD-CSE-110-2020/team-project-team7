@@ -35,12 +35,13 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+
 /**
- * Espresso UI Tester that tests to see if the user inputs one route to the route form
+ * Espresso UI Tester that tests to see if the user inputs multiple route to the route form
  */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class OneRouteTest {
+public class MultRouteTest {
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
@@ -62,7 +63,7 @@ public class OneRouteTest {
         sharedPreferences.edit().putBoolean("my_first_time", true).commit();
     }
     @Test
-    public void oneRouteTest() {
+    public void multRouteTest() {
         mActivityTestRule.launchActivity(intent);
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.height_save_btn), withText("Save"),
@@ -115,7 +116,6 @@ public class OneRouteTest {
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard());
 
-
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.SaveButton), withText("Save"),
                         childAtPosition(
@@ -127,19 +127,49 @@ public class OneRouteTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.routeName), withText("1"),
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.addRouteButton), withText("+"),
                         childAtPosition(
-                                allOf(withId(R.id.parentLayout),
-                                        childAtPosition(
-                                                withId(R.id.recyclerViewRoutes),
-                                                0)),
-                                0),
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
                         isDisplayed()));
-        textView.check(matches(withText("1")));
+        appCompatButton5.perform(click());
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.startingPoint), withText("Start: 1"),
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.routeNameEditText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.routeNameStartingLayout),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("2"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.startingPEditText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.routeNameStartingLayout),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("2"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.SaveButton), withText("Save"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayoutButtons),
+                                        childAtPosition(
+                                                withId(R.id.parentLayout),
+                                                5)),
+                                1),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.startingPoint), withText("Start: 2"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayoutInfo),
                                         childAtPosition(
@@ -147,7 +177,18 @@ public class OneRouteTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(withText("Start: 1")));
+        textView.check(matches(withText("Start: 2")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.routeName), withText("2"),
+                        childAtPosition(
+                                allOf(withId(R.id.parentLayout),
+                                        childAtPosition(
+                                                withId(R.id.recyclerViewRoutes),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        textView2.check(matches(withText("2")));
     }
 
     private static Matcher<View> childAtPosition(
