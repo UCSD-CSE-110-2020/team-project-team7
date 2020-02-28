@@ -51,6 +51,11 @@ public class TreeSetManipulation {
         Log.d("json", json);
         editor.putString(SHARED_PREFS_TREE_SET, json);
         editor.apply();
+
+        // TODO put routes in DATABASE TEST
+        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
+        db.storeRoutes(json, "Yoshi");
+
         Log.d(TAG, "TreeSet Saved");
     }
 

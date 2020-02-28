@@ -9,8 +9,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MockFirestoreDatabase {
@@ -88,5 +90,14 @@ public class MockFirestoreDatabase {
                         }
                     }
                 });
+    }
+
+    /**
+     * Add routes to user document
+     */
+    public void storeRoutes(String routesToStore, String mock_user_id) {
+        Map<String, String> routes = new HashMap<>();
+        routes.put("routes", routesToStore);
+        users.document(mock_user_id).set(routes, SetOptions.merge());
     }
 }
