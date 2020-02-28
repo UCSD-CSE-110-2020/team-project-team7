@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
         //launchFirstSession();
 
+        // Initiallize firebase
+        FirebaseApp.initializeApp(this);
+
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 5);
@@ -65,6 +69,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // Get specified FitnessService using fitnessServiceKey from Blueprint
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         fitnessService.setup();
+
+        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
+        db.checkUserExists("Calvin Nguy", "cn@gmail.com");
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
