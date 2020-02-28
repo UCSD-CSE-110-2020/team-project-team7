@@ -7,8 +7,11 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -24,6 +27,11 @@ public class MockFirestoreDatabase {
     public FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
     public CollectionReference users = dataBase.collection(USERS);
     public CollectionReference teams = dataBase.collection(TEAMS);
+
+    public boolean userOneStatus = false;
+    public boolean userTwoStatus = false;
+    public String userOneTeam = "";
+    public String userTwoTeam = "";
 
     /**
      * MAKE MOCKFIRESTOREDATABASE SINGLETON CLASS
@@ -98,6 +106,124 @@ public class MockFirestoreDatabase {
     public void storeRoutes(String routesToStore, String mock_user_id) {
         Map<String, String> routes = new HashMap<>();
         routes.put("routes", routesToStore);
-        users.document(mock_user_id).set(routes, SetOptions.merge());
+        try {
+            users.document(mock_user_id).set(routes, SetOptions.merge());
+        } catch (Exception e) {
+            Log.d("DB", "failed to store routes: ", e);
+        }
     }
+
+    /**
+     * THREE CASES FOR TEAM CREATION
+     * CASE 1: BOTH INVITER AND INVITEE ARE NOT IN A TEAM -> CREATE TEAM
+     * CASE 2: ONE OF THE TWO IS IN A GROUP -> ONE JOINS THE OTHERS TEAM
+     * CASE 3: BOTH ARE IN A GROUP -> THE TEAMS MERGE
+     */
+    public void teamCreation(String mock_user_one, String mock_user_two) {
+
+        DocumentReference userOne = users.document(mock_user_one);
+        DocumentReference userTwo = users.document(mock_user_two);
+
+        userOne.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                if(task.isSuccessful()) {
+                    if(snapshot.getData() != null) {
+                        Map<String, Object> data = snapshot.getData();
+                        if(data.get("team") != "") {
+                            userOneStatus = true;
+                            userOneTeam = (String)data.get("team");
+                        }
+                    }
+                }
+            }
+        });
+
+        userTwo.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                if(task.isSuccessful()) {
+                    if(snapshot.getData() != null) {
+                        Map<String, Object> data = snapshot.getData();
+                        if(data.get("team") != "") {
+                            userTwoStatus = true;
+                            userTwoTeam = (String)data.get("team");
+                        }
+                    }
+                }
+            }
+        });
+
+        // if neither are in a team
+        if(!userOneStatus && !userTwoStatus) {
+            // create new team doc in TEAMS
+            Map<String, String> teamMember = new HashMap<>();
+            DocumentReference newTeamRef = teams.document();
+
+            // put both users into team
+            teamMember.put("user", userOne.getId());
+            newTeamRef.collection(MEMBERS).add(teamMember);
+            teamMember.put("user", userTwo.getId());
+            newTeamRef.collection(MEMBERS).add(teamMember);
+
+            // update user's team field
+            userOne.update("team", newTeamRef.getId());
+            userTwo.update("team", newTeamRef.getId());
+        }
+        else if (userOneStatus && userTwoStatus) {
+            // create new team doc in TEAMS
+            //Map<String, String> teamMember = new HashMap<>();
+            DocumentReference newTeamRef = teams.document();
+
+            //String[] arr = {userOneTeam, userTwoTeam};
+
+            // merge both teams to a new team
+            teams.document(userOneTeam).collection(MEMBERS)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()) {
+                        Map<String, String> updateTeam = new HashMap<>();
+                        for(QueryDocumentSnapshot document : task.getResult()) {
+                            updateTeam.put("team", newTeamRef.getId());
+                            users.document((String)document
+                                    .getData()
+                                    .get("user"))
+                                    .set(updateTeam, SetOptions.merge());
+                        }
+                    }
+                }
+            });
+
+            teams.document(userTwoTeam).collection(MEMBERS)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()) {
+                        Map<String, String> updateTeam = new HashMap<>();
+                        for(QueryDocumentSnapshot document : task.getResult()) {
+                            updateTeam.put("team", newTeamRef.getId());
+                            users.document((String)document
+                                    .getData()
+                                    .get("user"))
+                                    .set(updateTeam, SetOptions.merge());
+                        }
+                    }
+                }
+            });
+
+            teams.document(userOneTeam).delete();
+            teams.document(userTwoTeam).delete();
+
+        }
+//        else {
+//            Map<String, String> teamMember = new HashMap<>();
+//            userOneStatus ?
+//
+//        }
+    }
+
+
 }

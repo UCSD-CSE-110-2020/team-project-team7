@@ -72,6 +72,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
         db.checkUserExists("Calvin Nguy", "cn@gmail.com");
+        db.teamCreation("Yoshi Russell", "Calvin Nguy");
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
