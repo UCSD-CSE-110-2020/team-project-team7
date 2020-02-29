@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -78,6 +79,18 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             @Override
             public void onClick(View view){
                 launchSession();
+            }
+        });
+
+        Button googleMaps = findViewById(R.id.btn_google_maps);
+        googleMaps.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Uri uri = Uri.parse("geo:0,0?q=3326 Mary Street");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setPackage("com.google.android.apps.maps");
+                startActivity(intent);
+
             }
         });
 
