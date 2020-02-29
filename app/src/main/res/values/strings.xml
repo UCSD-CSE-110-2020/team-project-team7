@@ -46,4 +46,9 @@
     <string name="add">Add</string>
     <string name="done">Done</string>
 
+    <!--Team Building-->
+    <string name="add_teammate">Add a Teammate!</string>
+    <string name="name">Name:</string>
+    <string name="email">Gmail:</string>
+
 </resources>
