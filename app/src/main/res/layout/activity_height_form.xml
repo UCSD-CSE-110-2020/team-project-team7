@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HeightForm">
+    tools:context=".forms.HeightForm">
 
     <TextView
         android:id="@+id/edit_height_button"

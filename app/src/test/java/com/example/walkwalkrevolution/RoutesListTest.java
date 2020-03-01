@@ -2,29 +2,20 @@ package com.example.walkwalkrevolution;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.runner.AndroidJUnit4;
 
-import android.content.SharedPreferences;
-import android.widget.EditText;
+import com.example.walkwalkrevolution.forms.HeightForm;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowToast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 @Config(sdk = 27)

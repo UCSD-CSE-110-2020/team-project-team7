@@ -2,10 +2,11 @@ package com.example.walkwalkrevolution;
 
 import android.content.Intent;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Button;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.runner.AndroidJUnit4;
+
+import com.example.walkwalkrevolution.forms.SetDate;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

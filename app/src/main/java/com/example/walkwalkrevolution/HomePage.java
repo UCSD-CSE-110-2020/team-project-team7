@@ -3,22 +3,19 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
-import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.example.walkwalkrevolution.forms.HeightForm;
+import com.example.walkwalkrevolution.forms.MockPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {

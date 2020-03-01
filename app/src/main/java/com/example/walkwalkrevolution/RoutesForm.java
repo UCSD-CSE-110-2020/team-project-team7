@@ -2,40 +2,44 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.util.Calendar;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.walkwalkrevolution.LastIntentionalWalk;
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.RecyclerViewAdapter;
+import com.example.walkwalkrevolution.Route;
+import com.example.walkwalkrevolution.RoutesList;
+import com.example.walkwalkrevolution.SendProposedWalk;
+import com.example.walkwalkrevolution.TreeSetManipulation;
+import com.example.walkwalkrevolution.WalkRunSession;
+import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.forms.NotesPage;
+import com.example.walkwalkrevolution.forms.SetDate;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Observable;
+import java.util.Observer;
 
 
 /**
  * Handles interactions with editing details of and saving a
  * Routes entry on the Routes Form Activity.
  */
-public class RoutesForm extends AppCompatActivity {
+public class RoutesForm extends AppCompatActivity implements Observer {
 
     // Constant for logging
     private static final String TAG = "RoutesForm";
@@ -135,10 +139,7 @@ public class RoutesForm extends AppCompatActivity {
         }
 
         // Setting the date, automatically set it to the current date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date currentTime = Calendar.getInstance().getTime();
-        String date = dateFormat.format(currentTime);
-        dateDisplayTextView.setText(date);
+        dateDisplayTextView.setText(DateTimeFormatter.getCurrentDate());
 
         // Find out which intent we are from
         checkIntent();
@@ -184,12 +185,16 @@ public class RoutesForm extends AppCompatActivity {
                     break;
                 case RecyclerViewAdapter.PREVIEW_DETAILS_INTENT:
                     intentFromRoutesDetails();
-                    Log.d(TAG, "Intent Found: Details Preview from Routes Page");
+                    Log.d(TAG, "Intent Found: Details Preview from Personal Routes Page");
                     break;
                 case RoutesList.ROUTE_CREATE_INTENT:
                     intentFromRoutesCreation();
                     Log.d(TAG, "Intent Found: Route Creation from Routes Page");
                     break;
+//                case TeamRoutes.ROUTE_DETAILS_INTENT:
+//                    intentFromTeamRoutes();
+//                    Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
+//                    break; TODO
                 default:
                     break;
             }
@@ -280,7 +285,6 @@ public class RoutesForm extends AppCompatActivity {
         if(TreeSetManipulation.getSelectedRoute() != null) {
             intentFromRoutesStartButton();
         }
-
     }
 
     /**
@@ -296,6 +300,51 @@ public class RoutesForm extends AppCompatActivity {
         // Load notes and display toggle info
         notes = routeBeingWalked.notes;
         displayToggleInfo(routeBeingWalked);
+    }
+
+    /**
+     * Intent from Team routes. Set the ProposedButton to be visible. Check the cloud to see if
+     * it should be enabled.
+     */
+    private void intentFromTeamRoutes() {
+        // Load UI as if coming from Personal Routes Page
+        intentFromRoutesDetails();
+
+        // Disable most editing UI
+        routeNameEditText.setEnabled(false);
+        startingPEditText.setEnabled(false);
+        // Disable toggle buttons
+        for(int i=0; i < optionalInfo.length; i++){
+            // Only allow one choice per toggle button
+            optionalInfo[i].setEnabled(false);
+        }
+
+        // Display the proposed walk button because we are from the team routes page
+        Button proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
+        proposeWalkButton.setVisibility(View.VISIBLE);
+
+        // No proposed walk exists, the button is enabled
+        if (this.proposedWalk == null) {
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    openSendProposedWalkActivity(v);
+                }
+            });
+
+        } else {
+            // gray out and disable the button if a proposed walk already exists
+            proposeWalkButton.setBackgroundColor(Color.GRAY);
+            proposeWalkButton.getBackground().setAlpha(55);
+
+            Activity thisActivity = this;
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    proposeWalkButton.setError("");
+                    Toast.makeText(thisActivity, "A Proposed Walk already exists",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
 
@@ -351,19 +400,18 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     private void lastIntentionalWalkUpdate(){
-
         //add in if statement for intentionalWalk to do walk/run sessions walks that are saved
-            SharedPreferences prefs = getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE);
-            List<String> list = new ArrayList<>();
-            list.add(""+steps);
-            list.add(""+distance);
-            if(seconds < 10){
-                list.add(minutes + ":0" +  seconds);
-            }
-            else{
-                list.add(minutes + ":" + seconds);
-            }
-            LastIntentionalWalk.saveLastWalk(prefs, list);
+        SharedPreferences prefs = getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE);
+        List<String> list = new ArrayList<>();
+        list.add(""+steps);
+        list.add(""+distance);
+        if(seconds < 10){
+            list.add(minutes + ":0" +  seconds);
+        }
+        else{
+            list.add(minutes + ":" + seconds);
+        }
+        LastIntentionalWalk.saveLastWalk(prefs, list);
     }
 
     /**
@@ -456,6 +504,17 @@ public class RoutesForm extends AppCompatActivity {
     }
 
     /**
+     * Opens the Send Proposed Walk Activity and passes in this Route's name.
+     */
+    public void openSendProposedWalkActivity(View view) {
+        Intent intent = new Intent(this, SendProposedWalk.class);
+        intent.putExtra("routeName", routeNameEditText.getText().toString());
+        intent.putExtra("startingPoint", startingPEditText.getText().toString());
+        Log.d(TAG, "Opening Send Proposed Walk activity...");
+        startActivity(intent);
+    }
+
+    /**
      * Handles coming back from the SetDate Activity (Saving the new date chosen on the DatePIcker).
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -476,4 +535,18 @@ public class RoutesForm extends AppCompatActivity {
                 break;
         }
     }
+
+
+    // PROPOSED WALK OBSERVER --------------------------------------------------------------------
+
+    private ProposedWalk proposedWalk;
+
+    /**
+     * Called in ProposedWalkObservable whenever a change to the Team's ProposedWalk is made.
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        this.proposedWalk = (ProposedWalk) arg;
+    }
+
 }

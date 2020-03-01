@@ -9,16 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HeightForm" />
+        <activity android:name=".forms.HeightForm" />
         <activity
             android:name=".RoutesForm"
             android:exported="true" />
+        <activity android:name=".SendProposedWalk"/>
         <activity android:name=".AddTeammate" />
-        <activity android:name=".SetDate" />
-        <activity android:name=".NotesPage" />
+        <activity android:name=".forms.SetDate" />
+        <activity android:name=".forms.NotesPage" />
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
-        <activity android:name=".MockPage" />
+        <activity android:name=".forms.MockPage" />
         <activity android:name=".HomePage" android:launchMode="singleInstance">
 
             <intent-filter>
