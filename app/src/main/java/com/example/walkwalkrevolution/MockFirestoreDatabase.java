@@ -222,21 +222,22 @@ public class MockFirestoreDatabase {
         else {
             Log.d("DB", "Inside of one of them has a team");
             Map<String, String> teamMember = new HashMap<>();
-            if (mock_user_one.getTeamStatus()) {
-                teamMember.put("user", mock_user_two.getUserID());
-                DocumentReference teamRef = teams.document(mock_user_one.getTeam());
-                teamRef.collection(MEMBERS).add(teamMember);
-                Map<String, String> updateTeam = new HashMap<>();
-                updateTeam.put("team", teamRef.getId());
-                users.document(mock_user_two.getUserID()).set(updateTeam, SetOptions.merge());
-            } else {
-                teamMember.put("user", mock_user_one.getUserID());
-                DocumentReference teamRef = teams.document(mock_user_two.getTeam());
-                teamRef.collection(MEMBERS).add(teamMember);
-                Map<String, String> updateTeam = new HashMap<>();
-                updateTeam.put("team", teamRef.getId());
-                users.document(mock_user_one.getUserID()).set(updateTeam, SetOptions.merge());
-            }
+            TeamMember oneWithTeam = mock_user_one.getTeamStatus() ? mock_user_one : mock_user_two;
+            TeamMember oneWithoutTeam = mock_user_one.getTeamStatus() ? mock_user_two : mock_user_one;
+
+            // include one without team as a member to existing team
+            teamMember.put("user", oneWithoutTeam.getUserID());
+            DocumentReference teamRef = teams.document(oneWithTeam.getTeam());
+            teamRef.collection(MEMBERS).add(teamMember);
+
+            // update new teammember's team field
+            Map<String, String> updateTeam = new HashMap<>();
+            updateTeam.put("team", teamRef.getId());
+            users.document(oneWithoutTeam.getUserID()).set(updateTeam, SetOptions.merge());
         }
     }
+
+    // TODO GET USERS ROUTES
+
+    // TODO GET TEAMS ROUTES
 }
