@@ -48,12 +48,13 @@ public class MockFirestoreDatabase {
 
     /**
      * Check to see if our current user is in the database
-     *      add them if they arent
-     *      ignore if they are
-     * @param mock_user_id: the user's name
-     * @param mock_user_email: the user's email
+     * @param mock_user_id: the user's google auth ID
+     * @param mock_user_email: the user's google auth Email
+     * @param name: the user's name specified in the heights form
      */
     public void checkUserExists(String mock_user_id, String mock_user_email, String name) {
+
+        // try to find their document in the database
         users.document(mock_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -74,6 +75,7 @@ public class MockFirestoreDatabase {
                                                (Boolean)data.get("teamStatus")));
                     } else {
                         Log.d("DB", "user doesnt exist");
+                        // if the current user does not exist create a teamMember obj and add to database
                         addUser(mock_user_id, mock_user_email, name);
                     }
                 } else {
@@ -90,6 +92,7 @@ public class MockFirestoreDatabase {
      */
     private void addUser(String mock_user_id, String mock_user_email, String name) {
 
+        // create teammember obj of user and put them in factory that will hold teammembers
         TeamMember user = new TeamMember(name, mock_user_email, mock_user_id, "", false);
         TeamMemberFactory.put(mock_user_id, user);
 
@@ -131,12 +134,19 @@ public class MockFirestoreDatabase {
         }
     }
 
+    /**
+     * When someone accepts your invite, acquire new teammate's data from database
+     *   then create a team accordingly
+     * @param mock_user_one
+     * @param mock_teammate_ID
+     */
     public void getNewTeamMemberData(String mock_user_one, String mock_teammate_ID) {
         users.document(mock_teammate_ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
+                    Log.d("DB", "Teammates document successfully found");
                     if(snapshot.getData() != null) {
                         Map<String, Object> data = snapshot.getData();
                         String teammate_name = data.get("name").toString();
@@ -148,6 +158,9 @@ public class MockFirestoreDatabase {
                         TeamMemberFactory.put(mock_teammate_ID, newTeammate);
                         teamCreation(TeamMemberFactory.get(mock_user_one), TeamMemberFactory.get(mock_teammate_ID));
                     }
+                } else {
+                    Log.d("DB", "Teammates document not found");
+                    // TODO MAYBE SOME TOAST MESSAGE SAYING THEY COULDNT FIND THE USER SPECIFIED
                 }
             }
         });
@@ -165,28 +178,7 @@ public class MockFirestoreDatabase {
         list.add(mock_user_one);
         list.add(mock_user_two);
 
-        // set user_one and user_two team status and team names
-//        for(TeamMember members : list) {
-//            users.document(members.getUserID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    DocumentSnapshot snapshot = task.getResult();
-//                    if(task.isSuccessful()) {
-//                        if(snapshot.getData() != null) {
-//                            Map<String, Object> data = snapshot.getData();
-//                            if(data.get("team") != "") {
-//                                Log.d("DB", "inside team != null");
-//                                user_triplet.setTeamID((String)data.get("team"));
-//                                user_triplet.setTeamStatus(true);
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
-
-
-        // if neither are in a team
+        // if neither are in a team -> create new team
         if(!mock_user_one.getTeamStatus() && !mock_user_two.getTeamStatus()) {
             Log.d("DB", "Inside neither have a team");
             // create new team doc in TEAMS
@@ -200,6 +192,7 @@ public class MockFirestoreDatabase {
                 users.document(member.getUserID()).update("team", newTeamRef.getId());
             }
         }
+        // if both are in a team -> merge both teams
         else if (mock_user_one.getTeamStatus() && mock_user_two.getTeamStatus()) {
             Log.d("DB", "Inside both have a team");
             // create new team doc in TEAMS
@@ -224,47 +217,10 @@ public class MockFirestoreDatabase {
                 teams.document(member.getTeam()).delete();
             }
 
-//            // merge both teams to a new team
-//            teams.document(userOneTeam).collection(MEMBERS)
-//                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                    if(task.isSuccessful()) {
-//                        Map<String, String> updateTeam = new HashMap<>();
-//                        for(QueryDocumentSnapshot document : task.getResult()) {
-//                            updateTeam.put("team", newTeamRef.getId());
-//                            users.document((String)document
-//                                    .getData()
-//                                    .get("user"))
-//                                    .set(updateTeam, SetOptions.merge());
-//                        }
-//                    }
-//                }
-//            });
-//
-//            teams.document(userTwoTeam).collection(MEMBERS)
-//                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                    if(task.isSuccessful()) {
-//                        Map<String, String> updateTeam = new HashMap<>();
-//                        for(QueryDocumentSnapshot document : task.getResult()) {
-//                            updateTeam.put("team", newTeamRef.getId());
-//                            users.document((String)document
-//                                    .getData()
-//                                    .get("user"))
-//                                    .set(updateTeam, SetOptions.merge());
-//                        }
-//                    }
-//                }
-//            });
-//
-//            teams.document(userOneTeam).delete();
-//            teams.document(userTwoTeam).delete();
-
         }
+        // one of them are in a team -> merge the one who isn't with the one who is
         else {
-            Log.d("DB", "Inside of them has a team");
+            Log.d("DB", "Inside of one of them has a team");
             Map<String, String> teamMember = new HashMap<>();
             if (mock_user_one.getTeamStatus()) {
                 teamMember.put("user", mock_user_two.getUserID());

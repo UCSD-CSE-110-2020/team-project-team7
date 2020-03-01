@@ -33,6 +33,9 @@ public class RoutesList extends AppCompatActivity {
         initRecyclerView();
 
         // TODO DATABASE TESTING
+        // TODO HARDCODED ID, LATER MOCK_USER_ONE SHOULD BE ACQUIRED THROUGH GOOGLE AUTH
+        // TODO LATER MOCK_TEAMMATE_ID NEEDS TO BE ACQUIRED WHEN INVITING SOMEONE
+        // TODO THESE FUNCTIONS SHOULD BE CALLED AFTER SOMEONE ACCEPTS YOUR INVITE
         MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
         db.getNewTeamMemberData("CalvinID", "YoshiID");
 

@@ -52,7 +52,8 @@ public class TreeSetManipulation {
         editor.putString(SHARED_PREFS_TREE_SET, json);
         editor.apply();
 
-        // TODO put routes in DATABASE TEST
+        // TODO put routes in DATABASE TEST (FOR AMRIT TO REFER OFF OF)
+        // TODO HARCODED "CalvinID" BUT LATER CAN BE CHANGED TO GETTING GOOGLE AUTH UID
         MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
         db.storeRoutes(json, TeamMemberFactory.get("CalvinID"));
 
