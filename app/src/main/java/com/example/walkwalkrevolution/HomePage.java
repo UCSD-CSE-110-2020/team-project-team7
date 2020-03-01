@@ -70,9 +70,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         fitnessService.setup();
 
+        // TODO DATABASE TESTING
         MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
-        db.checkUserExists("Calvin Nguy", "cn@gmail.com");
-        db.teamCreation("Yoshi Russell", "Calvin Nguy");
+        // name acquired in height screen
+        // email acquired from account.getEmail()
+        // userID acquired from account.getID()
+        //TeamMember userOne = new TeamMember("Yoshi Russell", "yr@gmail.com", "YoshiID", "");
+        //TeamMemberFactory.put("YoshiID", userOne);
+        db.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
+
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);

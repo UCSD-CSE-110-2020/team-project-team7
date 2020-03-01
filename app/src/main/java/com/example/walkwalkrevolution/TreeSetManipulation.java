@@ -54,7 +54,7 @@ public class TreeSetManipulation {
 
         // TODO put routes in DATABASE TEST
         MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
-        db.storeRoutes(json, "Yoshi");
+        db.storeRoutes(json, TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "TreeSet Saved");
     }

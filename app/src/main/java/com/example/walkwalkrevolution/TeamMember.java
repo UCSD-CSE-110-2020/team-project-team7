@@ -7,14 +7,19 @@ import java.util.Random;
 public class TeamMember {
 
     private String name;
+    private String userID;
     private String email;
     private String initials = "";
-    private String team = null;
+    private String team = "";
     private int colorVal;
+    private boolean teamStatus;
 
-    TeamMember(String name, String email) {
+    TeamMember(String name, String email, String userID, String teamID, boolean teamStatus) {
         this.name = name;
+        this.userID = userID;
         this.email = email;
+        this.team = teamID;
+        this.teamStatus = teamStatus;
         initialsMaker();
         randomColorGenerator();
     }
@@ -41,5 +46,24 @@ public class TeamMember {
         final int b = (baseBlue + rand.nextInt(256)) / 2;
 
         this.colorVal = Color.rgb(r,g,b);
+    }
+
+    /**
+     * GETTER METHODS
+     */
+    public String getName() { return this.name; }
+    public String getUserID() { return this.userID; }
+    public String getEmail() { return this.email; }
+    public String getInitials() { return this.initials; }
+    public String getTeam() { return this.team; }
+    public int getColorVal() { return this.colorVal; }
+    public boolean getTeamStatus() { return this.teamStatus; }
+
+    /**
+     * SETTER METHODS
+     */
+    public void setTeam(String teamID) {
+        this.team = teamID;
+        this.teamStatus = true;
     }
 }

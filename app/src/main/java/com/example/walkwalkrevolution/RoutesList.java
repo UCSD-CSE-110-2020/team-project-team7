@@ -32,6 +32,10 @@ public class RoutesList extends AppCompatActivity {
 
         initRecyclerView();
 
+        // TODO DATABASE TESTING
+        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
+        db.getNewTeamMemberData("CalvinID", "YoshiID");
+
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 
         addRouteButton.setOnClickListener(new View.OnClickListener() {
