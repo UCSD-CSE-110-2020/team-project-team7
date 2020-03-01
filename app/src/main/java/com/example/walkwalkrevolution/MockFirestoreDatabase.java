@@ -189,6 +189,7 @@ public class MockFirestoreDatabase {
             for(TeamMember member : list) {
                 teamMember.put("user", member.getUserID());
                 newTeamRef.collection(MEMBERS).add(teamMember);
+                member.setTeam(newTeamRef.getId());
                 users.document(member.getUserID()).update("team", newTeamRef.getId());
             }
         }
@@ -232,6 +233,7 @@ public class MockFirestoreDatabase {
 
             // update new teammember's team field
             Map<String, String> updateTeam = new HashMap<>();
+            oneWithoutTeam.setTeam(teamRef.getId());
             updateTeam.put("team", teamRef.getId());
             users.document(oneWithoutTeam.getUserID()).set(updateTeam, SetOptions.merge());
         }
