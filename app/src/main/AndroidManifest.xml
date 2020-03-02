@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".TeamRoutesList"></activity>
         <activity android:name=".HeightForm" />
         <activity
             android:name=".RoutesForm"
@@ -18,7 +19,9 @@
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".MockPage" />
-        <activity android:name=".HomePage" android:launchMode="singleInstance">
+        <activity
+            android:name=".HomePage"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

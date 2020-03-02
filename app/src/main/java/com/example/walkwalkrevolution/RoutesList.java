@@ -41,12 +41,12 @@ public class RoutesList extends AppCompatActivity {
             }
         });
 
-        Button goToHomePage = (Button) findViewById(R.id.goToHomePage);
+        Button goToTeamRoutes = (Button) findViewById(R.id.goToTeamRoutes);
 
-        goToHomePage.setOnClickListener(new View.OnClickListener() {
+        goToTeamRoutes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectToHomePage();
+                redirectToTeamRoutesPage();
             }
         });
 
@@ -83,10 +83,10 @@ public class RoutesList extends AppCompatActivity {
     /**
      * Home button clicked, so redirects to HomePage. Saves routes before switching pages.
      */
-    private void redirectToHomePage(){
+    private void redirectToTeamRoutesPage(){
         saveRoutes();
-        Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
-        startActivity(new Intent(RoutesList.this, HomePage.class));
+        Log.d(TAG, "HomeButton Clicked --> Going to Team Routes");
+        startActivity(new Intent(RoutesList.this, TeamRoutesList.class));
         finish();
     }
 
