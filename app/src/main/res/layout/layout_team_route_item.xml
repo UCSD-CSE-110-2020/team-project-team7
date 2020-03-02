@@ -7,21 +7,37 @@
     android:background="@drawable/route_item_states"
     android:padding="15dp">
 
+    <LinearLayout
+        android:id="@+id/iconLayout"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/teammateIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="AS"
+        android:background="@drawable/teammate_icon"
+        />
+
     <TextView
         android:id="@+id/routeName"
+        android:paddingLeft="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:text="Griswold Street"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/infoLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/routeName"
+        android:layout_below="@+id/iconLayout"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">

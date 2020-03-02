@@ -295,6 +295,8 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
         ImageButton favoriteRoute;
         TextView additionalInformation;
 
+        Button icon;
+
         /**
          * Informs RecyclerViewAdapter of every onClickFunctionality it needs to implement
          */
@@ -328,6 +330,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
             deleteRoute = itemView.findViewById(R.id.deleteRoute);
             favoriteRoute = itemView.findViewById(R.id.favoriteRoute);
             additionalInformation = itemView.findViewById(R.id.additionalInfo);
+            icon = itemView.findViewById(R.id.teammateIcon);
 
             this.listener = listener;
 
