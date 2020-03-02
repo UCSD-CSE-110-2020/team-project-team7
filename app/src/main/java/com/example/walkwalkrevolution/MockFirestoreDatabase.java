@@ -143,7 +143,8 @@ public class MockFirestoreDatabase {
      * @param mock_user_one
      * @param mock_teammate_ID
      */
-    public static void getNewTeamMemberData(String mock_user_one, String mock_teammate_ID) {
+    public static void addTeam(String mock_user_one, String mock_teammate_ID) {
+
         users.document(mock_teammate_ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -162,7 +163,7 @@ public class MockFirestoreDatabase {
                         teamCreation(TeamMemberFactory.get(mock_user_one), TeamMemberFactory.get(mock_teammate_ID));
                     }
                 } else {
-                    Log.d("DB", "Teammates document not found");
+                    Log.d(TAG, "Teammates document not found");
                     // TODO MAYBE SOME TOAST MESSAGE SAYING THEY COULDNT FIND THE USER SPECIFIED
                 }
             }
@@ -175,7 +176,7 @@ public class MockFirestoreDatabase {
      * CASE 2: ONE OF THE TWO IS IN A GROUP -> ONE JOINS THE OTHERS TEAM
      * CASE 3: BOTH ARE IN A GROUP -> THE TEAMS MERGE
      */
-    public static void teamCreation(TeamMember mock_user_one, TeamMember mock_user_two) {
+    private static void teamCreation(TeamMember mock_user_one, TeamMember mock_user_two) {
 
         List<TeamMember> list = new ArrayList<>();
         list.add(mock_user_one);
@@ -243,9 +244,27 @@ public class MockFirestoreDatabase {
     }
 
     // TODO GET USERS ROUTES
-
+    public static String getUserRoutes(TeamMember mock_user) {
+        final String[] userRoutesJSON = new String[1];
+        users.document(mock_user.getUserID()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                if(task.isSuccessful()) {
+                    try {
+                        userRoutesJSON[0] = snapshot.getData().get("routes").toString();
+                    } catch (NullPointerException e) {
+                        Log.d(TAG, "No routes");
+                        userRoutesJSON[0] = "";
+                    }
+                }
+            }
+        });
+        return userRoutesJSON[0];
+    }
 
     // TODO GET TEAMS ROUTES
+
 
     // TODO ONCE SOMEONE PROPOSES A WALK STORE SCHEDULED WALK TO FIRESTORE
     public static void storeProposedWalk(ProposedWalk proposedWalk, TeamMember creator) {
