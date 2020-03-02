@@ -35,11 +35,10 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * Fills up RoutesPage with saved Routes.
  */
-public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAdapterTeam.ViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";
-    
-    public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
+    private static final String TAG = "RecyclerViewAdapterTeam";
+    public static final String PREVIEW_DETAILS_INTENT = "From_Team_Routes_Details";
     private static final int MAX_LENGTH_NAME = 25; //max display length for any route name
     private static final int MAX_LENGTH_SP = 15; //max display length for any route starting point
 
@@ -51,7 +50,7 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
      * @param mContext The page that it will be updating
      * @param routes Routes that need to be displayed
      */
-    public RecyclerViewAdapter(Context mContext, List<Route> routes) {
+    public RecyclerViewAdapterTeam(Context mContext, List<Route> routes) {
         this.mContext = mContext;
         this.routes = routes;
         Log.d(TAG, "Recycler View Adapter Constructor");
@@ -67,7 +66,7 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, final int viewType) {
         Log.d(TAG, "onCreateViewHolder");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_route_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_team_route_item, parent, false);
         final ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
             /**
              * Start button on a Route clicked, so launches Walk/Run Session Screen.
@@ -78,8 +77,8 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
                 Log.d(TAG, "Button Clicked --> onStartWalkRunSession Called ");
                 TreeSetManipulation.setSelectedRoute(routes.get(p));
                 Log.d(TAG, "SelectedRoute: " + TreeSetManipulation.getSelectedRoute().name);
-                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-                TreeSetManipulation.saveTreeSet(prefs, routes);
+                //SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+                //TreeSetManipulation.saveTreeSet(prefs, routes);
                 mContext.startActivity(new Intent(mContext, WalkRunSession.class));
             }
 

@@ -35,10 +35,9 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * Fills up RoutesPage with saved Routes.
  */
-public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerViewAdapterPersonal.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
-    
     public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
     private static final int MAX_LENGTH_NAME = 25; //max display length for any route name
     private static final int MAX_LENGTH_SP = 15; //max display length for any route starting point
@@ -51,7 +50,7 @@ public abstract class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
      * @param mContext The page that it will be updating
      * @param routes Routes that need to be displayed
      */
-    public RecyclerViewAdapter(Context mContext, List<Route> routes) {
+    public RecyclerViewAdapterPersonal(Context mContext, List<Route> routes) {
         this.mContext = mContext;
         this.routes = routes;
         Log.d(TAG, "Recycler View Adapter Constructor");

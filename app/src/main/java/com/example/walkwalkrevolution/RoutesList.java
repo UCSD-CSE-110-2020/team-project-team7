@@ -22,7 +22,7 @@ public class RoutesList extends AppCompatActivity {
     private static final String TAG = "RoutesList";
     public static final String ROUTE_CREATE_INTENT = "From_Routes_Creation";
 
-    RecyclerViewAdapter adapter;
+    RecyclerViewAdapterPersonal adapter;
 
 
     @Override
@@ -61,7 +61,7 @@ public class RoutesList extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
 
         //create the adapter and set the recylerview to update the screen
-        adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
+        adapter = new RecyclerViewAdapterPersonal(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
