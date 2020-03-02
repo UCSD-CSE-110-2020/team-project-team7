@@ -2,6 +2,8 @@ package com.example.walkwalkrevolution.proposed_walk_observer_pattern;
 
 import android.util.Log;
 
+import com.example.walkwalkrevolution.MockFirestoreDatabase;
+import com.example.walkwalkrevolution.TeamMemberFactory;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 
@@ -23,10 +25,9 @@ public class ProposedWalkObservable extends Observable {
      */
     public void fetchProposedWalk() {
         // TODO, fetch the is a proposed walk json string from the cloud
-        String proposedWalkStr = "";
 
         // Fetch the proposed walk
-        ProposedWalk cloudProposedWalk = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkStr);
+        ProposedWalk cloudProposedWalk = MockFirestoreDatabase.getProposedWalk(TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "Comparing fetched proposed walk to current...");
 

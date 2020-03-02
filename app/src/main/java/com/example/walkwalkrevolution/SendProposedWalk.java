@@ -93,11 +93,8 @@ public class SendProposedWalk extends AppCompatActivity {
             proposedWalk.setLocation(startingPoint);
         }
 
-        // Convert the Proposed Walk to a Json string
-        String proposedWalkStr = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
-
-        // TODO, UPLOAD PROPOSED WALK TO CLOUD
-
+        // TODO, UPLOAD PROPOSED WALK TO CLOUD (USERID HARDCODED FOR NOW UNTIL GOOGLE AUTH WORKS)
+        MockFirestoreDatabase.storeProposedWalk(proposedWalk, TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "Proposed walk sent..");
         finish(); // TODO, WHICH ACTIVITY DO WE GO TO AFTER SENDING??

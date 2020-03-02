@@ -6,6 +6,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,15 +25,14 @@ import java.util.Set;
 
 public class MockFirestoreDatabase {
 
-    public final String TAG = "MOCK_FIRESTORE_DATABASE";
-    public final String USERS = "Users";
-    public final String TEAMS = "Teams";
-    public final String MEMBERS = "Members";
-    public final String SCHEDULEDWALKS = "ScheduledWalks";
+    public static final String TAG = "MOCK_FIRESTORE_DATABASE";
+    public static final String USERS = "Users";
+    public static final String TEAMS = "Teams";
+    public static final String MEMBERS = "Members";
 
-    public FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
-    public CollectionReference users = dataBase.collection(USERS);
-    public CollectionReference teams = dataBase.collection(TEAMS);
+    public static FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
+    public static CollectionReference users = dataBase.collection(USERS);
+    public static CollectionReference teams = dataBase.collection(TEAMS);
 
 
     /**
@@ -55,7 +55,7 @@ public class MockFirestoreDatabase {
      * @param mock_user_email: the user's google auth Email
      * @param name: the user's name specified in the heights form
      */
-    public void checkUserExists(String mock_user_id, String mock_user_email, String name) {
+    public static void checkUserExists(String mock_user_id, String mock_user_email, String name) {
 
         // try to find their document in the database
         users.document(mock_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -93,7 +93,7 @@ public class MockFirestoreDatabase {
      * @param mock_user_id: create own document of user
      * @param mock_user_email: make fake email
      */
-    private void addUser(String mock_user_id, String mock_user_email, String name) {
+    private static void addUser(String mock_user_id, String mock_user_email, String name) {
 
         // create teammember obj of user and put them in factory that will hold teammembers
         TeamMember user = new TeamMember(name, mock_user_email, mock_user_id, "", false);
@@ -127,7 +127,7 @@ public class MockFirestoreDatabase {
     /**
      * Add routes to user document
      */
-    public void storeRoutes(String routesToStore, TeamMember mock_user_one) {
+    public static void storeRoutes(String routesToStore, TeamMember mock_user_one) {
         Map<String, String> routes = new HashMap<>();
         routes.put("routes", routesToStore);
         try {
@@ -143,7 +143,7 @@ public class MockFirestoreDatabase {
      * @param mock_user_one
      * @param mock_teammate_ID
      */
-    public void getNewTeamMemberData(String mock_user_one, String mock_teammate_ID) {
+    public static void getNewTeamMemberData(String mock_user_one, String mock_teammate_ID) {
         users.document(mock_teammate_ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -175,7 +175,7 @@ public class MockFirestoreDatabase {
      * CASE 2: ONE OF THE TWO IS IN A GROUP -> ONE JOINS THE OTHERS TEAM
      * CASE 3: BOTH ARE IN A GROUP -> THE TEAMS MERGE
      */
-    public void teamCreation(TeamMember mock_user_one, TeamMember mock_user_two) {
+    public static void teamCreation(TeamMember mock_user_one, TeamMember mock_user_two) {
 
         List<TeamMember> list = new ArrayList<>();
         list.add(mock_user_one);
@@ -247,14 +247,40 @@ public class MockFirestoreDatabase {
 
     // TODO GET TEAMS ROUTES
 
-    // TODO STORE SCHEDULED WALK
-    public void storeNewScheduledWalk(String proposedWalkJSON, TeamMember creator) {
+    // TODO ONCE SOMEONE PROPOSES A WALK STORE SCHEDULED WALK TO FIRESTORE
+    public static void storeProposedWalk(ProposedWalk proposedWalk, TeamMember creator) {
+        String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
         Map<String, String> newWalkDetails = new HashMap<>();
-        newWalkDetails.put("details", proposedWalkJSON);
-        teams.document(creator.getTeam()).collection(SCHEDULEDWALKS).add(newWalkDetails);
+        newWalkDetails.put("current proposed walk", proposedWalkJSON);
+        teams.document(creator.getTeam()).set(newWalkDetails, SetOptions.merge());
         // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
     }
 
+    // TODO WHEN USER GOES TO THE SCHEDULE WALKS PAGE GET WALKS FROM FIRESTORE
+    public static ProposedWalk getProposedWalk(TeamMember mock_current_user) {
+        final ProposedWalk[] proposedWalk = new ProposedWalk[1];
+        teams.document(mock_current_user.getTeam()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                if(task.isSuccessful()) {
+                    if(snapshot != null) {
+                        try {
+                            String proposedWalkJSON = snapshot.getData().get("current proposed walk").toString();
+                            proposedWalk[0] = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
+                        } catch (NullPointerException e) {
+                            Log.d(TAG, "uhhh theres no proposed walk watchutalknbout");
+                            proposedWalk[0] = null;
+                        }
+                    } else {
+                        Log.d(TAG, "team document is empty for some reason..");
+                        proposedWalk[0] = null;
+                    }
+                }
+            }
+        });
+        return proposedWalk[0];
+    }
 
 
 

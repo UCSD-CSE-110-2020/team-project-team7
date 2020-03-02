@@ -71,10 +71,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
         // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE TEAMMEMBER OBJECT REPRESENTING THEM (DONE)
         // TODO IF THEY ARE NOT IN THE DATABASE CREATE TEAMMEMBER OBJECT AND ADD TO DATABASE (DONE)
-        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
         // TODO HARDCODED HERE BUT LATER WE GET USERID AND EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
-        db.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
-
+        MockFirestoreDatabase.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
