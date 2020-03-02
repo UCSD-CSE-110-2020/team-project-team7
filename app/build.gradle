@@ -66,4 +66,3 @@ dependencies {
     implementation 'org.honorato.multistatetogglebutton:multistatetogglebutton:0.2.2'
 
 }
-

@@ -104,6 +104,21 @@
             app:layout_constraintVertical_bias="0.792" />
 
         <Button
+            android:id="@+id/teammatesButton"
+            android:layout_width="205dp"
+            android:layout_height="62dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/routes_list_start_button_states"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="TEAM"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.792" />
+
+        <Button
             android:id="@+id/routesButt"
             android:layout_width="205dp"
             android:layout_height="62dp"
@@ -123,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearlayoutDistance"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical">
 
         <TextView
