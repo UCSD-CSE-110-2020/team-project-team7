@@ -89,7 +89,7 @@ public class SendProposedWalk extends AppCompatActivity {
 
         // Create the proposed walk use entered data and what was on the Route Form
         ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time);
-        if (!startingPoint.equals("")) {
+        if (startingPoint != null) {
             proposedWalk.setLocation(startingPoint);
         }
 
