@@ -11,6 +11,8 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 import com.example.walkwalkrevolution.forms.SetDate;
 
 /**
@@ -38,11 +40,12 @@ public class SendProposedWalk extends AppCompatActivity {
         setUpUI();
 
         // Get route name element from route form
-//        Intent fromIntent = this.getIntent();
-//        if (fromIntent != null) {
-//            routeName = fromIntent.getExtras().getString("routeName");
-//            startingPoint = fromIntent.getExtras().getString("startingPoint");
-//        }
+        Intent fromIntent = this.getIntent();
+        if (fromIntent != null) {
+            routeName = fromIntent.getExtras().getString("routeName");
+            startingPoint = fromIntent.getExtras().getString("startingPoint");
+            Log.d(TAG, "Received a Route from the Routes Form with the name: " + routeName);
+        }
 
     }
 
@@ -82,14 +85,19 @@ public class SendProposedWalk extends AppCompatActivity {
         String date = dateDisplayTextView.getText().toString();
         String time = DateTimeFormatter.formatTime(timePicker.getHour(), timePicker.getMinute());
 
-        // Create the proposed walk
         Log.d(TAG, "Creating a ProposedWalk with date: " + date + "and time: " + time);
-//        ProposedWalk proposedWalk = new ProposedWalk(name, date, time);
-//        if (!startingPoint.equals("")) {
-//            proposedWalk.setLocation(startingPoint);
-//        }
+
+        // Create the proposed walk use entered data and what was on the Route Form
+        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time);
+        if (!startingPoint.equals("")) {
+            proposedWalk.setLocation(startingPoint);
+        }
+
+        // Convert the Proposed Walk to a Json string
+        String proposedWalkStr = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
 
         // TODO, UPLOAD PROPOSED WALK TO CLOUD
+
 
         Log.d(TAG, "Proposed walk sent..");
         finish(); // TODO, WHICH ACTIVITY DO WE GO TO AFTER SENDING??

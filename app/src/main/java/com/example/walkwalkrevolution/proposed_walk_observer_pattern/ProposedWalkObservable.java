@@ -3,6 +3,7 @@ package com.example.walkwalkrevolution.proposed_walk_observer_pattern;
 import android.util.Log;
 
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 
 import java.util.Observable;
 
@@ -21,13 +22,20 @@ public class ProposedWalkObservable extends Observable {
      * If it's different from the current proposed walk, set it.
      */
     public void fetchProposedWalk() {
-        // TODO, check if there is a proposed walk in the cloud
+        // TODO, fetch the is a proposed walk json string from the cloud
+        String proposedWalkStr = "";
 
         // Fetch the proposed walk
-        ProposedWalk cloudProposedWalk = new ProposedWalk("" , "", ""); // Filler code
+        ProposedWalk cloudProposedWalk = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkStr);
 
         Log.d(TAG, "Comparing fetched proposed walk to current...");
-        if (!proposedWalk.equals(cloudProposedWalk)) {
+
+        if (proposedWalk == null && cloudProposedWalk != null) {
+            // current proposed walk is null but the one in the cloud isn't
+            setProposedWalk(cloudProposedWalk);
+
+        } else if (proposedWalk != null && !proposedWalk.equals(cloudProposedWalk)) {
+            // proposed walk exists, but the one in the cloud is different
             setProposedWalk(cloudProposedWalk);
         }
     }
@@ -37,7 +45,10 @@ public class ProposedWalkObservable extends Observable {
      * @param proposedWalk
      */
     public void setProposedWalk(ProposedWalk proposedWalk) {
-        Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.name);
+        if (proposedWalk != null) {
+            Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.name);
+        }
+
         this.proposedWalk = proposedWalk;
         this.setChanged();
         this.notifyObservers(proposedWalk);
