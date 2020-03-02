@@ -1,4 +1,4 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.custom_data_classes;
 
 import android.content.SharedPreferences;
 import android.util.Log;

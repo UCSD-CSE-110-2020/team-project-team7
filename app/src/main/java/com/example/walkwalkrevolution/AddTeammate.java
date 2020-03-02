@@ -66,6 +66,7 @@ public class AddTeammate extends AppCompatActivity {
         // TODO, Amrit says to upload teammate to the cloud, not pass as an intent extra,
         // she will be rendering Team page based on whats in the cloud
 
+
         Log.d(TAG, "Teammate saved.");
         finish();
     }

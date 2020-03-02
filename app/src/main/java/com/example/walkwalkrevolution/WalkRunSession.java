@@ -2,24 +2,21 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.TimedMetaData;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.custom_data_classes.TimeData;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
-import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.example.walkwalkrevolution.forms.MockPage;
 
-import java.util.Timer;
 /**
  * Displays Walk/Run session screen, updating steps/distance user has taken and ticking timer.
  */

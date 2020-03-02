@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,9 +24,11 @@ import java.util.Set;
 
 public class MockFirestoreDatabase {
 
+    public final String TAG = "MOCK_FIRESTORE_DATABASE";
     public final String USERS = "Users";
     public final String TEAMS = "Teams";
     public final String MEMBERS = "Members";
+    public final String SCHEDULEDWALKS = "ScheduledWalks";
 
     public FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
     public CollectionReference users = dataBase.collection(USERS);
@@ -61,7 +64,7 @@ public class MockFirestoreDatabase {
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()) {
-                        Log.d("DB", "user exists");
+                        Log.d(TAG, "user exists");
 
                         // populate map with user document data
                         Map<String, Object> data = document.getData();
@@ -74,12 +77,12 @@ public class MockFirestoreDatabase {
                                                data.get("team").toString(),
                                                (Boolean)data.get("teamStatus")));
                     } else {
-                        Log.d("DB", "user doesnt exist");
+                        Log.d(TAG, "user doesnt exist");
                         // if the current user does not exist create a teamMember obj and add to database
                         addUser(mock_user_id, mock_user_email, name);
                     }
                 } else {
-                    Log.d("DB", "failed with: ", task.getException());
+                    Log.d(TAG, "failed with: ", task.getException());
                 }
             }
         });
@@ -112,10 +115,10 @@ public class MockFirestoreDatabase {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             // some Toast message
-                            Log.d("DB", "add to database was successful");
+                            Log.d(TAG, "add to database was successful");
                         } else {
                             // some Toast message
-                            Log.d("DB", "add to database failed");
+                            Log.d(TAG, "add to database failed");
                         }
                     }
                 });
@@ -130,7 +133,7 @@ public class MockFirestoreDatabase {
         try {
             users.document(mock_user_one.getUserID()).set(routes, SetOptions.merge());
         } catch (Exception e) {
-            Log.d("DB", "failed to store routes: ", e);
+            Log.d(TAG, "failed to store routes: ", e);
         }
     }
 
@@ -146,7 +149,7 @@ public class MockFirestoreDatabase {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
-                    Log.d("DB", "Teammates document successfully found");
+                    Log.d(TAG, "Teammates document successfully found");
                     if(snapshot.getData() != null) {
                         Map<String, Object> data = snapshot.getData();
                         String teammate_name = data.get("name").toString();
@@ -180,7 +183,7 @@ public class MockFirestoreDatabase {
 
         // if neither are in a team -> create new team
         if(!mock_user_one.getTeamStatus() && !mock_user_two.getTeamStatus()) {
-            Log.d("DB", "Inside neither have a team");
+            Log.d(TAG, "Inside neither have a team");
             // create new team doc in TEAMS
             Map<String, String> teamMember = new HashMap<>();
             DocumentReference newTeamRef = teams.document();
@@ -195,10 +198,10 @@ public class MockFirestoreDatabase {
         }
         // if both are in a team -> merge both teams
         else if (mock_user_one.getTeamStatus() && mock_user_two.getTeamStatus()) {
-            Log.d("DB", "Inside both have a team");
+            Log.d(TAG, "Inside both have a team");
             // create new team doc in TEAMS
             DocumentReference newTeamRef = teams.document();
-            Log.d("DB", "Team " + newTeamRef.getId() + " made");
+            Log.d(TAG, "Team " + newTeamRef.getId() + " made");
 
             for(TeamMember member : list) {
                 teams.document(member.getTeam()).collection(MEMBERS)
@@ -221,7 +224,7 @@ public class MockFirestoreDatabase {
         }
         // one of them are in a team -> merge the one who isn't with the one who is
         else {
-            Log.d("DB", "Inside of one of them has a team");
+            Log.d(TAG, "Inside of one of them has a team");
             Map<String, String> teamMember = new HashMap<>();
             TeamMember oneWithTeam = mock_user_one.getTeamStatus() ? mock_user_one : mock_user_two;
             TeamMember oneWithoutTeam = mock_user_one.getTeamStatus() ? mock_user_two : mock_user_one;
@@ -241,5 +244,18 @@ public class MockFirestoreDatabase {
 
     // TODO GET USERS ROUTES
 
+
     // TODO GET TEAMS ROUTES
+
+    // TODO STORE SCHEDULED WALK
+    public void storeNewScheduledWalk(String proposedWalkJSON, TeamMember creator) {
+        Map<String, String> newWalkDetails = new HashMap<>();
+        newWalkDetails.put("details", proposedWalkJSON);
+        teams.document(creator.getTeam()).collection(SCHEDULEDWALKS).add(newWalkDetails);
+        // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
+    }
+
+
+
+
 }
