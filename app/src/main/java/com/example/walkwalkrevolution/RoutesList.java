@@ -7,12 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import java.util.TreeSet;
 
 /**
  * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
@@ -36,8 +33,7 @@ public class RoutesList extends AppCompatActivity {
         // TODO HARDCODED ID, LATER MOCK_USER_ONE SHOULD BE ACQUIRED THROUGH GOOGLE AUTH
         // TODO LATER MOCK_TEAMMATE_ID NEEDS TO BE ACQUIRED WHEN INVITING SOMEONE
         // TODO THESE FUNCTIONS SHOULD BE CALLED AFTER SOMEONE ACCEPTS YOUR INVITE
-        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
-        db.getNewTeamMemberData("CalvinID", "YoshiID");
+        MockFirestoreDatabase.addTeam("CalvinID", "YoshiID");
 
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 

@@ -3,23 +3,21 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.google.firebase.FirebaseApp;
+import com.example.walkwalkrevolution.forms.HeightForm;
+import com.example.walkwalkrevolution.forms.MockPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
@@ -73,10 +71,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
         // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE TEAMMEMBER OBJECT REPRESENTING THEM (DONE)
         // TODO IF THEY ARE NOT IN THE DATABASE CREATE TEAMMEMBER OBJECT AND ADD TO DATABASE (DONE)
-        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
         // TODO HARDCODED HERE BUT LATER WE GET USERID AND EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
-        db.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
-
+        MockFirestoreDatabase.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);

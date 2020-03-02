@@ -13,6 +13,8 @@ import java.util.List;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.walkwalkrevolution.forms.HeightForm;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.google.common.truth.Truth.assertThat;
 

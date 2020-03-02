@@ -14,7 +14,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -54,8 +53,8 @@ public class TreeSetManipulation {
 
         // TODO put routes in DATABASE TEST (FOR AMRIT TO REFER OFF OF)
         // TODO HARCODED "CalvinID" BUT LATER CAN BE CHANGED TO GETTING GOOGLE AUTH UID
-        MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
-        db.storeUserRoutes(json, TeamMemberFactory.get("CalvinID"));
+
+        MockFirestoreDatabase.storeRoutes(json, TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "TreeSet Saved");
     }
@@ -69,6 +68,10 @@ public class TreeSetManipulation {
         Log.d(TAG, "TreeSet Loaded");
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
+
+        // TODO GET ROUTES FROM DATABASE
+        MockFirestoreDatabase.getUserRoutes(TeamMemberFactory.get("CalvinID"));
+
         Type type = new TypeToken<List<Route>>() {}.getType();
         Log.d("create", json);
         return gson.fromJson(json, type);
