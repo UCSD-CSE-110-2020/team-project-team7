@@ -19,7 +19,7 @@ public class TeammatesPage extends AppCompatActivity {
 
     private static final String TAG = "TeammatesPage";
 
-    RecyclerViewAdapterTeam adapter;
+    RecyclerViewAdapterTeammates adapter;
 
 
     @Override
@@ -56,7 +56,7 @@ public class TeammatesPage extends AppCompatActivity {
         Log.d(TAG, "Starting initRecyclerView ");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
 
-        adapter = new RecyclerViewAdapterTeam(this, loadTeammates());
+        adapter = new RecyclerViewAdapterTeammates(this, loadTeammates());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

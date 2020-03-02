@@ -17,7 +17,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAdapterTeam.ViewHolder>{
+public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerViewAdapterTeammates.ViewHolder>{
 
     private static final String TAG = "RecyclerViewAdapterTeam";
 
@@ -29,7 +29,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
      * @param mContext The page that it will be updating
      * @param teammates Teammates that need to be displayed
      */
-    public RecyclerViewAdapterTeam(Context mContext, List<Teammate> teammates) {
+    public RecyclerViewAdapterTeammates(Context mContext, List<Teammate> teammates) {
         this.mContext = mContext;
         this.teammates = teammates;
         Log.d(TAG, "Recycler View Adapter Constructor");
