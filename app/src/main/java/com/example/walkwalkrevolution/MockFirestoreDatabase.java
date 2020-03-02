@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class MockFirestoreDatabase {
 
@@ -124,7 +123,7 @@ public class MockFirestoreDatabase {
     /**
      * Add routes to user document
      */
-    public void storeRoutes(String routesToStore, TeamMember mock_user_one) {
+    public void storeUserRoutes(String routesToStore, TeamMember mock_user_one) {
         Map<String, String> routes = new HashMap<>();
         routes.put("routes", routesToStore);
         try {
@@ -240,6 +239,31 @@ public class MockFirestoreDatabase {
     }
 
     // TODO GET USERS ROUTES
+    public String getUserRoutes(String mock_user_id) {
+        final String[] routesInStringForm = new String[1];
+        users.document(mock_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot userInfo = task.getResult();
+                    try {
+                        routesInStringForm[0] = userInfo.getData().get("routes").toString();
+                    } catch (NullPointerException e) {
+                        Log.d("DB", "There are no routes to be found");
+                        routesInStringForm[0] = "";
+                    }
+                }
+            }
+        });
+        return routesInStringForm[0];
+    }
 
     // TODO GET TEAMS ROUTES
+
+    // TODO UPLOAD PROPOSED WALKS
+//    public void uploadProposedWalks(TeamMember mock_user, ProposedWalk proposedWalk) {
+//
+//    }
+
+    // TODO RETRIEVE PROPOSED WALKS
 }

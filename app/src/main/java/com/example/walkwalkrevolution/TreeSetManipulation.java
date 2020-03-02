@@ -55,7 +55,7 @@ public class TreeSetManipulation {
         // TODO put routes in DATABASE TEST (FOR AMRIT TO REFER OFF OF)
         // TODO HARCODED "CalvinID" BUT LATER CAN BE CHANGED TO GETTING GOOGLE AUTH UID
         MockFirestoreDatabase db = MockFirestoreDatabase.getInstance();
-        db.storeRoutes(json, TeamMemberFactory.get("CalvinID"));
+        db.storeUserRoutes(json, TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "TreeSet Saved");
     }
