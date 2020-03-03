@@ -3,22 +3,21 @@ package com.example.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.google.firebase.FirebaseApp;
+import com.example.walkwalkrevolution.forms.HeightForm;
+import com.example.walkwalkrevolution.forms.MockPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
@@ -45,12 +44,22 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
         //launchFirstSession();
 
+        // Initiallize firebase
+        FirebaseApp.initializeApp(this);
+
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
         int feet = getHeight.getInt("height_ft", 5);
         int inches = getHeight.getInt("height_in", 7);
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
+
+        // save stepsPerMile into shared prefs as a string
+        SharedPreferences sharedPreferences = getSharedPreferences("stepsPerMileFromHome", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("stepsPerMileFromHome", stepsPerMile + "");
+        editor.apply();
+
 
         // Check from String extra if a test FitnessService is being passed
         fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
@@ -65,6 +74,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // Get specified FitnessService using fitnessServiceKey from Blueprint
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         fitnessService.setup();
+
+        // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
+        // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE TEAMMEMBER OBJECT REPRESENTING THEM (DONE)
+        // TODO IF THEY ARE NOT IN THE DATABASE CREATE TEAMMEMBER OBJECT AND ADD TO DATABASE (DONE)
+        // TODO HARDCODED HERE BUT LATER WE GET USERID AND EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
+        MockFirestoreDatabase.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
@@ -220,7 +235,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public void launchSession(){
         Log.d("HOMEPAGE LAUNCH WALK SESSION", "launching walkrunsession");
         Intent intent = new Intent(this, WalkRunSession.class);
-        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+
         intent.putExtra(FITNESS_SERVICE_KEY, fitnessServiceKey);
         SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
         //sf.edit().putLong("getsteps", -1).apply();

@@ -46,4 +46,14 @@
     <string name="add">Add</string>
     <string name="done">Done</string>
 
+    <!--Team Building-->
+    <string name="add_teammate">Add a Teammate!</string>
+    <string name="name">Name</string>
+    <string name="email">Gmail</string>
+
+    <!--Proposed Walk-->
+    <string name="time">Time</string>
+    <string name="send">Send</string>
+    <string name="propose_walk">Propose Team Walk</string>
+
 </resources>

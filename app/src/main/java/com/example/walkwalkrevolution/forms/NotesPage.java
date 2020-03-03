@@ -1,4 +1,4 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Scroller;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.walkwalkrevolution.R;
 
 /**
  * Allows users to write notes for Route entry.

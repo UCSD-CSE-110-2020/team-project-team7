@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -65,5 +66,10 @@ dependencies {
     //Multi-State Toggle Buttons (Github)
     implementation 'org.honorato.multistatetogglebutton:multistatetogglebutton:0.2.2'
 
+    // Firebase dependencies
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }
 

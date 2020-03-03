@@ -7,6 +7,8 @@ import android.widget.Button;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.walkwalkrevolution.forms.NotesPage;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Shadows;
