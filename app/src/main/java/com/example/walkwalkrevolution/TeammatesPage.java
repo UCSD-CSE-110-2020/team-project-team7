@@ -59,7 +59,6 @@ public class TeammatesPage extends AppCompatActivity {
         adapter = new RecyclerViewAdapterTeammates(this, loadTeammates());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         Log.d(TAG, "Finished initRecyclerView ");
     }
 

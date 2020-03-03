@@ -29,6 +29,7 @@ public class Route {
     public String[] optionalFeaturesStr = new String[5]; //Strings chosen from optionals
     public int[] optionalFeatures = new int[5];//States of optionals chosen
 
+    public Teammate creator;
 
     /**
      * Constructor for a Route object.
@@ -73,6 +74,10 @@ public class Route {
             Log.d(TAG, "Starting point set to null since its empty.");
             this.startingPoint = null;
         }
+    }
+
+    public void setCreator(Teammate creator){
+        this.creator = creator;
     }
     /**
      * Setter method for date instance var.

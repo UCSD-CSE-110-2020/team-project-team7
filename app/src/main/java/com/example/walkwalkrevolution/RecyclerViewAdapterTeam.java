@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -176,6 +177,9 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
         holder.routeDate.setText(formatDate(route.date));
         holder.routeSteps.setText(formatSteps(route.steps));
         holder.routeMiles.setText(formatMiles(route.distance));
+
+        holder.icon.setText(route.creator.getInitials());
+        holder.icon.getBackground().setColorFilter(Color.parseColor(route.creator.getColor()), PorterDuff.Mode.MULTIPLY);
 
         //updates for any additional information clicked (Toggle Buttons + Notes)
         holder.additionalInformation.setText(renderOptionalInfo(route));
