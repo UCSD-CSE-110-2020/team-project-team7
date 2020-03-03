@@ -62,12 +62,12 @@ public class TeammatesPage extends AppCompatActivity {
         Log.d(TAG, "Finished initRecyclerView ");
     }
 
-    private List<Teammate> loadTeammates(){
-        List<Teammate> teammates = new ArrayList<>();
+    private List<TeamMember> loadTeammates(){
+        List<TeamMember> teammates = new ArrayList<>();
 
-        teammates.add(new Teammate("Amrit Singh", "AS", 0x7986CB));
-        teammates.add(new Teammate("Titan Ngo", "TN", 0xB2DFDB));
-        teammates.add(new Teammate("Cindy Do", "CD", 0xFFCCBC));
+        teammates.add(new TeamMember("Amrit Singh", "AS", 0x7986CB));
+        teammates.add(new TeamMember("Titan Ngo", "TN", 0xB2DFDB));
+        teammates.add(new TeamMember("Cindy Do", "CD", 0xFFCCBC));
         return teammates;
     }
 

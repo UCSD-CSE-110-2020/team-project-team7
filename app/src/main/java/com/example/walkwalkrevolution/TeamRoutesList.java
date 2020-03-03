@@ -72,15 +72,15 @@ public class TeamRoutesList extends AppCompatActivity {
     private List<Route> getTeamRoutes(){
         List<Route> list = new ArrayList<>();
         Route route1 = new Route("Arker Walk", "Garden Grove", 30, 2.4);
-        route1.setCreator(new Teammate("Amrit Singh", "AS", 0x7986CB));
+        route1.setCreator(new TeamMember("Amrit Singh", "AS", 0x7986CB));
         list.add(route1);
 
         Route route2 = new Route("Bryan Avenue", "Archer Ave", 20, 1.4);
-        route2.setCreator(new Teammate("Titan Ngo", "TN", 0xB2DFDB));
+        route2.setCreator(new TeamMember("Titan Ngo", "TN", 0xB2DFDB));
         list.add(route2);
 
         Route route3 = new Route("Celt Drive", "Grisly Garden", 440, 30.4);
-        route3.setCreator(new Teammate("Cindy Do", "CD", 0xFFCCBC));
+        route3.setCreator(new TeamMember("Cindy Do", "CD", 0xFFCCBC));
         list.add(route3);
 
         return list;

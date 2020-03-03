@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.Comparator;
+
 /**
  * Creates a Route object, and wraps up all information associated with it.
  */
-public class Route {
+public class Route implements Comparable<Route> {
 
     // Constant for logging
     private static final String TAG = "Route.class";
@@ -29,7 +31,7 @@ public class Route {
     public String[] optionalFeaturesStr = new String[5]; //Strings chosen from optionals
     public int[] optionalFeatures = new int[5];//States of optionals chosen
 
-    public Teammate creator;
+    public TeamMember creator;
 
     /**
      * Constructor for a Route object.
@@ -76,7 +78,7 @@ public class Route {
         }
     }
 
-    public void setCreator(Teammate creator){
+    public void setCreator(TeamMember creator){
         this.creator = creator;
     }
     /**
@@ -124,5 +126,10 @@ public class Route {
         return false;
     }
 
+    @Override
+    public int compareTo(Route route) {
+        TreeSetComparator comparator = new TreeSetComparator();
+        return comparator.compare(this.name, route.name);
+    }
 }
 

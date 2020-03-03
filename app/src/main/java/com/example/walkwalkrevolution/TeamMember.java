@@ -2,7 +2,9 @@ package com.example.walkwalkrevolution;
 
 import android.util.Log;
 
-public class Teammate {
+import java.util.Comparator;
+
+public class TeamMember implements Comparable<TeamMember> {
 
     private static final String TAG = "Teammate";
 
@@ -10,7 +12,7 @@ public class Teammate {
     private String initials;
     private String hexaColor;
 
-    public Teammate(String name, String initials, int hexaColor) {
+    public TeamMember(String name, String initials, int hexaColor) {
         this.name = name.trim();
         this.initials = initials.trim();
         this.hexaColor = String.format("#%06X", (0xFFFFFF & hexaColor));
@@ -30,4 +32,10 @@ public class Teammate {
         return this.hexaColor;
     }
 
+
+    @Override
+    public int compareTo(TeamMember teamMember) {
+        TreeSetComparator comparator = new TreeSetComparator();
+        return comparator.compare(this.getName(), teamMember.getName());
+    }
 }

@@ -21,7 +21,7 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
 
     private static final String TAG = "RecyclerViewAdapterTeam";
 
-    public List<Teammate> teammates;
+    public List<TeamMember> teammates;
     private Context mContext;
 
     /**
@@ -29,7 +29,7 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
      * @param mContext The page that it will be updating
      * @param teammates Teammates that need to be displayed
      */
-    public RecyclerViewAdapterTeammates(Context mContext, List<Teammate> teammates) {
+    public RecyclerViewAdapterTeammates(Context mContext, List<TeamMember> teammates) {
         this.mContext = mContext;
         this.teammates = teammates;
         Log.d(TAG, "Recycler View Adapter Constructor");
@@ -47,7 +47,7 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Teammate teammate = teammates.get(position);
+        final TeamMember teammate = teammates.get(position);
         Log.d(TAG, "onBindViewHolder: Position " + position + " Teammate Initials: " + teammate.getInitials());
 
         holder.icon.setText(teammate.getInitials());
