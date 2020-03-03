@@ -21,6 +21,10 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -219,12 +223,19 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      */
     public void launchSession(){
         Log.d("HOMEPAGE LAUNCH WALK SESSION", "launching walkrunsession");
+        /*
         Intent intent = new Intent(this, WalkRunSession.class);
         intent.putExtra("stepsPerMileFromHome", stepsPerMile);
         intent.putExtra(FITNESS_SERVICE_KEY, fitnessServiceKey);
         SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
         //sf.edit().putLong("getsteps", -1).apply();
         startActivity(intent);
+         */
+        Fragment fragment = new WalkRunFragment();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.testFragment, fragment);
+        ft.commit();
     }
 
     /**

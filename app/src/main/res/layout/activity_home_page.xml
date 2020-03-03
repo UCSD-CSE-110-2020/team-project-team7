@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".HomePage">
 
+
+
     <Button
         android:id="@+id/mockPageButton"
         android:layout_width="67dp"
@@ -212,5 +214,12 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.example.walkwalkrevolution.WalkRunFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
 </RelativeLayout>
