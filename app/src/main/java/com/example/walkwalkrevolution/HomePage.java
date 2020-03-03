@@ -54,6 +54,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
+        // save stepsPerMile into shared prefs
+        SharedPreferences sharedPreferences = getSharedPreferences("stepsPerMileFromHome", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+
+
         // Check from String extra if a test FitnessService is being passed
         fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         if(fitnessServiceKey == null) {
@@ -228,7 +234,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public void launchSession(){
         Log.d("HOMEPAGE LAUNCH WALK SESSION", "launching walkrunsession");
         Intent intent = new Intent(this, WalkRunSession.class);
-        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+
         intent.putExtra(FITNESS_SERVICE_KEY, fitnessServiceKey);
         SharedPreferences sf = getSharedPreferences("MockSteps" , 0);
         //sf.edit().putLong("getsteps", -1).apply();
