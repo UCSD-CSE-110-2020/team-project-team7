@@ -33,7 +33,7 @@ public class RoutesList extends AppCompatActivity {
         // TODO HARDCODED ID, LATER MOCK_USER_ONE SHOULD BE ACQUIRED THROUGH GOOGLE AUTH
         // TODO LATER MOCK_TEAMMATE_ID NEEDS TO BE ACQUIRED WHEN INVITING SOMEONE
         // TODO THESE FUNCTIONS SHOULD BE CALLED AFTER SOMEONE ACCEPTS YOUR INVITE
-        MockFirestoreDatabase.addTeam("CalvinID", "YoshiID");
+//        MockFirestoreDatabase.addTeam("CalvinID", "YoshiID");
 
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 
