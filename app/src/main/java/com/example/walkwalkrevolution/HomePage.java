@@ -54,10 +54,11 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         int heightInInches = (feet * 12) + inches;
         stepsPerMile = calculateStepsPerMile(heightInInches);
 
-        // save stepsPerMile into shared prefs
+        // save stepsPerMile into shared prefs as a string
         SharedPreferences sharedPreferences = getSharedPreferences("stepsPerMileFromHome", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-//        intent.putExtra("stepsPerMileFromHome", stepsPerMile);
+        editor.putString("stepsPerMileFromHome", stepsPerMile + "");
+        editor.apply();
 
 
         // Check from String extra if a test FitnessService is being passed

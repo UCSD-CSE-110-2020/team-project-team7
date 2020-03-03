@@ -61,7 +61,11 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         // steps and miles views initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
-        stepsPerMile = getIntent().getDoubleExtra("stepsPerMileFromHome", 1);
+
+        // get stepsPerMile from sharedPrefs for calculating distance
+        SharedPreferences sharedPreferences = getSharedPreferences("stepsPerMileFromHome", MODE_PRIVATE);
+        String stepsPerMileStr = sharedPreferences.getString("stepsPerMileFromHome", "1");
+        stepsPerMile = Double.parseDouble(stepsPerMileStr);
 
         // Check from String extra if a test FitnessService is being passed
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
