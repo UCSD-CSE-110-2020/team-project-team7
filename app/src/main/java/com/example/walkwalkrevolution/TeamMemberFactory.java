@@ -35,6 +35,7 @@ public class TeamMemberFactory {
 
     /**
      * set/get proposed walk
+     * !!! SET THROUGH FIRESTORE
      */
     public static void setProposedWalk(ProposedWalk newProposedWalk) {
         proposedWalk = newProposedWalk;

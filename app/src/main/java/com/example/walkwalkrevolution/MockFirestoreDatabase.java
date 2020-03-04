@@ -53,6 +53,7 @@ public class MockFirestoreDatabase {
     // TODO [START] (HOMEPAGE ON CREATE) -------------------------------------------------------------------
 
     /**
+     * !!! CALL ON CREATE OF HOMEPAGE !!! (FOR YOSHI/CALVIN)
      * CHECK IF CURRENT USER EXISTS IN DATABASE -> IN BOTH CASES CREATE GLOBAL USERDETAILS OBJECT OF THEM
      * @param currentUserEmail
      * @param currentUserName
@@ -62,9 +63,8 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
      * Check to see if our current user is in the database
-     * @param mock_user_email: the user's google auth Email
-     * @param name: the user's name specified in the heights form
      */
     private static void checkUserExists(String mock_user_email, String name) {
 
@@ -94,6 +94,7 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
      * Add new users to the database via google account
      * @param mock_user_email: make fake email
      */
@@ -124,6 +125,7 @@ public class MockFirestoreDatabase {
 
     // TODO [START] (ROUTES PAGE) ------------------------------------------------------------------------
     /**
+     * !!! CALL ONSTART OF ROUTES PAGE !!! (FOR AMRIT)
      * Update UserDetail's routes by grabbing from firestore on activity start
      * @param currentUser
      */
@@ -144,6 +146,7 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! PUT THIS IN TREEMANIPULATION.SAVETREE !!! (FOR AMRIT)
      * Add/update routes to user document on FireStore
      */
     public static void storeRoutes(String routesToStore, UserDetails currentUser) {
@@ -158,9 +161,8 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! PUT THIS IN TREEMANIPULATION.LOADTREE !!! (FOR AMRIT)
      * Get updated routes from UserDetails as it should always be updated
-     * @param currentUser
-     * @return
      */
     public static List<Route> getUserRoutes(UserDetails currentUser) {
         Gson gson = new Gson();
@@ -172,7 +174,7 @@ public class MockFirestoreDatabase {
 
     // TODO [START] (TEAM PAGE) ------------------------------------------------------------------------
     /**
-     * Called everytime we go into TeamPage to populate Map of TeamMates
+     * !!! CALL ONSTART OF TEAMPAGE !!! (FOR AMRIT)
      * @param currentUserEmail
      */
     public static void teamsPageOnStart(String currentUserEmail) {
@@ -193,6 +195,7 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! HELPER METHOD FOR ABOVE FUNCTION !!!
      * populate Map of TeamMates every time we go into TeamPage
      * @param teamID
      */
@@ -214,8 +217,8 @@ public class MockFirestoreDatabase {
     }
 
     /**
-     * Call this onCreate/onStart of TeamRoutesPage
-     * @param teamID
+     * !!! CALL THIS IN ONSTART OF TEAM ROUTES PAGE !!! (FOR AMRIT)
+     * TeamMemberFactory will then have a list of pairs of everyone's routes
      */
     public static void populateTeamRoutes(String teamID) {
         TeamMemberFactory.resetRoutes();
@@ -243,9 +246,7 @@ public class MockFirestoreDatabase {
     }
 
     /**
-     * WHEN USER INVITES SOMEONE TO THEIR TEAM
-     * @param currentUser
-     * @param mock_teammate_email
+     * WHEN USER INVITES SOMEONE TO THEIR TEAM (FOR HARRISON)
      */
     public static void inviteToTeam(UserDetails currentUser, String mock_teammate_email) {
 
@@ -274,24 +275,20 @@ public class MockFirestoreDatabase {
     }
 
     /**
-     * IF USER ACCEPTS INVITE
-     * THREE CASES FOR TEAM CREATION
-     * CASE 1: BOTH INVITER AND INVITEE ARE NOT IN A TEAM -> CREATE TEAM
-     * CASE 2: ONE OF THE TWO IS IN A GROUP -> ONE JOINS THE OTHERS TEAM
-     * CASE 3: BOTH ARE IN A GROUP -> THE TEAMS MERGE
+     * IF INVITEE ACCEPTS INVITE (FOR HARRISON)
      */
-    public static void teamCreationOnAccept(UserDetails currentUser, UserDetails newTeamMate) {
+    public static void teamCreationOnAccept(UserDetails inviter, UserDetails invitee) {
 
         Map<String, String> updateTeam = new HashMap<>();
-        updateTeam.put("team", currentUser.getTeam());
+        updateTeam.put("team", inviter.getTeam());
         Map<String, Boolean> updateStatus = new HashMap<>();
         updateStatus.put("pendingStatus", false);
 
-        // if accepter was already on a team
-        if(newTeamMate.getTeam() != "") {
+        // if invitee was already on a team MERGE
+        if(invitee.getTeam() != "") {
             Log.d(TAG, "Accepted member does have a team");
 
-            teams.document(newTeamMate.getTeam()).collection(MEMBERS)
+            teams.document(invitee.getTeam()).collection(MEMBERS)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -299,25 +296,23 @@ public class MockFirestoreDatabase {
                                 for(QueryDocumentSnapshot document : task.getResult()) {
                                     String newMembersName = document.get("name").toString();
                                     String newMembersEmail = document.get("email").toString();
-                                    if(newMembersEmail != newTeamMate.getEmail()) {
+                                    if(newMembersEmail != invitee.getEmail()) {
                                         users.document(newMembersEmail).set(updateTeam, SetOptions.merge());
-                                        teams.document(currentUser.getTeam()).collection(MEMBERS).document(newMembersEmail)
+                                        teams.document(inviter.getTeam()).collection(MEMBERS).document(newMembersEmail)
                                                 .set(new TeamMember(newMembersName, newMembersEmail, false));
                                     }
                                 }
                             }
                         }
                     });
-                    teams.document(newTeamMate.getTeam()).delete();
+                    teams.document(invitee.getTeam()).delete();
             }
-        users.document(newTeamMate.getEmail()).set(updateTeam, SetOptions.merge());
-        users.document(newTeamMate.getEmail()).set(updateStatus, SetOptions.merge());
+        users.document(invitee.getEmail()).set(updateTeam, SetOptions.merge());
+        users.document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
     }
 
     /**
-     * If invitee declines, if inviter was originally not on any team delete the temporary team
-     * @param inviter
-     * @param invitee
+     * IF INVITEE DECLINES INVITE (FOR HARRISON)
      */
     public static void teamCreationOnDecline(UserDetails inviter, UserDetails invitee) {
         teams.document(inviter.getTeam()).collection(MEMBERS).document(invitee.getEmail()).delete();
@@ -331,9 +326,8 @@ public class MockFirestoreDatabase {
     // TODO [START] (PROPOSED WALKS) -----------------------------------------------------------------
 
     /**
-     * Store the proposed walk into the teams document and send out notification
-     * @param proposedWalk
-     * @param currentUser
+     * !!! PUT IN SENDPROPOSEDWALK.SENDPROPOSEDWALK() !!! (FOR TITAN)
+     * Store the proposed walk into the cloud teams document and send out notification
      */
     public static void storeProposedWalk(ProposedWalk proposedWalk, UserDetails currentUser) {
 
@@ -345,6 +339,8 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! PROPOSED WALK IS SENT TO TEAMMEMBERFACTORY,
+     *     TO GET CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
      * Retrieving the proposed walk from database
      * @param teamID
      * @return
