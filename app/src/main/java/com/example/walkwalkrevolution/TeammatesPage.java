@@ -63,23 +63,16 @@ public class TeammatesPage extends AppCompatActivity {
     }
 
     private List<TeamMember> loadTeammates(){
-        List<TeamMember> teammates = new ArrayList<>();
-
-        teammates.add(new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
-        teammates.add(new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", false));
-        teammates.add(new TeamMember("Cindy Do", "cido@ucsd.edu", "CindyID", "TEAMC", false));
-        return teammates;
+        return TeammatesAdapter.retrieveTeammatesFromCloud();
     }
 
     /**
-     * Add button clicked, so redirects to RouteForm. Saves routes before switching pages.
+     * Add button clicked, so redirects to AddTeamForm.
      */
     private void redirectToTeammateAddForm(){
-        Log.d(TAG, "+ Clicked --> Going to RoutesForm");
-//        Intent intent = new Intent(RoutesList.this, RoutesForm.class);
-//        intent.putExtra("From_Intent", ROUTE_CREATE_INTENT);
-//        startActivity(intent);
-//        finish();
+        Log.d(TAG, "+ Clicked --> Going to AddTeammate Form");
+        Intent intent = new Intent(TeammatesPage.this, AddTeammate.class);
+        startActivity(intent);
     }
 
     /**

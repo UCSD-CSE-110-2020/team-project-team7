@@ -5,11 +5,14 @@ import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -54,6 +57,12 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
         holder.name.setText(teammate.getName());
         holder.icon.getBackground().setColorFilter(teammate.getColorVal(), PorterDuff.Mode.MULTIPLY);
 
+        //Invitation not yet accepted (Grayed & italicized)
+        if(!teammate.getTeamStatus()){
+            holder.parentLayout.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY );
+            holder.name.setTypeface(null, Typeface.ITALIC);
+        }
+
     }
 
     @Override
@@ -68,6 +77,7 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
 
         Button icon;
         TextView name;
+        RelativeLayout parentLayout;
 
         /**
          * Provides a reference to the holder of all parts of the layout that are subject to change (modifiable
@@ -80,6 +90,7 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
             //attaches variables to all layout ids
             this.icon = (Button) itemView.findViewById(R.id.teammateIcon);
             this.name = (TextView) itemView.findViewById(R.id.teammateName);
+            this.parentLayout = (RelativeLayout) itemView.findViewById(R.id.parentLayout);
         }
 
     }
