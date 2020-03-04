@@ -129,14 +129,14 @@
                     app:srcCompat="@android:drawable/btn_star_big_off" />
 
                 <ImageButton
-                    android:id="@+id/deleteRoute"
+                    android:id="@+id/routeChecked"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/routes_list_start_button_states"
-                    app:srcCompat="@android:drawable/ic_delete" />
+                    android:background="@drawable/button_default_style"
+                    app:srcCompat="@drawable/icons8_checkmark_border_24" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

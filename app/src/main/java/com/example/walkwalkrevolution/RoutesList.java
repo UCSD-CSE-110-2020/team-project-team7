@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
+
 /**
  * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
  */

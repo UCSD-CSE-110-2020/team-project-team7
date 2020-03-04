@@ -3,18 +3,14 @@
  * Icons : https://icons8.com/icon/pack/sports/android
  */
 
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.RecycleViewAdapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,20 +21,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.Route;
+import com.example.walkwalkrevolution.RoutesForm;
+import com.example.walkwalkrevolution.TreeSetManipulation;
+import com.example.walkwalkrevolution.WalkRunSession;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
 /**
  * Fills up RoutesPage with saved Routes.
  */
-public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerViewAdapterPersonal.ViewHolder> {
+public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAdapterTeam.ViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";
-    public static final String PREVIEW_DETAILS_INTENT = "From_Routes_Details";
+    private static final String TAG = "RecyclerViewAdapterTeam";
+    public static final String PREVIEW_DETAILS_INTENT = "From_Team_Routes_Details";
     private static final int MAX_LENGTH_NAME = 25; //max display length for any route name
     private static final int MAX_LENGTH_SP = 15; //max display length for any route starting point
 
@@ -50,7 +50,7 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
      * @param mContext The page that it will be updating
      * @param routes Routes that need to be displayed
      */
-    public RecyclerViewAdapterPersonal(Context mContext, List<Route> routes) {
+    public RecyclerViewAdapterTeam(Context mContext, List<Route> routes) {
         this.mContext = mContext;
         this.routes = routes;
         Log.d(TAG, "Recycler View Adapter Constructor");
@@ -66,7 +66,7 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, final int viewType) {
         Log.d(TAG, "onCreateViewHolder");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_route_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_team_route_item, parent, false);
         final ViewHolder holder = new ViewHolder(view, new ViewHolder.MyClickListener() {
             /**
              * Start button on a Route clicked, so launches Walk/Run Session Screen.
@@ -77,8 +77,8 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
                 Log.d(TAG, "Button Clicked --> onStartWalkRunSession Called ");
                 TreeSetManipulation.setSelectedRoute(routes.get(p));
                 Log.d(TAG, "SelectedRoute: " + TreeSetManipulation.getSelectedRoute().name);
-                SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
-                TreeSetManipulation.saveTreeSet(prefs, routes);
+                //SharedPreferences prefs = mContext.getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+                //TreeSetManipulation.saveTreeSet(prefs, routes);
                 mContext.startActivity(new Intent(mContext, WalkRunSession.class));
             }
 
@@ -94,16 +94,6 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
                 TreeSetManipulation.setSelectedRoute(routes.get(p));
                 Log.d(TAG, "SelectedRoute: " + TreeSetManipulation.getSelectedRoute().name);
                 mContext.startActivity(intent);
-            }
-
-            /**
-             * Delete button of route clicked, so deletes that route and updates page.
-             * @param p
-             */
-            @Override
-            public void onDeleteCurrentRoute(int p) {
-                Log.d(TAG, "Button Clicked --> onDeleteCurrentRoute Called ");
-                displayRouteDeletionDialogue(mContext, p);
             }
 
             /**
@@ -186,6 +176,14 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
         }
         else{
             holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.routes_list_start_button_states));
+        }
+
+        holder.icon.setText(route.creator.getInitials());
+        holder.icon.getBackground().setColorFilter(route.creator.getColorVal(), PorterDuff.Mode.MULTIPLY);
+
+        //route has been walked by user --> set background of check to green
+        if(route.userHasWalkedRoute){
+            holder.routeChecked.getBackground().setColorFilter(Color.parseColor("#DCE775"), PorterDuff.Mode.MULTIPLY);
         }
     }
 
@@ -291,9 +289,11 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
         TextView routeMiles;
         RelativeLayout parentLayout;
         Button startRoute;
-        ImageButton deleteRoute;
+        ImageButton routeChecked;
         ImageButton favoriteRoute;
         TextView additionalInformation;
+
+        Button icon;
 
         /**
          * Informs RecyclerViewAdapter of every onClickFunctionality it needs to implement
@@ -302,8 +302,6 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
             void onStartWalkRunSession(int p);
 
             void onPreviewDetailsPage(int p);
-
-            void onDeleteCurrentRoute(int p);
 
             void onFavoriteCurrentRoute(int p);
         }
@@ -325,15 +323,15 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
             routeMiles = itemView.findViewById(R.id.routeMiles);
             parentLayout = itemView.findViewById(R.id.parentLayout);
             startRoute = itemView.findViewById(R.id.startRoute);
-            deleteRoute = itemView.findViewById(R.id.deleteRoute);
+            routeChecked = itemView.findViewById(R.id.routeChecked);
             favoriteRoute = itemView.findViewById(R.id.favoriteRoute);
             additionalInformation = itemView.findViewById(R.id.additionalInfo);
+            icon = itemView.findViewById(R.id.teammateIcon);
 
             this.listener = listener;
 
             //sets listener functionalities for all buttons for each route view
             startRoute.setOnClickListener(this);
-            deleteRoute.setOnClickListener(this);
             parentLayout.setOnClickListener(this);
             favoriteRoute.setOnClickListener(this);
         }
@@ -353,10 +351,6 @@ public class RecyclerViewAdapterPersonal extends RecyclerView.Adapter<RecyclerVi
                 //Route Clicked (Details)
                 case R.id.parentLayout:
                     listener.onPreviewDetailsPage(this.getLayoutPosition());
-                    break;
-                //Delete Button Clicked
-                case R.id.deleteRoute:
-                    listener.onDeleteCurrentRoute(this.getLayoutPosition());
                     break;
                 //Favorite Button Clicked
                 case R.id.favoriteRoute:

@@ -29,6 +29,7 @@ public class Route implements Comparable<Route> {
     public int[] optionalFeatures = new int[5];//States of optionals chosen
 
     public TeamMember creator;
+    public boolean userHasWalkedRoute;
 
     /**
      * Constructor for a Route object.
@@ -107,6 +108,10 @@ public class Route implements Comparable<Route> {
     }
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public void setUserHasWalkedRoute(boolean hasWalkedRoute){
+        this.userHasWalkedRoute = hasWalkedRoute;
     }
 
 

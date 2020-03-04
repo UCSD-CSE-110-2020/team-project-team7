@@ -3,7 +3,7 @@
  * Icons : https://icons8.com/icon/pack/sports/android
  */
 
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.RecycleViewAdapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,6 +19,12 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.Route;
+import com.example.walkwalkrevolution.RoutesForm;
+import com.example.walkwalkrevolution.TreeSetManipulation;
+import com.example.walkwalkrevolution.WalkRunSession;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

@@ -5,16 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeam;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
@@ -70,21 +69,7 @@ public class TeamRoutesList extends AppCompatActivity {
     }
 
     private List<Route> getTeamRoutes(){
-        List<Route> list = new ArrayList<>();
-
-        Route route2 = new Route("Bryan Avenue", "Archer Ave", 20, 1.4);
-        route2.setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", false));
-        list.add(route2);
-
-        Route route3 = new Route("Celt Drive", "Grisly Garden", 440, 30.4);
-        route3.setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", "CindyID", "TEAMC", false));
-        list.add(route3);
-
-        Route route1 = new Route("Arker Walk", "Garden Grove", 30, 2.4);
-        route1.setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
-        list.add(route1);
-
-        return list;
+        return TeamRoutesListAdapter.retrieveTeammatesFromCloud();
     }
 
     /**

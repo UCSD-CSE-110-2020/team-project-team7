@@ -5,13 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
+
 import java.util.List;
 
 public class TeammatesPage extends AppCompatActivity {
@@ -63,7 +63,7 @@ public class TeammatesPage extends AppCompatActivity {
     }
 
     private List<TeamMember> loadTeammates(){
-        return TeammatesAdapter.retrieveTeammatesFromCloud();
+        return TeammatesPageAdapter.retrieveTeammatesFromCloud();
     }
 
     /**

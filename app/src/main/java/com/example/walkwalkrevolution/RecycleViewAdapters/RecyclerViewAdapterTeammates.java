@@ -1,12 +1,9 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.RecycleViewAdapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.TeamMember;
 
 import java.util.List;
 
