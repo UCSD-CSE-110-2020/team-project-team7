@@ -32,4 +32,9 @@ public class TestFitnessServiceAdapter implements FitnessService {
         homePage.setStepCount(nextStepCount);
         homePage.updateStepView(String.valueOf(homePage.getStepCount()));
     }
+
+    @Override
+    public long getStepCount() {
+        return 0;
+    }
 }

@@ -38,7 +38,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
     public FitnessService fitnessService;
     private String fitnessServiceKey = "GOOGLE_FIT";
     public boolean testStep = true;
-    public transient StepCountActivity sc;
+    //public StepCountActivity sc;
     public TextView stepCountText;
 
 
@@ -90,6 +90,16 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
         stepCountText = findViewById(R.id.stepCountText);
         milesText = findViewById(R.id.distanceCountText);
 
+        /*
+        // Create Observable object to keep track of steps/timer
+        sco = new StepCountObservable(fitnessService, testStep);
+        Log.d("HOMEPAGE ON START", "Created StepCountObservable");
+        // sc = new StepCountActivity(fitnessService, testStep);
+        sco.updateStep = this;
+        sco.addObserver(this);
+
+         */
+
         // used to start the walk/run activity
         Log.d(TAG, "Started AsyncTask for step counter");
 
@@ -127,7 +137,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
 
         // stop async task
         //sc.cancel(true);
-        sco.cancelStepCount();
+        //sco.cancelStepCount();
+
+        // Set HomePage session for StepCount is ending
+        sco.homePageSession = false;
     }
 
     @Override
@@ -142,8 +155,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
         // get latest walk
         displayLastWalk();
 
-        // Create async task
+        // Create Observable object to keep track of steps/timer
         sco = new StepCountObservable(fitnessService, testStep);
+        Log.d("HOMEPAGE ON START", "Created StepCountObservable");
        // sc = new StepCountActivity(fitnessService, testStep);
         sco.updateStep = this;
         sco.addObserver(this);
@@ -167,8 +181,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
     protected void onDestroy() {
         Log.d("HOMEPAGE ON DESTROY", "being destroy");
         super.onDestroy();
-        if(!sc.isCancelled()) {
-            sc.cancel(true);
+        if(!sco.checkSCCancelled()) {
+            sco.cancelStepCount();
         }
     }
 
@@ -290,8 +304,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
     @Override
     public void update(Observable o, Object arg) {
         if(o == sco) {
-            stepCountText.setText(sco.getStepCountStr());
-            milesText.setText(sco.getMileStr());
+            if(sco.homePageSession) {
+                stepCountText.setText(sco.getStepCountStr());
+                milesText.setText(sco.getMileStr());
+            }
         }
     }
 }

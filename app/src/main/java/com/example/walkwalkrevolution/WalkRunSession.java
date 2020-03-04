@@ -33,6 +33,8 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public static final int REQUEST_MOCK_SESSION = 3;
 
+    private long initialStepCount;
+
     private boolean isCancelled;
     private long startTime;
     private int minutes, seconds;
@@ -62,11 +64,10 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         resultTime = timerText.getText().toString();
        // runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
 
-        // Get StepCountActivity from Intent
-        Intent intent = getIntent();
-        this.sc = (StepCountActivity) intent.getSerializableExtra("sc");
-        sc.setUpWalkRun(this);
-       // HomePage.sco. TODO
+        // Get current step count from HomePage
+        Log.d("Current step count = ", HomePage.sco.getStepCountStr());
+        initialStepCount = Long.valueOf(HomePage.sco.getStepCountStr());
+
         // steps and miles views initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
@@ -85,6 +86,9 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         }
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         */
+        // Add Walk/Run to StepCount observer list
+        HomePage.sco.addObserver(this);
+        HomePage.sco.updateStep = this;
 
         // Make a new TimeData object based on what's in shared prefs
         timeData = new TimeData();
@@ -100,7 +104,8 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         stopActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sc.cancel(true);
+                //sc.cancel(true);
+                HomePage.sco.cancelStepCount();
                 isCancelled = true;
                 finish();
                 launchRouteForm();
@@ -164,8 +169,10 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
 
         Intent intent = getIntent();
       //  sc = new StepCountActivity(fitnessService, testStep);
-        sc = (StepCountActivity) intent.getSerializableExtra("sc");
-        sc.updateStep = this;
+       // sc = (StepCountActivity) intent.getSerializableExtra("sc");
+        //sc.updateStep = this;
+        HomePage.sco.updateStep = this;
+        initialStepCount = Long.valueOf(HomePage.sco.getStepCountStr());
 
         // Mock time is set
         if(stepsFromMock != 0) {
@@ -179,7 +186,8 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     protected void onStop() {
         super.onStop();
         Log.d("WALK RUN SESSION ONSTOP", "in onstop");
-        sc.cancel(true);
+        //sc.cancel(true);
+        HomePage.sco.cancelStepCount();
 
         // Save into shared prefs
         long savedSteps = stepsFromMock + stepCount;
@@ -195,7 +203,8 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         setMiles((Math.floor((stepCount / stepsPerMile) * 100)) / 100);
         updateStepView(String.valueOf(getStepCount()));
         updatesMilesView(String.valueOf(getMiles()));
-        sc.turnOffAPI = true;
+        //sc.turnOffAPI = true;
+        HomePage.sco.turnOffAPI = true;
     }
 
 
@@ -263,9 +272,29 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         return String.format("%d:%02d", minutes, seconds);
     }
 
+    /**
+     * Update textview objects in Walk/Run from StepCountObservable
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
+        if(o == HomePage.sco) {
+            if(!HomePage.sco.homePageSession) {
+                // Subtract current stepCount from initial step count from Homepahe
+                long currStepCount = Long.valueOf(HomePage.sco.getStepCountStr()) - initialStepCount;
+                stepCountText.setText(String.valueOf(currStepCount));
 
+                // Calculate miles from current step count
+                double stepCountdouble = (double) currStepCount;
+                double miles = (Math.floor((stepCountdouble / getStepsPerMile()) * 100)) / 100;
+                milesText.setText(String.valueOf(miles));
+
+                String currTime = makeTimeString();
+                Log.d(TAG , "DISPLAYED TIME IS: " + currTime);
+                timerText.setText(currTime);
+            }
+        }
     }
 
 

@@ -10,6 +10,7 @@ import java.util.Observable;
 public class StepCountObservable extends Observable {
 
     public boolean turnOffAPI = false;
+    public boolean homePageSession = true;
     public UpdateStepTextView updateStep;
 
     private FitnessService fs;
@@ -30,12 +31,16 @@ public class StepCountObservable extends Observable {
         return mileStr;
     }
 
-    public String getTimerStr() {
-        return timerStr;
-    }
+  //  public String getTimerStr() {
+//        return timerStr;
+   // }
 
     public void cancelStepCount() {
         sc.cancel(true);
+    }
+
+    public boolean checkSCCancelled() {
+        return sc.isCancelled();
     }
 
     private class StepCountActivity extends AsyncTask<String, String, String> {
@@ -89,29 +94,34 @@ public class StepCountObservable extends Observable {
         */
 
             // Setting up string for Timer in Walk/Run Session
-            String toReturn = "0";
-            publishProgress(String.valueOf(updateStep.getStepCount()),
-                    String.valueOf(updateStep.getMiles()), toReturn);
+           // String toReturn = "0";
+           // publishProgress(String.valueOf(updateStep.getStepCount()),
+                  //  String.valueOf(updateStep.getMiles()), toReturn);
 
             do {
                 // Don't update step count from publish if testing
                 if(!testStep) {
                     if(!turnOffAPI) {
                         // Create string for Timer
-                        if(runSession) {
-                            toReturn = wrs.makeTimeString();
-                            Log.d(TAG , "DISPLAYED TIME IS: " + toReturn);
-                        }
+                        //if(!homePageSession) {
+                            //toReturn = wrs.makeTimeString();
+                            //Log.d(TAG , "DISPLAYED TIME IS: " + toReturn);
+                        //}
 
                         fs.updateStepCount();
+                        double stepCountdouble = (double) fs.getStepCount();
+                        miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
+                        publishProgress(String.valueOf(fs.getStepCount()), String.valueOf(miles));
+
+                        /*
                         publishProgress(String.valueOf(updateStep.getStepCount()),
-                                String.valueOf(updateStep.getMiles()),
-                                toReturn);
+                                String.valueOf(updateStep.getMiles()));
                         Log.d("steps tracker", String.valueOf(updateStep.getStepCount()));
                         // TODO comment below line out if you want to use google api
                         double stepCountdouble = (double) updateStep.getStepCount();
                         miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
                         updateStep.setMiles(miles);
+                         */
 
 
                     }
@@ -143,7 +153,6 @@ public class StepCountObservable extends Observable {
             // Set count values to Observable
             stepCountStr = text[0];
             mileStr = text[1];
-            timerStr = text[2];
             setChanged();
             notifyObservers();
         }

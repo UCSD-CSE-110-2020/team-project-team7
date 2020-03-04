@@ -22,6 +22,7 @@ public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;
+    public long stepCount;
 
     private HomePage activity;
 
@@ -95,6 +96,7 @@ public class GoogleFitAdapter implements FitnessService {
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
                                 activity.setStepCount(total);
+                                stepCount = total;
                                 Log.d(TAG, "Total steps: " + total);
                             }
                         })
@@ -115,4 +117,9 @@ public class GoogleFitAdapter implements FitnessService {
 
     @Override
     public void setNextStepCount(long sc) {}
+
+    @Override
+    public long getStepCount() {
+        return stepCount;
+    }
 }
