@@ -42,18 +42,5 @@ public class RoutesListTest {
         }
     }
 
-    @Test
-    public void testHomeButton(){
-        try(ActivityScenario<RoutesList> scenario = ActivityScenario.launch(RoutesList.class)) {
-            scenario.onActivity(activity -> {
-                Button homeButton = activity.findViewById(R.id.goToHomePage);
-                homeButton.performClick();
-                assertThat(homeButton.isPressed());
-                Intent intent = Shadows.shadowOf(activity).getNextStartedActivity();
-                assertThat(intent.getComponent()).isEqualTo(new ComponentName(activity, HomePage.class));
-            });
-        }
-    }
-
 
 }
