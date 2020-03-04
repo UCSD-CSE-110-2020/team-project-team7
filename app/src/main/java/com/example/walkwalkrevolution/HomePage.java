@@ -160,7 +160,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
         Log.d("HOMEPAGE ON START", "Created StepCountObservable");
        // sc = new StepCountActivity(fitnessService, testStep);
         sco.updateStep = this;
-        sco.addObserver(this);
+        //sco.addObserver(this);
 
         // if steps were modified from mock page change steps to static mock steps
         SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
@@ -184,6 +184,13 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView, O
         if(!sco.checkSCCancelled()) {
             sco.cancelStepCount();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("HOMEPAGE ON RESUME", "resuming homepage");
+        super.onResume();
+        sco.addObserver(this);
     }
 
     @Override
