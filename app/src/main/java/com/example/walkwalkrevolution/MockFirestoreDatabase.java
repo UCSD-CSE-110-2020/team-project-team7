@@ -217,6 +217,7 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! TO ACTUALLY GET THE TEAMROUTES LIST YOU NEED TO CALL TEAMMEMBERFACTORY.GETTEAMROUTES()
      * !!! CALL THIS IN ONSTART OF TEAM ROUTES PAGE !!! (FOR AMRIT)
      * TeamMemberFactory will then have a list of pairs of everyone's routes
      */
@@ -319,8 +320,6 @@ public class MockFirestoreDatabase {
     }
 
     // TODO [END] (TEAM PAGE) ------------------------------------------------------------------------
-
-
 
 
     // TODO [START] (PROPOSED WALKS) -----------------------------------------------------------------
