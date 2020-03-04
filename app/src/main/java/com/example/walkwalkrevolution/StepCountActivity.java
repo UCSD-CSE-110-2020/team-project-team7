@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 
+import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -16,6 +17,10 @@ import java.text.DecimalFormat;
  * Updates HomePage information (steps + distance) in the background of the app.
  */
 public class StepCountActivity extends AsyncTask<String, String, String> {
+
+    public WalkRunSession wrs;
+    public boolean runSession = false;
+    private static final String TAG = "WalkRunSession";
 
     public UpdateStepTextView updateStep;
     public boolean turnOffAPI = false;
@@ -61,17 +66,32 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
         }
         */
 
+        // Setting up string for Timer in Walk/Run Session
+        String toReturn = "0";
+        publishProgress(String.valueOf(updateStep.getStepCount()),
+                String.valueOf(updateStep.getMiles()), toReturn);
+
         do {
             // Don't update step count from publish if testing
             if(!testStep) {
                 if(!turnOffAPI) {
+                    // Create string for Timer
+                    if(runSession) {
+                        toReturn = wrs.makeTimeString();
+                        Log.d(TAG , "DISPLAYED TIME IS: " + toReturn);
+                    }
+
                     fs.updateStepCount();
-                    publishProgress(String.valueOf(updateStep.getStepCount()), String.valueOf(updateStep.getMiles()));
+                    publishProgress(String.valueOf(updateStep.getStepCount()),
+                            String.valueOf(updateStep.getMiles()),
+                            toReturn);
                     Log.d("steps tracker", String.valueOf(updateStep.getStepCount()));
                     // TODO comment below line out if you want to use google api
                     double stepCountdouble = (double) updateStep.getStepCount();
                     miles = (Math.floor((stepCountdouble / updateStep.getStepsPerMile()) * 100)) / 100;
                     updateStep.setMiles(miles);
+
+
                 }
             }
             try {
@@ -94,7 +114,18 @@ public class StepCountActivity extends AsyncTask<String, String, String> {
     protected void onProgressUpdate(String... text) {
         updateStep.updateStepView(text[0]);
         updateStep.updatesMilesView(text[1]);
+
+        // Sets timer text if Walk/Run Session
+        if(runSession) wrs.setTimerText(text[2]);
     }
 
+    /**
+     * Adds support for Walk/Run Session to Async activity
+     * @param wrs: Walk/Run Session activity
+     */
+    public void setUpWalkRun(WalkRunSession wrs) {
+        this.wrs = wrs;
+        runSession = true;
+    }
 }
 

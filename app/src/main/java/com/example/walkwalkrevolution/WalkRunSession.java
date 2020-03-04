@@ -17,10 +17,14 @@ import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.forms.MockPage;
 
+import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * Displays Walk/Run session screen, updating steps/distance user has taken and ticking timer.
  */
-public class WalkRunSession extends AppCompatActivity implements UpdateStepTextView {
+public class WalkRunSession extends AppCompatActivity implements UpdateStepTextView, Observer {
 
     // Constant for logging
     private static final String TAG = "WalkRunSession";
@@ -34,10 +38,10 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
     private int minutes, seconds;
     private long stepCount, stepsFromMock;
     private double stepsPerMile, milesCount;
-    private TextView timerText, stepCountText, milesText;
+    private TextView timerText, milesText, stepCountText;
     private TimeData timeData;
     private FitnessService fitnessService;
-    private StepCountActivity sc;
+    public StepCountActivity sc;
     private TimerCount runner;
     private String resultTime;
     public boolean testStep = true;
@@ -54,10 +58,15 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         timerText = findViewById(R.id.timer_text);
 
         // timer counter initialize
-        runner = new TimerCount();
+       // runner = new TimerCount();
         resultTime = timerText.getText().toString();
-        runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
+       // runner.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,resultTime);
 
+        // Get StepCountActivity from Intent
+        Intent intent = getIntent();
+        this.sc = (StepCountActivity) intent.getSerializableExtra("sc");
+        sc.setUpWalkRun(this);
+       // HomePage.sco. TODO
         // steps and miles views initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
@@ -68,13 +77,14 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         stepsPerMile = Double.parseDouble(stepsPerMileStr);
 
         // Check from String extra if a test FitnessService is being passed
+        /*
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         if(fitnessServiceKey == null) {
             fitnessServiceKey = "GOOGLE_FIT";
             testStep = false;
         }
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
-
+        */
 
         // Make a new TimeData object based on what's in shared prefs
         timeData = new TimeData();
@@ -152,7 +162,9 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         timerText.setText(makeTimeString());
         Log.d(TAG, "Get time: " + timeData.getTime());
 
-        sc = new StepCountActivity(fitnessService, testStep);
+        Intent intent = getIntent();
+      //  sc = new StepCountActivity(fitnessService, testStep);
+        sc = (StepCountActivity) intent.getSerializableExtra("sc");
         sc.updateStep = this;
 
         // Mock time is set
@@ -160,7 +172,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
             mockStepsSet();
         }
 
-        sc.execute();
+        //sc.execute();
     }
 
     @Override
@@ -239,7 +251,7 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
 
     // ASYNC TASK, TIMER ---------------------------------------------------------------------------
 
-    private String makeTimeString() {
+    public String makeTimeString() {
         if (timeData == null) {
             timeData = new TimeData();
         }
@@ -249,6 +261,11 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         minutes = seconds/60;
         seconds %= 60;
         return String.format("%d:%02d", minutes, seconds);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 
 
@@ -290,6 +307,14 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         protected void onProgressUpdate(String... text){
             timerText.setText(text[0]);
         }
+    }
+
+    /**
+     * Sets the current time on the timer
+     * @param text: Current time the timer is on
+     */
+    public void setTimerText(String text) {
+        timerText.setText(text);
     }
 
     /**

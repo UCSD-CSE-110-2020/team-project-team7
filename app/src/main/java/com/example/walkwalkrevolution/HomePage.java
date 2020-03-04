@@ -17,11 +17,16 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.google.firebase.FirebaseApp;
 import com.example.walkwalkrevolution.forms.HeightForm;
 import com.example.walkwalkrevolution.forms.MockPage;
+import com.google.protobuf.StringValue;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class HomePage extends AppCompatActivity implements UpdateStepTextView {
+public class HomePage extends AppCompatActivity implements UpdateStepTextView, Observer {
 
+    public static StepCountObservable sco;
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public final String TAG = "Home Page";
 
@@ -33,7 +38,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public FitnessService fitnessService;
     private String fitnessServiceKey = "GOOGLE_FIT";
     public boolean testStep = true;
-    public StepCountActivity sc;
+    public transient StepCountActivity sc;
     public TextView stepCountText;
 
 
@@ -121,7 +126,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onStop();
 
         // stop async task
-        sc.cancel(true);
+        //sc.cancel(true);
+        sco.cancelStepCount();
     }
 
     @Override
@@ -137,8 +143,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         displayLastWalk();
 
         // Create async task
-        sc = new StepCountActivity(fitnessService, testStep);
-        sc.updateStep = this;
+        sco = new StepCountObservable(fitnessService, testStep);
+       // sc = new StepCountActivity(fitnessService, testStep);
+        sco.updateStep = this;
+        sco.addObserver(this);
 
         // if steps were modified from mock page change steps to static mock steps
         SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
@@ -149,9 +157,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
             updateStepView(String.valueOf(getStepCount()));
             updatesMilesView(String.valueOf(getMiles()));
-            sc.turnOffAPI = true;   // turn off google api if doing mock
+            //sc.turnOffAPI = true;   // turn off google api if doing mock
+            sco.turnOffAPI = true;
         }
-        sc.execute();
+        //sc.execute();
     }
 
     @Override
@@ -198,7 +207,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             timeValue.setText(list.get(2));
         }
     }
-
 
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface
@@ -277,6 +285,14 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Intent intent = new Intent(this, MockPage.class);
         intent.putExtra("stepCountFromHome", stepCount);
         startActivity(intent);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o == sco) {
+            stepCountText.setText(sco.getStepCountStr());
+            milesText.setText(sco.getMileStr());
+        }
     }
 }
 
