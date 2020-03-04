@@ -27,7 +27,7 @@ public class ProposedWalkObservable extends Observable {
         // TODO, fetch the is a proposed walk json string from the cloud
 
         // Fetch the proposed walk
-        ProposedWalk cloudProposedWalk = MockFirestoreDatabase.getProposedWalk(TeamMemberFactory.get("CalvinID"));
+        ProposedWalk cloudProposedWalk = TeamMemberFactory.getProposedWalk();
 
         Log.d(TAG, "Comparing fetched proposed walk to current...");
 
