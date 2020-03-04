@@ -1,4 +1,4 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.forms;
 
 import android.content.Intent;
 import android.icu.util.Calendar;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,8 +24,7 @@ import java.util.Date;
 public class SetDate extends AppCompatActivity {
 
     // Activity objects
-    private Button saveButton;
-    private Button cancelButton;
+    private Button saveButton, cancelButton;
     private DatePicker datePicker;
 
     private static final String TAG = "SetDate";
@@ -43,12 +45,12 @@ public class SetDate extends AppCompatActivity {
             try {
                 // Try to get the current saved date of the route
                 String date = fromIntent.getExtras().getString("date");
-                int month = Integer.parseInt(date.substring(0,2)) - 1;
-                int day = Integer.parseInt(date.substring(3,5));
-                int year = Integer.parseInt(date.substring(6, date.length()));
+                int[] mdy = DateTimeFormatter.extractMonthDayYear(date);
 
                 // Set the date info on the calendar
-                datePicker.init(year, month, day, null);;
+                datePicker.init(mdy[DateTimeFormatter.YEAR_INDEX],
+                        mdy[DateTimeFormatter.MONTH_INDEX],
+                        mdy[DateTimeFormatter.DAY_INDEX], null);;
 
             } catch(NullPointerException e) {
             }
@@ -76,21 +78,11 @@ public class SetDate extends AppCompatActivity {
      * back as a String to the RoutesForm.
      */
     private void saveDate() {
-        int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth() + 1;
+        int day = datePicker.getDayOfMonth();
         int year = datePicker.getYear();
 
-        // Handle the case for single digit months/days
-        String monthStr = month + "";
-        if (monthStr.length() < 2) {
-            monthStr = "0" + monthStr;
-        }
-        String dayStr = day + "";
-        if (dayStr.length() < 2) {
-            dayStr = "0" + dayStr;
-        }
-
-        String date = monthStr + "/" + dayStr + "/" + year;
+        String date = DateTimeFormatter.formatMonthDayYear(month, day, year);
 
         // Pass the new date back to the RoutesForm
         Intent intent = new Intent();

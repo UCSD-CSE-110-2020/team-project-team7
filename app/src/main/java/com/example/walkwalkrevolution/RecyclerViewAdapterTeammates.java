@@ -52,7 +52,7 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
 
         holder.icon.setText(teammate.getInitials());
         holder.name.setText(teammate.getName());
-        holder.icon.getBackground().setColorFilter(Color.parseColor(teammate.getColor()), PorterDuff.Mode.MULTIPLY);
+        holder.icon.getBackground().setColorFilter(teammate.getColorVal(), PorterDuff.Mode.MULTIPLY);
 
     }
 

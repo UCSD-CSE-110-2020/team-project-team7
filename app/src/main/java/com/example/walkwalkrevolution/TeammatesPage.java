@@ -65,9 +65,9 @@ public class TeammatesPage extends AppCompatActivity {
     private List<TeamMember> loadTeammates(){
         List<TeamMember> teammates = new ArrayList<>();
 
-        teammates.add(new TeamMember("Amrit Singh", "AS", 0x7986CB));
-        teammates.add(new TeamMember("Titan Ngo", "TN", 0xB2DFDB));
-        teammates.add(new TeamMember("Cindy Do", "CD", 0xFFCCBC));
+        teammates.add(new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
+        teammates.add(new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", false));
+        teammates.add(new TeamMember("Cindy Do", "cido@ucsd.edu", "CindyID", "TEAMC", false));
         return teammates;
     }
 

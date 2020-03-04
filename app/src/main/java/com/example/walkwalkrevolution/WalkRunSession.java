@@ -2,24 +2,21 @@ package com.example.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.TimedMetaData;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.custom_data_classes.TimeData;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
-import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.example.walkwalkrevolution.forms.MockPage;
 
-import java.util.Timer;
 /**
  * Displays Walk/Run session screen, updating steps/distance user has taken and ticking timer.
  */
@@ -64,7 +61,11 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
         // steps and miles views initialize
         stepCountText = findViewById(R.id.activity_miles_number2);
         milesText = findViewById(R.id.activity_miles_number);
-        stepsPerMile = getIntent().getDoubleExtra("stepsPerMileFromHome", 1);
+
+        // get stepsPerMile from sharedPrefs for calculating distance
+        SharedPreferences sharedPreferences = getSharedPreferences("stepsPerMileFromHome", MODE_PRIVATE);
+        String stepsPerMileStr = sharedPreferences.getString("stepsPerMileFromHome", "1");
+        stepsPerMile = Double.parseDouble(stepsPerMileStr);
 
         // Check from String extra if a test FitnessService is being passed
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);

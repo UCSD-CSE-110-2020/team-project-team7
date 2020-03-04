@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetDate">
+    tools:context=".forms.SetDate">
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="301dp"
-        android:layout_height="380dp"
+        android:layout_width="347dp"
+        android:layout_height="440dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,12 +23,14 @@
             android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="@string/choose_route_date"
-            android:textSize="19sp" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
         <DatePicker
             android:id="@+id/datePicker"
-            android:layout_width="match_parent"
-            android:layout_height="376dp"
+            android:layout_width="wrap_content"
+            android:layout_height="414dp"
+            android:layout_gravity="center"
             android:headerBackground="#2196F3"
             android:scaleX="0.8"
             android:scaleY="0.7" />

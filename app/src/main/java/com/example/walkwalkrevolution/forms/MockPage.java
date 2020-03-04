@@ -1,17 +1,19 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.forms;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.UpdateStepTextView;
+import com.example.walkwalkrevolution.custom_data_classes.TimeData;
 
 /**
  * Class for mocking steps and time.

@@ -179,7 +179,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
         holder.routeMiles.setText(formatMiles(route.distance));
 
         holder.icon.setText(route.creator.getInitials());
-        holder.icon.getBackground().setColorFilter(Color.parseColor(route.creator.getColor()), PorterDuff.Mode.MULTIPLY);
+        holder.icon.getBackground().setColorFilter(route.creator.getColorVal(), PorterDuff.Mode.MULTIPLY);
 
         //updates for any additional information clicked (Toggle Buttons + Notes)
         holder.additionalInformation.setText(renderOptionalInfo(route));
