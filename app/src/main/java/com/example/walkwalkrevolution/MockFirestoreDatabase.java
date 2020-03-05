@@ -69,7 +69,8 @@ public class MockFirestoreDatabase {
     private static void checkUserExists(String mock_user_email, String name) {
 
         // try to find their document in the database
-        users.document(mock_user_email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        users.document(mock_user_email).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
@@ -83,7 +84,8 @@ public class MockFirestoreDatabase {
                     } else {
                         Log.d(TAG, "user doesnt exist");
 
-                        // if the current user does not exist create a userDetails obj and add to database
+                        // if the current user does not exist ...
+                        //   create a userDetails obj and add to database
                         addUserToFireStore(mock_user_email, name);
                     }
                 } else {
@@ -275,7 +277,10 @@ public class MockFirestoreDatabase {
             }
         });
     }
+    // TODO [END] (TEAM ROUTES PAGE) ---------------------------------------------------------------
 
+
+    // TODO [START] (NOTIFICATIONS) ----------------------------------------------------------------
     /**
      * WHEN USER INVITES SOMEONE TO THEIR TEAM (FOR HARRISON)
      */
@@ -356,10 +361,10 @@ public class MockFirestoreDatabase {
     public static void teamCreationOnDecline(UserDetails inviter, UserDetails invitee) {
         teams.document(inviter.getTeam()).collection(MEMBERS).document(invitee.getEmail()).delete();
     }
+    // TODO [END] (NOTIFICATIONS) ------------------------------------------------------------------
 
 
-
-    // TODO [START] (PROPOSED WALKS) -----------------------------------------------------------------
+    // TODO [START] (PROPOSED WALKS) ---------------------------------------------------------------
     /**
      * !!! PUT IN SENDPROPOSEDWALK.SENDPROPOSEDWALK() !!! (FOR TITAN)
      * Store the proposed walk into the cloud teams document and send out notification
@@ -374,13 +379,15 @@ public class MockFirestoreDatabase {
     }
 
     /**
+     * !!! THIS SHOULD BE CALLED ONCREATE OF TEAMS PAGE !!!
      * !!! PROPOSED WALK IS SENT TO TEAMMEMBERFACTORY,
      *     TO GET, CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
      * Retrieving the proposed walk from database
      */
     public static void getProposedWalk(String teamID) {
 
-        teams.document(teamID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        teams.document(teamID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
@@ -394,5 +401,5 @@ public class MockFirestoreDatabase {
             }
         });
     }
-    // TODO [END] (PROPOSED WALKS) -------------------------------------------------------------------
+    // TODO [END] (PROPOSED WALKS) -----------------------------------------------------------------
 }
