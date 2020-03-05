@@ -5,6 +5,7 @@ public class UserDetails {
     String email;
     String routes = "";
     String team = "";
+    String teamRoutesWalked = "";
 
     UserDetails() {}
 
@@ -26,11 +27,13 @@ public class UserDetails {
     public void setTeam(String team) {
         this.team = team;
     }
+    public void setTeamRoutesWalked(String teamRouteWalked) { this.teamRoutesWalked = teamRouteWalked; }
 
     public String getName() { return this.name; }
     public String getEmail() { return this.email; }
     public String getRoutes() { return this.routes; }
     public String getTeam() { return this.team; }
+    public String getTeamRoutesWalked() { return this.teamRoutesWalked; }
 
 
 }

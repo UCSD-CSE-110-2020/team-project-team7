@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -167,7 +168,30 @@ public class MockFirestoreDatabase {
     public static List<Route> getUserRoutes(UserDetails currentUser) {
         Gson gson = new Gson();
         Type type = new TypeToken<List<Route>>() {}.getType();
-        return gson.fromJson(UserDetailsFactory.get(currentUser.getEmail()).getRoutes(), type);
+        return gson.fromJson(currentUser.getRoutes(), type);
+    }
+
+    /**
+     * WHEN CURRENT USER WALKS A TEAMMATE'S ROUTE STORE INTO TEAMROUTEWALKED FIELD IN CLOUD
+     */
+    public static void storeTeamRoutesWalked(String routesToStore, UserDetails currentUser) {
+
+        Map<String, String> teamRoutesWalked = new HashMap<>();
+        teamRoutesWalked.put("teamRoutesWalked", routesToStore);
+        try {
+            users.document(currentUser.getEmail()).set(teamRoutesWalked, SetOptions.merge());
+        } catch (Exception e) {
+            Log.d(TAG, "failed to store teamRoutesWalked: ", e);
+        }
+    }
+
+    /**
+     * GET THE CURRENT USER'S ROUTES THAT WERE TAKEN FROM TEAM ROUTES PAGE
+     */
+    public static List<Route> getTeamRoutesWalked(UserDetails currentUser) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Route>>() {}.getType();
+        return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
     }
     // TODO [END] (ROUTES PAGE) ------------------------------------------------------------------------
 
@@ -175,17 +199,18 @@ public class MockFirestoreDatabase {
     // TODO [START] (TEAM PAGE) ------------------------------------------------------------------------
     /**
      * !!! CALL ONSTART OF TEAMPAGE !!! (FOR AMRIT)
-     * @param currentUserEmail
      */
-    public static void teamsPageOnStart(String currentUserEmail) {
+    public static void teamsPageOnStart(UserDetails currentUser) {
 
-        users.document(currentUserEmail).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        users.document(currentUser.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
                     String team = snapshot.get("team").toString();
-                    UserDetailsFactory.get(currentUserEmail).setTeam(team);
+                    String teamRoutesWalked = snapshot.get("teamRoutesWalked").toString();
+                    currentUser.setTeam(team);
+                    currentUser.setTeamRoutesWalked(teamRoutesWalked);
                     populateTeamMateFactory(team);
                 } else {
                     Log.d(TAG, "Error getting team on load");
@@ -221,7 +246,7 @@ public class MockFirestoreDatabase {
      * !!! CALL THIS IN ONSTART OF TEAM ROUTES PAGE !!! (FOR AMRIT)
      * TeamMemberFactory will then have a list of pairs of everyone's routes
      */
-    public static void populateTeamRoutes(String teamID) {
+    public static void populateTeamRoutesOnStart(UserDetails currentUser, String teamID) {
         TeamMemberFactory.resetRoutes();
         getProposedWalk(teamID);
 
@@ -234,7 +259,7 @@ public class MockFirestoreDatabase {
                     for(QueryDocumentSnapshot members : task.getResult()) {
                         String memberEmail = members.getData().get("email").toString();
                         String routesJSON = members.getData().get("routes").toString();
-                        if(routesJSON != "") {
+                        if((routesJSON != "") && (memberEmail != currentUser.getEmail())) {
                             List<Route> membersRoutes = gson.fromJson(routesJSON, type);
                             for(Route route : membersRoutes) {
                                 TeamMemberFactory.addRoute(new Pair<>(memberEmail,route));
