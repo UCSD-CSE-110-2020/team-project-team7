@@ -7,25 +7,31 @@ import com.example.walkwalkrevolution.TeamMemberFactory;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 
 /**
  * Observable that keeps track of a Team's ProposedWalk for several Activity observers.
  * Use addObserver and deleteObserver for registering/deleting.
  */
-public class ProposedWalkObservable extends Observable {
+public class ProposedWalkObservable {
 
-    private final String TAG = "ProposedWalkObservable";
+    private final static String TAG = "ProposedWalkObservable";
 
-    private ProposedWalk proposedWalk;
+    // Static var holding team proposed walk, updated to current proposed walk when fetch is called
+    private static ProposedWalk proposedWalk = null;
+
+    // ArrayList holding all observers
+    private static ArrayList<ProposedWalkObserver> observers
+            = new ArrayList<ProposedWalkObserver>();
+
 
     /**
      * Fetch the team's proposed walk from the cloud, if there is one.
      * If it's different from the current proposed walk, set it.
      */
-    public void fetchProposedWalk() {
-        // TODO, fetch the is a proposed walk json string from the cloud
-
+    public static void fetchProposedWalk() {
         // Fetch the proposed walk
         ProposedWalk cloudProposedWalk = MockFirestoreDatabase.getProposedWalk(TeamMemberFactory.get("CalvinID"));
 
@@ -41,26 +47,67 @@ public class ProposedWalkObservable extends Observable {
         }
     }
 
+
+    // MANIPULATION OF PROPOSED WALK DATA VAR ------------------------------------------------------
+
     /**
      * Set the proposed walk instance variable. Notify observers of the change.
+     *
      * @param proposedWalk
      */
-    public void setProposedWalk(ProposedWalk proposedWalk) {
+    public static void setProposedWalk(ProposedWalk proposedWalk) {
         if (proposedWalk != null) {
             Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.name);
         }
 
-        this.proposedWalk = proposedWalk;
-        this.setChanged();
-        this.notifyObservers(proposedWalk);
+        proposedWalk = proposedWalk;
+        notifyObservers(proposedWalk);
     }
 
     /**
      * Clear the currently saved proposed walk to null.
      */
-    public void clearProposedWalk() {
+    public static void clearProposedWalk() {
         setProposedWalk(null);
         Log.d(TAG, "Cleared Proposed Walk to null");
+    }
+
+
+    // MANIPULATION OF OBSERVERS -------------------------------------------------------------------
+
+    /**
+     * Loop through all concrete observers in the observers ArrayList and call their update methods.
+     */
+    public static void notifyObservers(ProposedWalk proposedWalk) {
+        for (ProposedWalkObserver observer : observers) {
+            observer.update(observer, proposedWalk);
+        }
+    }
+
+    /**
+     * Add an observer to observers.
+     */
+    public static void register(ProposedWalkObserver observer) {
+        observers.add(observer);
+    }
+
+    /**
+     * Remove an observer form observers.
+     */
+    public static void removeObserver(ProposedWalkObserver observer) {
+        // Create an iterator over the observers array list
+        Iterator<ProposedWalkObserver> i = observers.iterator();
+
+        // loop over observers
+        while (i.hasNext()) {
+            ProposedWalkObserver myObserver = i.next();
+
+            // if we found the observer, delete it from the array list
+            if (observer == myObserver) {
+                i.remove();
+                break;
+            }
+        }
     }
 
 }

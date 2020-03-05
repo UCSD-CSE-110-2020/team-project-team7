@@ -9,19 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".proposed_walk_observer_pattern.ProposedWalkFetcherService"
+            android:exported="false"></service>
+
         <activity android:name=".forms.HeightForm" />
         <activity
             android:name=".RoutesForm"
             android:exported="true" />
-        <activity android:name=".SendProposedWalk"/>
+        <activity android:name=".SendProposedWalk" />
         <activity android:name=".AddTeammate" />
         <activity android:name=".forms.SetDate" />
         <activity android:name=".forms.NotesPage" />
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".forms.MockPage" />
-        <activity android:name=".HomePage" android:launchMode="singleInstance">
-
+        <activity
+            android:name=".HomePage"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,8 +37,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <service
-            android:name="MyFirebaseMessagingService">
+
+        <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name=".com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

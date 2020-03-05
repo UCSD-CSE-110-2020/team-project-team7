@@ -26,6 +26,9 @@ import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.forms.NotesPage;
 import com.example.walkwalkrevolution.forms.SetDate;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkFetcherService;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObserver;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
@@ -39,7 +42,7 @@ import java.util.Observer;
  * Handles interactions with editing details of and saving a
  * Routes entry on the Routes Form Activity.
  */
-public class RoutesForm extends AppCompatActivity implements Observer {
+public class RoutesForm extends AppCompatActivity implements ProposedWalkObserver {
 
     // Constant for logging
     private static final String TAG = "RoutesForm";
@@ -64,7 +67,7 @@ public class RoutesForm extends AppCompatActivity implements Observer {
     private String notes = "";
 
 
-    // SETTING UP GENERAL UI ELEMENTS AND BEHAVIOR -------------------------------------------------
+    // SETTING UP/DESTORYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
     private boolean intentFromWalkRunSession;
 
     @Override
@@ -75,7 +78,29 @@ public class RoutesForm extends AppCompatActivity implements Observer {
         Log.d(TAG, "Starting formSetUp");
         formSetUp();
         Log.d(TAG, "Finished formSetup");
+
+        // Add this activity into the observer pattern
+        ProposedWalkObservable.register(this);
+        // Start the fetcher intent service
+        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+        startService(intent);
     }
+
+    /**
+     * Upon quitting this intent, stop the fetcher intent service. Remove this Activity as
+     * an observer.
+     */
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        // Stop the fetcher intent service
+        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+        stopService(intent);
+
+        ProposedWalkObservable.removeObserver(this);
+    }
+
 
     /**
      * Initialize instance vars for most Activity objects. Set up the date. Find out which
@@ -545,7 +570,7 @@ public class RoutesForm extends AppCompatActivity implements Observer {
      * Called in ProposedWalkObservable whenever a change to the Team's ProposedWalk is made.
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(ProposedWalkObserver o, Object arg) {
         this.proposedWalk = (ProposedWalk) arg;
     }
 
