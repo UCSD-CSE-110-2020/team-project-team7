@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 /**
  * Creates a Route object, and wraps up all information associated with it.
+ *
  */
 public class Route implements Comparable<Route> {
 
