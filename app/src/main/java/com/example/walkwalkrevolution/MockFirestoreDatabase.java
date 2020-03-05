@@ -52,7 +52,6 @@ public class MockFirestoreDatabase {
     }
 
     // TODO [START] (HOMEPAGE ON CREATE) -------------------------------------------------------------------
-
     /**
      * !!! CALL ON CREATE OF HOMEPAGE !!! (FOR YOSHI/CALVIN)
      * CHECK IF CURRENT USER EXISTS IN DATABASE -> IN BOTH CASES CREATE GLOBAL USERDETAILS OBJECT OF THEM
@@ -120,7 +119,6 @@ public class MockFirestoreDatabase {
                     }
                 });
     }
-
     // TODO [END] (HOMEPAGE ON CREATE) -------------------------------------------------------------------
 
 
@@ -343,12 +341,10 @@ public class MockFirestoreDatabase {
     public static void teamCreationOnDecline(UserDetails inviter, UserDetails invitee) {
         teams.document(inviter.getTeam()).collection(MEMBERS).document(invitee.getEmail()).delete();
     }
-
     // TODO [END] (TEAM PAGE) ------------------------------------------------------------------------
 
 
     // TODO [START] (PROPOSED WALKS) -----------------------------------------------------------------
-
     /**
      * !!! PUT IN SENDPROPOSEDWALK.SENDPROPOSEDWALK() !!! (FOR TITAN)
      * Store the proposed walk into the cloud teams document and send out notification
@@ -385,7 +381,5 @@ public class MockFirestoreDatabase {
             }
         });
     }
-
     // TODO [END] (PROPOSED WALKS) -------------------------------------------------------------------
-
 }
