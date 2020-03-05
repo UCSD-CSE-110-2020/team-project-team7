@@ -23,7 +23,7 @@ import java.util.TreeSet;
 public class TreeSetManipulation {
 
     public final static String SHARED_PREFS_TREE_SET = "treeSet";
-    private static TreeSetComparator comparator = new TreeSetComparator();
+    //private static TreeSetComparator comparator = new TreeSetComparator();
     private static Route selectedRoute = null; //route from RoutesPage that is being in use
 
     private static final String TAG = "TreeSetManipulation";
@@ -84,7 +84,7 @@ public class TreeSetManipulation {
      */
     public static boolean updateRouteInTreeSet(SharedPreferences sharedPreferences, Route updatedRoute){
         Log.d(TAG, "Attempting to UPDATE treeset...");
-        TreeSet<Route> treeSet = new TreeSet<Route>(comparator);
+        TreeSet<Route> treeSet = new TreeSet<Route>();
         treeSet.addAll(loadTreeSet(sharedPreferences));
         Log.d("updateTreeSet", "hello");
         //route's modified name already exists in the list (excluding route's original name)
@@ -108,7 +108,7 @@ public class TreeSetManipulation {
      */
     public static boolean addRouteInTreeSet(SharedPreferences sharedPreferences, Route route){
         Log.d(TAG, "Attempting to ADD to treeset...");
-        TreeSet<Route> treeSet = new TreeSet<Route>(comparator);
+        TreeSet<Route> treeSet = new TreeSet<Route>();
         treeSet.addAll(loadTreeSet(sharedPreferences));
         Log.d("addTreeSet", "hello");
         //false if route name already exists in TreeSet

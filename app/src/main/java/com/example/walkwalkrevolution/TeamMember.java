@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import java.util.Random;
 
-public class TeamMember {
+public class TeamMember implements Comparable<TeamMember>{
 
     private String name;
     private String userID;
@@ -34,6 +34,13 @@ public class TeamMember {
             this.initials += n.charAt(0);
         }
     }
+
+    @Override
+    public int compareTo(TeamMember teamMember) {
+        TreeSetComparator comparator = new TreeSetComparator();
+        return comparator.compare(this.getName(), teamMember.getName());
+    }
+
     // Helper method to generate random pastel color for user emblem
     private void randomColorGenerator() {
         Random rand = new Random();

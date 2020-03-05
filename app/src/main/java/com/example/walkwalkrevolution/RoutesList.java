@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
+
 /**
  * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
  */
@@ -19,7 +21,7 @@ public class RoutesList extends AppCompatActivity {
     private static final String TAG = "RoutesList";
     public static final String ROUTE_CREATE_INTENT = "From_Routes_Creation";
 
-    RecyclerViewAdapter adapter;
+    RecyclerViewAdapterPersonal adapter;
 
 
     @Override
@@ -44,12 +46,12 @@ public class RoutesList extends AppCompatActivity {
             }
         });
 
-        Button goToHomePage = (Button) findViewById(R.id.goToHomePage);
+        Button goToTeamRoutes = (Button) findViewById(R.id.goToTeamRoutes);
 
-        goToHomePage.setOnClickListener(new View.OnClickListener() {
+        goToTeamRoutes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirectToHomePage();
+                redirectToTeamRoutesPage();
             }
         });
 
@@ -64,7 +66,7 @@ public class RoutesList extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
 
         //create the adapter and set the recylerview to update the screen
-        adapter = new RecyclerViewAdapter(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
+        adapter = new RecyclerViewAdapterPersonal(this, TreeSetManipulation.loadTreeSet(sharedPreferences));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -86,10 +88,10 @@ public class RoutesList extends AppCompatActivity {
     /**
      * Home button clicked, so redirects to HomePage. Saves routes before switching pages.
      */
-    private void redirectToHomePage(){
+    private void redirectToTeamRoutesPage(){
         saveRoutes();
-        Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
-        startActivity(new Intent(RoutesList.this, HomePage.class));
+        Log.d(TAG, "HomeButton Clicked --> Going to Team Routes");
+        startActivity(new Intent(RoutesList.this, TeamRoutesList.class));
         finish();
     }
 

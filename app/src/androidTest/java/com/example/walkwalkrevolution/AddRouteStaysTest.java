@@ -35,13 +35,9 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-/**
- * Espresso UI Tester that tests to see if the user inputs notes on the
- * notes page. Does various checks as well.
- */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class NotesPageTest {
+public class AddRouteStaysTest {
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
@@ -62,8 +58,9 @@ public class NotesPageTest {
                 getSharedPreferences("MyPrefsFile", Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("my_first_time", true).commit();
     }
+
     @Test
-    public void notesPageTest() {
+    public void addRouteStaysTest() {
         mActivityTestRule.launchActivity(intent);
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.height_save_btn), withText("Save"),
@@ -82,7 +79,7 @@ public class NotesPageTest {
                                         childAtPosition(
                                                 withClassName(is("android.widget.RelativeLayout")),
                                                 3)),
-                                1),
+                                2),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -96,6 +93,17 @@ public class NotesPageTest {
                         isDisplayed()));
         appCompatButton3.perform(click());
 
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.SaveButton), withText("Save"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayoutButtons),
+                                        childAtPosition(
+                                                withId(R.id.parentLayout),
+                                                5)),
+                                1),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.routeNameEditText),
                         childAtPosition(
@@ -104,7 +112,7 @@ public class NotesPageTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("hello"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("123"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.startingPEditText),
@@ -114,61 +122,50 @@ public class NotesPageTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("hello"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("123"), closeSoftKeyboard());
 
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.notesButton), withText("Notes"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayoutButtons),
-                                        childAtPosition(
-                                                withId(R.id.parentLayout),
-                                                5)),
-                                0),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.notesEditText),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("hello world"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.SaveButton), withText("Save"),
                         childAtPosition(
-                                allOf(withId(R.id.LinearLayout02),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        appCompatButton5.perform(click());
-
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.notesButton), withText("Notes"),
-                        childAtPosition(
                                 allOf(withId(R.id.linearLayoutButtons),
                                         childAtPosition(
                                                 withId(R.id.parentLayout),
                                                 5)),
-                                0),
+                                1),
                         isDisplayed()));
-        appCompatButton6.perform(click());
+        appCompatButton5.perform(click());
 
-        ViewInteraction editText = onView(
-                allOf(withId(R.id.notesEditText), withText("hello world"),
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.goToTeamRoutes), withText("Team Routes"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
+                                2),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.goToPersonalRoutesPage), withText("My Routes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatButton7.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.routeName), withText("123"),
+                        childAtPosition(
+                                allOf(withId(R.id.parentLayout),
+                                        childAtPosition(
+                                                withId(R.id.recyclerViewRoutes),
+                                                0)),
                                 0),
                         isDisplayed()));
-        editText.check(matches(withText("hello world")));
+        textView.check(matches(withText("123")));
     }
 
     private static Matcher<View> childAtPosition(
