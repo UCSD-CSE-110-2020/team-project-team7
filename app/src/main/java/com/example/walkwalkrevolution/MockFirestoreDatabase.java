@@ -281,10 +281,13 @@ public class MockFirestoreDatabase {
                 if(task.isSuccessful()) {
                     // if inviter isn't in a team create one
                     if(currentUser.getTeam() == "") {
+                        Map<String, String> updateTeam = new HashMap<>();
                         DocumentReference newTeamRef = teams.document();
                         newTeamRef.collection(MEMBERS).document(currentUser.getEmail())
                                 .set(new TeamMember(currentUser.getName(), currentUser.getEmail(), false));
                         currentUser.setTeam(newTeamRef.getId());
+                        updateTeam.put("team", newTeamRef.getId());
+                        users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
                     }
 
                     // get invitee's info to create TeamMember object to store in new team
