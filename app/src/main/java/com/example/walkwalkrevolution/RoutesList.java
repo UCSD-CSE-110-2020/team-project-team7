@@ -55,6 +55,13 @@ public class RoutesList extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MockFirestoreDatabase.routesListOnStartFireStore(
+                UserDetailsFactory.get("yrussell@gmail.com"));
+    }
+
     /**
      * Calls the RecyclerViewAdapter class to create and display all routes to screen.
      */

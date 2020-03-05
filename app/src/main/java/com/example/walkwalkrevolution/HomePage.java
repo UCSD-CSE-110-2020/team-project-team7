@@ -76,10 +76,11 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         fitnessService.setup();
 
         // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
-        // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE TEAMMEMBER OBJECT REPRESENTING THEM (DONE)
-        // TODO IF THEY ARE NOT IN THE DATABASE CREATE TEAMMEMBER OBJECT AND ADD TO DATABASE (DONE)
-        // TODO HARDCODED HERE BUT LATER WE GET USERID AND EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
-        MockFirestoreDatabase.checkUserExists("CalvinID", "cn@gmail.com", "Calvin Nguy");
+        // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE UserDetail OBJECT REPRESENTING THEM (DONE)
+        // TODO IF THEY ARE NOT IN THE DATABASE CREATE UserDetail OBJECT AND ADD TO DATABASE (DONE)
+        // TODO HARDCODED HERE BUT LATER WE GET EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
+        MockFirestoreDatabase.homePageOnCreateFireStore("yrussell@gmail.com", "Yoshi Russell");
+        MockFirestoreDatabase.homePageOnCreateFireStore("cnguy@gmail.com", "Calvin Nguy");
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);

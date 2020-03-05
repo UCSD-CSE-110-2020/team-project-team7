@@ -46,7 +46,6 @@ public class SendProposedWalk extends AppCompatActivity {
             startingPoint = fromIntent.getExtras().getString("startingPoint");
             Log.d(TAG, "Received a Route from the Routes Form with the name: " + routeName);
         }
-
     }
 
 
@@ -94,7 +93,7 @@ public class SendProposedWalk extends AppCompatActivity {
         }
 
         // TODO, UPLOAD PROPOSED WALK TO CLOUD (USERID HARDCODED FOR NOW UNTIL GOOGLE AUTH WORKS)
-        MockFirestoreDatabase.storeProposedWalk(proposedWalk, TeamMemberFactory.get("CalvinID"));
+        MockFirestoreDatabase.storeProposedWalk(proposedWalk, UserDetailsFactory.get("yrussell@gmail.com"));
 
         Log.d(TAG, "Proposed walk sent..");
         finish(); // TODO, WHICH ACTIVITY DO WE GO TO AFTER SENDING??
@@ -107,7 +106,6 @@ public class SendProposedWalk extends AppCompatActivity {
         Log.d(TAG, "No proposed walk sent.");
         finish();
     }
-
 
     // HELPER METHODS -------------------------------------------------------------
 

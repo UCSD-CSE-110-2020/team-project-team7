@@ -33,7 +33,7 @@ public class ProposedWalkObservable {
      */
     public static void fetchProposedWalk() {
         // Fetch the proposed walk
-        ProposedWalk cloudProposedWalk = MockFirestoreDatabase.getProposedWalk(TeamMemberFactory.get("CalvinID"));
+        ProposedWalk cloudProposedWalk = TeamMemberFactory.getProposedWalk();
 
         Log.d(TAG, "Comparing fetched proposed walk to current...");
 
