@@ -51,12 +51,12 @@ public class MockFirestoreDatabase {
         return single_instance;
     }
 
-    // TODO [START] (HOMEPAGE ON CREATE) -------------------------------------------------------------------
+    // TODO [START] (HOME PAGE) --------------------------------------------------------------------
     /**
      * !!! CALL ON CREATE OF HOMEPAGE !!! (FOR YOSHI/CALVIN)
-     * CHECK IF CURRENT USER EXISTS IN DATABASE -> IN BOTH CASES CREATE GLOBAL USERDETAILS OBJECT OF THEM
-     * @param currentUserEmail
-     * @param currentUserName
+     * CHECK IF CURRENT USER EXISTS IN DATABASE
+     * -> IN BOTH CASES CREATE USERDETAILS OBJECT REPRESENTING CURRENT USER AND STORE IN
+     *    USERDETAILSFACTORY
      */
     public static void homePageOnCreateFireStore(String currentUserEmail, String currentUserName) {
         checkUserExists(currentUserEmail, currentUserName);
@@ -119,10 +119,10 @@ public class MockFirestoreDatabase {
                     }
                 });
     }
-    // TODO [END] (HOMEPAGE ON CREATE) -------------------------------------------------------------------
+    // TODO [END] (HOME PAGE) ----------------------------------------------------------------------
 
 
-    // TODO [START] (ROUTES PAGE) ------------------------------------------------------------------------
+    // TODO [START] (ROUTES PAGE) ------------------------------------------------------------------
     /**
      * !!! CALL ONSTART OF ROUTES PAGE !!! (FOR AMRIT)
      * Update UserDetail's routes by grabbing from firestore on activity start
@@ -130,7 +130,8 @@ public class MockFirestoreDatabase {
      */
     public static void routesListOnStartFireStore(UserDetails currentUser) {
 
-        users.document(currentUser.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        users.document(currentUser.getEmail()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
@@ -191,16 +192,17 @@ public class MockFirestoreDatabase {
         Type type = new TypeToken<List<Route>>() {}.getType();
         return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
     }
-    // TODO [END] (ROUTES PAGE) ------------------------------------------------------------------------
+    // TODO [END] (ROUTES PAGE) --------------------------------------------------------------------
 
 
-    // TODO [START] (TEAM PAGE) ------------------------------------------------------------------------
+    // TODO [START] (TEAM PAGE) --------------------------------------------------------------------
     /**
      * !!! CALL ONSTART OF TEAMPAGE !!! (FOR AMRIT)
      */
     public static void teamsPageOnStart(UserDetails currentUser) {
 
-        users.document(currentUser.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        users.document(currentUser.getEmail()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
@@ -225,7 +227,8 @@ public class MockFirestoreDatabase {
     private static void populateTeamMateFactory(String teamID) {
         TeamMemberFactory.resetMembers();
 
-        teams.document(teamID).collection(MEMBERS).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        teams.document(teamID).collection(MEMBERS).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
@@ -238,7 +241,10 @@ public class MockFirestoreDatabase {
             }
         });
     }
+    // TODO [END] (TEAM PAGE) ----------------------------------------------------------------------
 
+
+    // TODO [START] (TEAM ROUTES PAGE) -------------------------------------------------------------
     /**
      * !!! TO ACTUALLY GET THE TEAMROUTES LIST YOU NEED TO CALL TEAMMEMBERFACTORY.GETTEAMROUTES()
      * !!! CALL THIS IN ONSTART OF TEAM ROUTES PAGE !!! (FOR AMRIT)
@@ -248,7 +254,8 @@ public class MockFirestoreDatabase {
         TeamMemberFactory.resetRoutes();
         getProposedWalk(teamID);
 
-        users.whereEqualTo("team", teamID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        users.whereEqualTo("team", teamID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
@@ -274,7 +281,8 @@ public class MockFirestoreDatabase {
      */
     public static void inviteToTeam(UserDetails currentUser, String mock_teammate_email) {
 
-        users.document(mock_teammate_email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        users.document(mock_teammate_email).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
@@ -284,7 +292,9 @@ public class MockFirestoreDatabase {
                         Map<String, String> updateTeam = new HashMap<>();
                         DocumentReference newTeamRef = teams.document();
                         newTeamRef.collection(MEMBERS).document(currentUser.getEmail())
-                                .set(new TeamMember(currentUser.getName(), currentUser.getEmail(), false));
+                                .set(new TeamMember(currentUser.getName(),
+                                        currentUser.getEmail(),
+                                        false));
                         currentUser.setTeam(newTeamRef.getId());
                         updateTeam.put("team", newTeamRef.getId());
                         users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
@@ -293,7 +303,9 @@ public class MockFirestoreDatabase {
                     // get invitee's info to create TeamMember object to store in new team
                     UserDetails pendingTeamMate = new UserDetails();
                     pendingTeamMate = snapshot.toObject(UserDetails.class);
-                    TeamMember pendingMember = new TeamMember(pendingTeamMate.getName(), pendingTeamMate.getEmail(), true);
+                    TeamMember pendingMember = new TeamMember(pendingTeamMate.getName(),
+                            pendingTeamMate.getEmail(),
+                            true);
                     teams.document(currentUser.getTeam()).collection(MEMBERS).document(mock_teammate_email).set(pendingMember);
                     // TODO SEND NOTIFICATION TO INVITEE ALONG WITH INVITER EMAIL
                 }
@@ -344,7 +356,7 @@ public class MockFirestoreDatabase {
     public static void teamCreationOnDecline(UserDetails inviter, UserDetails invitee) {
         teams.document(inviter.getTeam()).collection(MEMBERS).document(invitee.getEmail()).delete();
     }
-    // TODO [END] (TEAM PAGE) ------------------------------------------------------------------------
+
 
 
     // TODO [START] (PROPOSED WALKS) -----------------------------------------------------------------
@@ -363,10 +375,8 @@ public class MockFirestoreDatabase {
 
     /**
      * !!! PROPOSED WALK IS SENT TO TEAMMEMBERFACTORY,
-     *     TO GET CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
+     *     TO GET, CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
      * Retrieving the proposed walk from database
-     * @param teamID
-     * @return
      */
     public static void getProposedWalk(String teamID) {
 

@@ -4,6 +4,10 @@ import android.graphics.Color;
 
 import java.util.Random;
 
+/**
+ * Object representing each team member's information
+ * in /TEAMS/{teamID}/MEMBERS/{memberID} in FireStore
+ */
 public class TeamMember {
 
     private String name;

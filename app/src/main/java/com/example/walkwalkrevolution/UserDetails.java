@@ -1,11 +1,15 @@
 package com.example.walkwalkrevolution;
 
+/**
+ * Object representing user's information
+ * in USERS/{userID} in FireStore
+ */
 public class UserDetails {
-    String name;
-    String email;
-    String routes = "";
-    String team = "";
-    String teamRoutesWalked = "";
+    private String name;
+    private String email;
+    private String routes = "";
+    private String team = "";
+    private String teamRoutesWalked = "";
 
     UserDetails() {}
 
