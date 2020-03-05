@@ -35,6 +35,10 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * BBD Test MS2
+ * Made sure that the user has the option to add teammates to their team
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddingTeamMateTest {

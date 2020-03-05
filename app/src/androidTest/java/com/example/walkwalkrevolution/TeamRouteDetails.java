@@ -32,6 +32,11 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+
+/**
+ * BDD TEST MS2
+ * Checks a myriad of information regarding team routes page
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class TeamRouteDetails {

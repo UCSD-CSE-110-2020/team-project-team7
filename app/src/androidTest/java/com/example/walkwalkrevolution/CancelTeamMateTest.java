@@ -32,6 +32,10 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * BDD TEST MS2
+ * Have the option to cancel the invite to a teammate
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CancelTeamMateTest {

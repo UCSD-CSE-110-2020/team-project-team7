@@ -32,6 +32,11 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+
+/**
+ * BDD TEST MS2
+ * Checking to see if the date is set correctly in the propose walk screen
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ProposeRouteDateTest {

@@ -35,6 +35,10 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * BDD TEST MS2
+ * Checks to see if the user inputs a valid email
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MissingEmailTest {
