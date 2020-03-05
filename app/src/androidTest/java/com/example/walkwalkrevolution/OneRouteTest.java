@@ -35,11 +35,11 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+@LargeTest
+@RunWith(AndroidJUnit4.class)
 /**
  * Espresso UI Tester that tests to see if the user inputs one route to the route form
  */
-@LargeTest
-@RunWith(AndroidJUnit4.class)
 public class OneRouteTest {
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
@@ -54,7 +54,6 @@ public class OneRouteTest {
         intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
         intent.putExtra("testStep", true);
     }
-
     private void clearSharedPrefs() {
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.
@@ -81,7 +80,7 @@ public class OneRouteTest {
                                         childAtPosition(
                                                 withClassName(is("android.widget.RelativeLayout")),
                                                 3)),
-                                1),
+                                2),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -103,7 +102,7 @@ public class OneRouteTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("1"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("gary road"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.startingPEditText),
@@ -113,10 +112,42 @@ public class OneRouteTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard());
-
+        appCompatEditText2.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.mstb_button_view), withText("Loop"),
+                        childAtPosition(
+                                allOf(withId(R.id.loopToggle),
+                                        childAtPosition(
+                                                withId(R.id.linearLayoutAdditionalInfo),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.mstb_button_view), withText("Medium"),
+                        childAtPosition(
+                                allOf(withId(R.id.difficultyToggle),
+                                        childAtPosition(
+                                                withId(R.id.linearLayoutAdditionalInfo),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
+
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.mstb_button_view), withText("Even"),
+                        childAtPosition(
+                                allOf(withId(R.id.surfaceToggle),
+                                        childAtPosition(
+                                                withId(R.id.linearLayoutAdditionalInfo),
+                                                2)),
+                                0),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
                 allOf(withId(R.id.SaveButton), withText("Save"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayoutButtons),
@@ -125,10 +156,10 @@ public class OneRouteTest {
                                                 5)),
                                 1),
                         isDisplayed()));
-        appCompatButton4.perform(click());
+        appCompatButton7.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.routeName), withText("1"),
+                allOf(withId(R.id.routeName), withText("gary road"),
                         childAtPosition(
                                 allOf(withId(R.id.parentLayout),
                                         childAtPosition(
@@ -136,10 +167,10 @@ public class OneRouteTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("1")));
+        textView.check(matches(withText("gary road")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.startingPoint), withText("Start: 1"),
+                allOf(withId(R.id.startingPoint), withText("Start: 0"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayoutInfo),
                                         childAtPosition(
@@ -147,7 +178,18 @@ public class OneRouteTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(withText("Start: 1")));
+        textView2.check(matches(withText("Start: 0")));
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.additionalInfo), withText("Loop Even Medium "),
+                        childAtPosition(
+                                allOf(withId(R.id.parentLayout),
+                                        childAtPosition(
+                                                withId(R.id.recyclerViewRoutes),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        textView3.check(matches(withText("Loop Even Medium ")));
     }
 
     private static Matcher<View> childAtPosition(

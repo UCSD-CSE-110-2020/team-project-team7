@@ -26,6 +26,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -35,12 +36,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+
+@LargeTest
+@RunWith(AndroidJUnit4.class)
 /**
  * Espresso UI Tester that tests to see if the user inputs a
  * valid time on the routesform and it displays correctly.
  */
-@LargeTest
-@RunWith(AndroidJUnit4.class)
 public class SetRouteTimeDurationTest {
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
@@ -55,7 +57,6 @@ public class SetRouteTimeDurationTest {
         intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
         intent.putExtra("testStep", true);
     }
-
     private void clearSharedPrefs() {
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.
@@ -82,7 +83,7 @@ public class SetRouteTimeDurationTest {
                                         childAtPosition(
                                                 withClassName(is("android.widget.RelativeLayout")),
                                                 3)),
-                                1),
+                                2),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -104,7 +105,7 @@ public class SetRouteTimeDurationTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("test"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("1"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.startingPEditText),
@@ -114,7 +115,7 @@ public class SetRouteTimeDurationTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("test"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("1"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.minutesEditText),
@@ -125,7 +126,7 @@ public class SetRouteTimeDurationTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("123"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("10"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.secondsEditText),
@@ -136,10 +137,44 @@ public class SetRouteTimeDurationTest {
                                                 1)),
                                 2),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("32"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("01"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.secondsEditText), withText("01"),
+                        childAtPosition(
+                                allOf(withId(R.id.timeHoriLayout),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                2),
+                        isDisplayed()));
+        appCompatEditText5.perform(pressImeActionButton());
+
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.SaveButton), withText("Save"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayoutButtons),
+                                        childAtPosition(
+                                                withId(R.id.parentLayout),
+                                                5)),
+                                1),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
+        ViewInteraction relativeLayout = onView(
+                allOf(withId(R.id.parentLayout),
+                        childAtPosition(
+                                allOf(withId(R.id.recyclerViewRoutes),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        relativeLayout.perform(click());
 
         ViewInteraction editText = onView(
-                allOf(withId(R.id.minutesEditText), withText("123"),
+                allOf(withId(R.id.minutesEditText), withText("10"),
                         childAtPosition(
                                 allOf(withId(R.id.timeHoriLayout),
                                         childAtPosition(
@@ -147,10 +182,10 @@ public class SetRouteTimeDurationTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        editText.check(matches(withText("123")));
+        editText.check(matches(withText("10")));
 
         ViewInteraction editText2 = onView(
-                allOf(withId(R.id.secondsEditText), withText("32"),
+                allOf(withId(R.id.secondsEditText), withText("01"),
                         childAtPosition(
                                 allOf(withId(R.id.timeHoriLayout),
                                         childAtPosition(
@@ -158,7 +193,7 @@ public class SetRouteTimeDurationTest {
                                                 1)),
                                 2),
                         isDisplayed()));
-        editText2.check(matches(withText("32")));
+        editText2.check(matches(withText("01")));
     }
 
     private static Matcher<View> childAtPosition(

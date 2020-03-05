@@ -14,14 +14,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkwalkrevolution.LastIntentionalWalk;
-import com.example.walkwalkrevolution.R;
-import com.example.walkwalkrevolution.RecyclerViewAdapter;
-import com.example.walkwalkrevolution.Route;
-import com.example.walkwalkrevolution.RoutesList;
-import com.example.walkwalkrevolution.SendProposedWalk;
-import com.example.walkwalkrevolution.TreeSetManipulation;
-import com.example.walkwalkrevolution.WalkRunSession;
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapter;
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeam;
 import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.forms.NotesPage;
@@ -66,6 +61,9 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     // NOtes taken for the Route
     private String notes = "";
 
+    Button saveButton;
+    Button notesButton;
+
 
     // SETTING UP/DESTORYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
     private boolean intentFromWalkRunSession;
@@ -108,7 +106,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      */
     private void formSetUp(){
         // Handle onClickListeners for Buttons
-        Button saveButton = (Button) findViewById(R.id.SaveButton);
+        saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 attemptToSave();
@@ -120,7 +118,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 cancel();
             }
         });
-        Button notesButton = (Button) findViewById(R.id.notesButton);
+        notesButton = (Button) findViewById(R.id.notesButton);
         notesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 openNotesActivity(v);
@@ -208,18 +206,18 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                     Log.d(TAG, "Intent Found: Walk/Run Session");
                     intentFromWalkRunSession = true;
                     break;
-                case RecyclerViewAdapter.PREVIEW_DETAILS_INTENT:
-                    intentFromRoutesDetails();
-                    Log.d(TAG, "Intent Found: Details Preview from Personal Routes Page");
-                    break;
                 case RoutesList.ROUTE_CREATE_INTENT:
                     intentFromRoutesCreation();
                     Log.d(TAG, "Intent Found: Route Creation from Routes Page");
                     break;
-//                case TeamRoutes.ROUTE_DETAILS_INTENT:
-//                    intentFromTeamRoutes();
-//                    Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
-//                    break; TODO
+                case RecyclerViewAdapterPersonal.PREVIEW_DETAILS_INTENT:
+                    intentFromRoutesDetails();
+                    Log.d(TAG, "Intent Found: Details Preview from Personal Routes Page");
+                    break;
+                case RecyclerViewAdapterTeam.PREVIEW_DETAILS_INTENT:
+                    intentFromTeamRoutes();
+                    Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
+                    break;
                 default:
                     break;
             }
@@ -306,8 +304,17 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
         displayStepsDistanceTime();
 
-        // Walk/Run Session started from Routes page, not from Home page
-        if(TreeSetManipulation.getSelectedRoute() != null) {
+        Route route = TreeSetManipulation.getSelectedRoute();
+        // Walk/Run Session didn't start from Home page
+        if(route != null) {
+
+//            if(route.creator.getEmail() != account.getEmail()){
+//                intentFromTeamRoutes();
+//            }
+//            else{
+//                intentFromRoutesStartButton();
+//            } TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
+
             intentFromRoutesStartButton();
         }
     }
@@ -338,6 +345,9 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         // Disable most editing UI
         routeNameEditText.setEnabled(false);
         startingPEditText.setEnabled(false);
+        saveButton.setVisibility(View.INVISIBLE);
+        notesButton.setVisibility(View.INVISIBLE);
+
         // Disable toggle buttons
         for(int i=0; i < optionalInfo.length; i++){
             // Only allow one choice per toggle button

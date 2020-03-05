@@ -22,11 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -38,11 +34,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-/**
- * Espresso UI Tester that tests to see if the user inputs a valid
- * route name and route starting point
- */
-public class RouteNamePointTest {
+public class TeamRouteDetails {
 
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
@@ -57,7 +49,6 @@ public class RouteNamePointTest {
         intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
         intent.putExtra("testStep", true);
     }
-
     private void clearSharedPrefs() {
         Context targetContext = getInstrumentation().getTargetContext();
         SharedPreferences sharedPreferences = targetContext.
@@ -65,7 +56,7 @@ public class RouteNamePointTest {
         sharedPreferences.edit().putBoolean("my_first_time", true).commit();
     }
     @Test
-    public void routeNamePointTest() {
+    public void teamRouteDetails() {
         mActivityTestRule.launchActivity(intent);
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.height_save_btn), withText("Save"),
@@ -89,80 +80,39 @@ public class RouteNamePointTest {
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.addRouteButton), withText("+"),
+                allOf(withId(R.id.goToTeamRoutes), withText("Team Routes"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                1),
+                                2),
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.routeNameEditText),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.routeNameStartingLayout),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("Cool Road"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.startingPEditText),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.routeNameStartingLayout),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("0"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.startingPEditText), withText("0"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.routeNameStartingLayout),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(pressImeActionButton());
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.SaveButton), withText("Save"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayoutButtons),
-                                        childAtPosition(
-                                                withId(R.id.parentLayout),
-                                                5)),
-                                1),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
-
         ViewInteraction textView = onView(
-                allOf(withId(R.id.routeName), withText("Cool Road"),
+                allOf(withId(R.id.startingPoint), withText("Start: Garden Grove"),
                         childAtPosition(
-                                allOf(withId(R.id.parentLayout),
+                                allOf(withId(R.id.linearLayoutInfo),
                                         childAtPosition(
-                                                withId(R.id.recyclerViewRoutes),
+                                                withId(R.id.infoLayout),
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Cool Road")));
+        textView.check(matches(withText("Start: Garden Grove")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.startingPoint), withText("Start: 0"),
+                allOf(withId(R.id.routeSteps), withText("Steps: 30"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayoutInfo),
                                         childAtPosition(
                                                 withId(R.id.infoLayout),
                                                 0)),
-                                0),
+                                2),
                         isDisplayed()));
-        textView2.check(matches(withText("Start: 0")));
+        textView2.check(matches(withText("Steps: 30")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.startingPoint), withText("Start: 0"),
+                allOf(withId(R.id.startingPoint), withText("Start: Archer Ave"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayoutInfo),
                                         childAtPosition(
@@ -170,7 +120,18 @@ public class RouteNamePointTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView3.check(matches(withText("Start: 0")));
+        textView3.check(matches(withText("Start: Archer Ave")));
+
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.routeName), withText("Celt Drive"),
+                        childAtPosition(
+                                allOf(withId(R.id.iconLayout),
+                                        childAtPosition(
+                                                withId(R.id.parentLayout),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        textView4.check(matches(withText("Celt Drive")));
     }
 
     private static Matcher<View> childAtPosition(

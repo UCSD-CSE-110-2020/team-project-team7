@@ -2,10 +2,12 @@ package com.example.walkwalkrevolution;
 
 import android.util.Log;
 
+import java.util.Comparator;
+
 /**
  * Creates a Route object, and wraps up all information associated with it.
  */
-public class Route {
+public class Route implements Comparable<Route> {
 
     // Constant for logging
     private static final String TAG = "Route.class";
@@ -26,6 +28,8 @@ public class Route {
     public String[] optionalFeaturesStr = new String[5]; //Strings chosen from optionals
     public int[] optionalFeatures = new int[5];//States of optionals chosen
 
+    public TeamMember creator;
+    public boolean userHasWalkedRoute;
 
     /**
      * Constructor for a Route object.
@@ -71,6 +75,10 @@ public class Route {
             this.startingPoint = null;
         }
     }
+
+    public void setCreator(TeamMember creator){
+        this.creator = creator;
+    }
     /**
      * Setter method for date instance var.
      * @param date - String denoting a date for the route
@@ -102,6 +110,10 @@ public class Route {
         this.notes = notes;
     }
 
+    public void setUserHasWalkedRoute(boolean hasWalkedRoute){
+        this.userHasWalkedRoute = hasWalkedRoute;
+    }
+
 
     /**
      * Compares two Routes. They are the same if they have the same name.
@@ -116,5 +128,10 @@ public class Route {
         return false;
     }
 
+    @Override
+    public int compareTo(Route route) {
+        TreeSetComparator comparator = new TreeSetComparator();
+        return comparator.compare(this.name, route.name);
+    }
 }
 

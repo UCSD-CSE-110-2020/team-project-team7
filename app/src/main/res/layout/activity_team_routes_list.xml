@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RoutesList">
+    tools:context=".TeamRoutesList">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewRoutes"
+        android:id="@+id/recyclerViewTeamRoutes"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/addRouteButton"
+        android:id="@+id/goToPersonalRoutesPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -20,18 +20,19 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/routes_list_start_button_states"
-        android:text="+"
-        android:textSize="20sp" />
+        android:text="My Routes"
+        />
 
     <Button
-        android:id="@+id/goToTeamRoutes"
+        android:id="@+id/goToHomePage"
         android:background="@drawable/routes_list_start_button_states"
+        android:drawableLeft="@drawable/icons8_home_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="12dp"
-        android:text="Team Routes" />
+        android:text="Home" />
 
 </RelativeLayout>

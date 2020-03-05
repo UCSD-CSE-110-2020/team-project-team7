@@ -114,6 +114,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 launchMockPage();
             }
         });
+
+        // Button that opens mockPage
+        Button teammatesButton = (Button) findViewById(R.id.teammatesButton);
+        teammatesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchTeammatesPage();
+            }
+        });
     }
 
     @Override
@@ -220,6 +229,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public double getMiles() { return milesCount; }
 
     public double getStepsPerMile() { return this.stepsPerMile; }
+
+    /**
+     * used to launch the Routes Screen
+     */
+    public void launchTeammatesPage(){
+        Log.d(TAG, "Launching Routes Screen");
+        Intent intent = new Intent(this, TeammatesPage.class);
+        startActivity(intent);
+    }
 
     /**
      * used to launch the Routes Screen
