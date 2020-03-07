@@ -47,6 +47,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Initiallize firebase
         FirebaseApp.initializeApp(this);
+        subscribeToNotificationsTopic();
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
