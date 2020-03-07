@@ -291,5 +291,4 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
 }
 
-}
 
