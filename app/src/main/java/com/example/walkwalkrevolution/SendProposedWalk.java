@@ -30,6 +30,7 @@ public class SendProposedWalk extends AppCompatActivity {
 
     // Route name, saved from RoutesForm
     private String routeName, startingPoint;
+    private TeamMember creator;
 
 
     @Override
@@ -88,7 +89,7 @@ public class SendProposedWalk extends AppCompatActivity {
         Log.d(TAG, "Creating a ProposedWalk with date: " + date + "and time: " + time);
 
         // Create the proposed walk use entered data and what was on the Route Form
-        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time);
+        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time, creator);
         if (startingPoint != null) {
             proposedWalk.setLocation(startingPoint);
         }

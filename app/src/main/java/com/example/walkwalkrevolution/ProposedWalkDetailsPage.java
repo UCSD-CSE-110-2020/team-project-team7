@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
@@ -70,6 +72,11 @@ public class ProposedWalkDetailsPage extends AppCompatActivity {
         walkLocation.setText("Location: " + proposedWalk.getLocation());
         walkLocation.setEnabled(false);
 
+        TeamMember creator = proposedWalk.getCreator();
+        Button icon = (Button) findViewById(R.id.creatorIcon);
+        icon.setText(creator.getInitials().toString());
+        icon.getBackground().setColorFilter(creator.getColorVal(), PorterDuff.Mode.MULTIPLY);
+
 //        ((TextView) findViewById(R.id.walkName)).setText("Route: " + proposedWalk.getName());
 //        ((TextView) findViewById(R.id.walkDate)).setText("Date: " + proposedWalk.getDate());
 //        ((TextView) findViewById(R.id.walkTime)).setText("Time: " + proposedWalk.getTime());
@@ -82,7 +89,8 @@ public class ProposedWalkDetailsPage extends AppCompatActivity {
     }
 
     private void setProposedWalk(){
-        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM");
+        TeamMember creator = new TeamMember("Cindy Do", "aksingh@ucsd.edu", "AmritID", "TEAMA", true);
+        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
         walk.setLocation("Splash Mountain");
         List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
         walk.setTeammates(teammates);
