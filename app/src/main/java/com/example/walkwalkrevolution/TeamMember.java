@@ -13,8 +13,9 @@ public class TeamMember {
     private String name;
     private String email;
     private String initials = "";
-    private String colorVal;
+    private int colorVal;
     private boolean pendingStatus;
+    private int proposedWalkStatus;
 
     TeamMember() {}
 
@@ -47,7 +48,7 @@ public class TeamMember {
         final int g = (baseGreen + rand.nextInt(256)) / 2;
         final int b = (baseBlue + rand.nextInt(256)) / 2;
 
-        this.colorVal = String.format("#%06X", (0xFFFFFF & Color.rgb(r,g,b)));
+        this.colorVal = Color.rgb(r,g,b);
     }
 
     /**
@@ -56,6 +57,9 @@ public class TeamMember {
     public String getName() { return this.name; }
     public String getEmail() { return this.email; }
     public String getInitials() { return this.initials; }
-    public String getColorVal() { return this.colorVal; }
+    public int getColorVal() { return this.colorVal; }
     public boolean getPendingStatus() { return this.pendingStatus; }
+    public int getProposedWalkStatus() { return this.proposedWalkStatus; }
+
+    public void setProposedWalkStatus(int status) { this.proposedWalkStatus = status; }
 }
