@@ -17,6 +17,7 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.google.firebase.FirebaseApp;
 import com.example.walkwalkrevolution.forms.HeightForm;
 import com.example.walkwalkrevolution.forms.MockPage;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Initiallize firebase
         FirebaseApp.initializeApp(this);
+        subscribeToNotificationsTopic();
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -272,5 +274,22 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         intent.putExtra("stepCountFromHome", stepCount);
         startActivity(intent);
     }
+
+    /**
+     * subscribes to the team pages notification
+     */
+    public static void subscribeToNotificationsTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("4ZhyI8xmfYpA4nnZ0bHO")
+                .addOnCompleteListener(task -> {
+                            String msg = "Notif subbed!";
+                            if (!task.isSuccessful()) {
+                                msg = "Notif failed :(";
+                            }
+                            Log.d("Sub_Message", msg);
+                        }
+                );
+    }
+
 }
+
 
