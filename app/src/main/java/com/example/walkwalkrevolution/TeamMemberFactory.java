@@ -38,9 +38,7 @@ public class TeamMemberFactory {
 
     /** -------------------------- Getter/Setter of Team Routes -------------------------------- */
     // add route to list of team routes
-    public static void addRoute(Pair<String, Route> route) {
-        teamRoutes.add(route);
-    }
+    public static void addRoute(Pair<String, Route> route)  { teamRoutes.add(route); }
 
     // get list of team routes
     public static List<Pair<String,Route>> getTeamRoutes() { return teamRoutes; }
