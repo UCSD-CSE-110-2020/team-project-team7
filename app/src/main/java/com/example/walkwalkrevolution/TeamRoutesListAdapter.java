@@ -12,16 +12,16 @@ public class TeamRoutesListAdapter {
         List<Route> list = new ArrayList<>();
 
         Route route2 = new Route("Bryan Avenue", "Archer Ave", 20, 1.4);
-        route2.setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", false));
+        route2.setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu",  false));
         route2.setUserHasWalkedRoute(true);
         list.add(route2);
 
         Route route3 = new Route("Celt Drive", "Grisly Garden", 440, 30.4);
-        route3.setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", "CindyID", "TEAMC", false));
+        route3.setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", false));
         list.add(route3);
 
         Route route1 = new Route("Arker Walk", "Garden Grove", 30, 2.4);
-        route1.setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
+        route1.setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu",  false));
         list.add(route1);
 
 

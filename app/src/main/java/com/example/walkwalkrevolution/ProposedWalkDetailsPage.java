@@ -20,7 +20,10 @@ import android.widget.Toast;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterProposedAvailability;
+import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterScheduledWalks;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
 import com.google.android.gms.common.api.GoogleApiActivity;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
@@ -112,6 +115,10 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
         if(proposedWalk.getCreator().getEmail().equals(currentUser.getEmail())){
             ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.INVISIBLE);
             ((LinearLayout) findViewById(R.id.buttonsLayoutCreator)).setVisibility(View.VISIBLE);
+
+            if(proposedWalk.getIsScheduled()){
+                ((Button) findViewById(R.id.scheduleWalkButton)).setVisibility(View.INVISIBLE);
+            }
         }
         else{
             ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.VISIBLE);
@@ -133,8 +140,9 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void scheduleWalk(){
-//        Intent intent = new Intent(ProposedWalkDetailsPage.this, .class);
-//        startActivity(intent);
+        this.proposedWalk.setIsScheduled(true);
+        Intent intent = new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class);
+        startActivity(intent);
         Toast.makeText(this, "Successfully Scheduled", Toast.LENGTH_SHORT).show();
     }
 
@@ -172,15 +180,28 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void setProposedWalk(){
-        TeamMember creator = new TeamMember("Cindy Do", "cdo@ucsd.edu", "AmritID", "TEAMA", true);
-        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
-        walk.setLocation("Splash Mountain");
-        List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
-        walk.setTeammates(teammates);
 
-        this.currentUser = creator;
-        this.proposedWalk = walk;
-        sortTeammatesByStatus();
+        Intent intent = this.getIntent();
+
+        TeamMember creator = new TeamMember("Cindy Do", "cdo@ucsd.edu", true);
+
+        try{
+            String walk = intent.getExtras().getString("Scheduled Walk");
+            this.proposedWalk = ProposedWalkJsonConverter.convertJsonToWalk(walk);
+            Log.d(TAG, "Intent from Scheduled Walks Page");
+
+        }catch (Exception e){
+            //Call Yoshi's Firebase stuff here
+            ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
+            walk.setLocation("Splash Mountain");
+            List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
+            walk.setTeammates(teammates);
+            this.proposedWalk = walk;
+            Log.d(TAG, "Intent NOT from Scheduled Walks Page");
+        }
+
+            this.currentUser = proposedWalk.getTeammates().get(2);
+            sortTeammatesByStatus();
     }
 
     private void sortTeammatesByStatus(){

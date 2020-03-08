@@ -69,6 +69,7 @@ public class ProposedWalk {
     public TeamMember getCreator() {
         return creator;
     }
+    public boolean getIsScheduled(){return this.isScheduled;}
 
 
     /**

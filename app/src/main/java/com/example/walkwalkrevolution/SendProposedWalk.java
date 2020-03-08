@@ -95,7 +95,7 @@ public class SendProposedWalk extends AppCompatActivity {
         }
 
         // TODO, UPLOAD PROPOSED WALK TO CLOUD (USERID HARDCODED FOR NOW UNTIL GOOGLE AUTH WORKS)
-        MockFirestoreDatabase.storeProposedWalk(proposedWalk, TeamMemberFactory.get("CalvinID"));
+//        MockFirestoreDatabase.storeProposedWalk(proposedWalk, TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "Proposed walk sent..");
         finish(); // TODO, WHICH ACTIVITY DO WE GO TO AFTER SENDING??

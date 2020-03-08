@@ -10,17 +10,14 @@ public class TeamMember implements Comparable<TeamMember>{
     private String userID;
     private String email;
     private String initials = "";
-    private String team = "";
     private int colorVal;
-    private boolean teamStatus;
+    private boolean pendingStatus;
     private int proposedWalkStatus;//0 = Pending, 1 = Bad Route, 2 = Bad Time, 3 = Accepted
 
-    TeamMember(String name, String email, String userID, String teamID, boolean teamStatus) {
+    TeamMember(String name, String email,  boolean teamStatus) {
         this.name = name;
-        this.userID = userID;
         this.email = email;
-        this.team = teamID;
-        this.teamStatus = teamStatus;
+        this.pendingStatus = teamStatus;
         initialsMaker();
         randomColorGenerator();
     }
@@ -60,20 +57,17 @@ public class TeamMember implements Comparable<TeamMember>{
      * GETTER METHODS
      */
     public String getName() { return this.name; }
-    public String getUserID() { return this.userID; }
     public String getEmail() { return this.email; }
     public String getInitials() { return this.initials; }
-    public String getTeam() { return this.team; }
     public int getColorVal() { return this.colorVal; }
-    public boolean getTeamStatus() { return this.teamStatus; }
+    public boolean getPendingStatus() { return this.pendingStatus; }
     public int getProposedWalkStatus() { return this.proposedWalkStatus; }
 
     /**
      * SETTER METHODS
      */
     public void setTeam(String teamID) {
-        this.team = teamID;
-        this.teamStatus = true;
+        this.pendingStatus = true;
     }
     public void setProposedWalkStatus(int status) {
         this.proposedWalkStatus = status;
