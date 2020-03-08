@@ -13,6 +13,7 @@ public class TeamMember implements Comparable<TeamMember>{
     private String team = "";
     private int colorVal;
     private boolean teamStatus;
+    private int proposedWalkStatus;//0 = Pending, 1 = Bad Route, 2 = Bad Time, 3 = Accepted
 
     TeamMember(String name, String email, String userID, String teamID, boolean teamStatus) {
         this.name = name;
@@ -65,6 +66,7 @@ public class TeamMember implements Comparable<TeamMember>{
     public String getTeam() { return this.team; }
     public int getColorVal() { return this.colorVal; }
     public boolean getTeamStatus() { return this.teamStatus; }
+    public int getProposedWalkStatus() { return this.proposedWalkStatus; }
 
     /**
      * SETTER METHODS
@@ -73,4 +75,8 @@ public class TeamMember implements Comparable<TeamMember>{
         this.team = teamID;
         this.teamStatus = true;
     }
+    public void setProposedWalkStatus(int status) {
+        this.proposedWalkStatus = status;
+    }
+
 }

@@ -12,9 +12,24 @@ public class TeammatesPageAdapter {
         //Use Yoshi's function to call Teammates from cloud
         List<TeamMember> teammates = new ArrayList<>();
 
-        teammates.add(new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", false));
-        teammates.add(new TeamMember("Cindy Do", "cido@ucsd.edu", "CindyID", "TEAMC", true));
-        teammates.add(new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
+        TeamMember member1 = new TeamMember("Aashna Setia", "cido@ucsd.edu", "CindyID", "TEAMC", false);
+        member1.setProposedWalkStatus(1);
+        teammates.add(member1);
+
+        TeamMember member2 = new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", true);
+        member2.setProposedWalkStatus(2);
+        teammates.add(member2);
+
+        TeamMember member3 = new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", true);
+        member3.setProposedWalkStatus(3);
+        teammates.add(member3);
+
+        TeamMember member4 = new TeamMember("Harrison Kim", "aksingh@ucsd.edu", "AmritID", "TEAMA", true);
+        member4.setProposedWalkStatus(3);
+        teammates.add(member4);
+
+        teammates.add(new TeamMember("Yoshi Russel", "aksingh@ucsd.edu", "AmritID", "TEAMA", true));
+        teammates.add(new TeamMember("Calvin Nguyen", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
 
         return alphabetizeTeammates(teammates);
     }

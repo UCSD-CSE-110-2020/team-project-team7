@@ -9,21 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeamRoutesList"></activity>
-        <activity android:name=".TeammatesPage"></activity>
+        <activity android:name=".ProposedWalkDetailsPage"></activity>
+        <activity android:name=".TeamRoutesList" />
+        <activity android:name=".TeammatesPage" />
         <activity android:name=".forms.HeightForm" />
         <activity
             android:name=".RoutesForm"
             android:exported="true" />
-        <activity android:name=".SendProposedWalk"/>
+        <activity android:name=".SendProposedWalk" />
         <activity android:name=".AddTeammate" />
         <activity android:name=".forms.SetDate" />
         <activity android:name=".forms.NotesPage" />
         <activity android:name=".RoutesList" />
         <activity android:name=".WalkRunSession" />
         <activity android:name=".forms.MockPage" />
-        <activity android:name=".HomePage" android:launchMode="singleInstance">
-
+        <activity
+            android:name=".HomePage"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,12 +36,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-<!--        <service-->
-<!--            android:name="MyFirebaseMessagingService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name=".com.google.firebase.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
     </application>
 
 </manifest>

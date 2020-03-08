@@ -47,7 +47,7 @@ public class ProposedWalkObservable extends Observable {
      */
     public void setProposedWalk(ProposedWalk proposedWalk) {
         if (proposedWalk != null) {
-            Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.name);
+            Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.getName());
         }
 
         this.proposedWalk = proposedWalk;

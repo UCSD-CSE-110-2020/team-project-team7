@@ -3,6 +3,10 @@ package com.example.walkwalkrevolution.custom_data_classes;
 
 import android.util.Log;
 
+import com.example.walkwalkrevolution.TeamMember;
+
+import java.util.List;
+
 /**
  * Class for storing data on Team Proposed Walks. Setter methods included, as well as
  * an overriden equals() methods.
@@ -11,16 +15,20 @@ public class ProposedWalk {
 
     private final String TAG = "ProposedWalk";
 
-    public String name, date, time, location;
-    public boolean isScheduled = false;
+    private String name, date, time, location;
+    private TeamMember creator;
+    private boolean isScheduled = false;
+
+    private List<TeamMember> teammates;
 
     /**
      * Constructor
      * @param date
      * @param time
      */
-    public ProposedWalk(String name, String date, String time) {
+    public ProposedWalk(String name, String date, String time, TeamMember creator) {
         this.name= name;
+        this.creator = creator;
         setDate(date);
         setTime(time);
         Log.d(TAG, "Finished constructing a ProposedWalk with name: " + name);
@@ -38,6 +46,28 @@ public class ProposedWalk {
     }
     public void setIsScheduled(boolean isScheduled) {
         this.isScheduled = isScheduled;
+    }
+    public void setTeammates(List<TeamMember> teammates) {
+        this.teammates = teammates;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public String getDate() {
+        return date;
+    }
+    public String getTime() {
+        return time;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public List<TeamMember> getTeammates() {
+        return teammates;
+    }
+    public TeamMember getCreator() {
+        return creator;
     }
 
 

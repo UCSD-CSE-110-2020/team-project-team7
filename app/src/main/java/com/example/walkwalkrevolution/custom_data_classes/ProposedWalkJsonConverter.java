@@ -20,7 +20,7 @@ public class ProposedWalkJsonConverter {
         // Convert Proposed Walk to JSON string
         String proposedWalkStr = gson.toJson(proposedWalk);
 
-        Log.d(TAG, "Converted a ProposedWalk with the name: " + proposedWalk.name + " to Json str");
+        Log.d(TAG, "Converted a ProposedWalk with the name: " + proposedWalk.getName() + " to Json str");
 
         return proposedWalkStr;
     }
@@ -33,7 +33,7 @@ public class ProposedWalkJsonConverter {
 
         ProposedWalk proposedWalk = gson.fromJson(proposedWalkStr, ProposedWalk.class);
 
-        Log.d(TAG, "Converted Json string to a ProposedWalk with the name: " + proposedWalk.name);
+        Log.d(TAG, "Converted Json string to a ProposedWalk with the name: " + proposedWalk.getName());
 
         return proposedWalk;
     }
