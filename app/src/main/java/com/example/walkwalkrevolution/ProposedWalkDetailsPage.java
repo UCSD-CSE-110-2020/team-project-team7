@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -128,8 +129,10 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void launchGoogleMaps(){
-//        Intent intent = new Intent(ProposedWalkDetailsPage.this, .class);
-//        startActivity(intent);
+        Uri uri = Uri.parse("geo:0,0?q=" + proposedWalk.getLocation());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
         Toast.makeText(this, "Google Maps Launched", Toast.LENGTH_SHORT).show();
     }
 
