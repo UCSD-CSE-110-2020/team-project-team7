@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class MockFirestoreDatabase {
 
@@ -80,7 +81,6 @@ public class MockFirestoreDatabase {
 
                         // create userDetails object and put into factory for fast local access
                         UserDetails currentUser = document.toObject(UserDetails.class);
-                        Log.d("AHHHHH", currentUser.getEmail());
                         UserDetailsFactory.put(mock_user_email, currentUser);
                     } else {
                         Log.d(TAG, "user doesn't exist");
@@ -90,7 +90,7 @@ public class MockFirestoreDatabase {
                         addUserToFireStore(mock_user_email, name);
                     }
                 } else {
-                    Log.d(TAG, "failed with: ", task.getException());
+                    Log.d(TAG, "task failed in checkUserExists: ", task.getException());
                 }
             }
         });
@@ -133,14 +133,19 @@ public class MockFirestoreDatabase {
      */
     public static void routesListOnStartFireStore(UserDetails currentUser) {
 
+        // Retrieve the routes field value of current User from Database
         users.document(currentUser.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
-                    String routesJSON = snapshot.get("routes").toString();
-                    currentUser.setRoutes(routesJSON);
+                    if(snapshot != null) {
+                        String routesJSON = (String)snapshot.get("routes");
+                        currentUser.setRoutes(routesJSON);
+                    } else {
+                        Log.d(TAG, "routes was null");
+                    }
                 } else {
                     Log.d(TAG, "Error getting routeslist on load");
                 }
@@ -154,8 +159,10 @@ public class MockFirestoreDatabase {
      */
     public static void storeRoutes(String routesToStore, UserDetails currentUser) {
 
+        // create map to add/update user document with key value pair
         Map<String, String> routes = new HashMap<>();
         routes.put("routes", routesToStore);
+
         try {
             users.document(currentUser.getEmail()).set(routes, SetOptions.merge());
         } catch (Exception e) {
@@ -168,6 +175,8 @@ public class MockFirestoreDatabase {
      * Get updated routes from UserDetails as it should always be updated
      */
     public static List<Route> getUserRoutes(UserDetails currentUser) {
+
+        // convert routes represented as string to list of routes
         Gson gson = new Gson();
         Type type = new TypeToken<List<Route>>() {}.getType();
         return gson.fromJson(currentUser.getRoutes(), type);
@@ -178,8 +187,10 @@ public class MockFirestoreDatabase {
      */
     public static void storeTeamRoutesWalked(String routesToStore, UserDetails currentUser) {
 
+        // create map to add/update user document with key value pair
         Map<String, String> teamRoutesWalked = new HashMap<>();
         teamRoutesWalked.put("teamRoutesWalked", routesToStore);
+
         try {
             users.document(currentUser.getEmail()).set(teamRoutesWalked, SetOptions.merge());
         } catch (Exception e) {
@@ -191,6 +202,8 @@ public class MockFirestoreDatabase {
      * GET THE CURRENT USER'S ROUTES THAT WERE TAKEN FROM TEAM ROUTES PAGE
      */
     public static List<Route> getTeamRoutesWalked(UserDetails currentUser) {
+
+        // convert teamrouteswalked represented as string to list of routes
         Gson gson = new Gson();
         Type type = new TypeToken<List<Route>>() {}.getType();
         return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
@@ -204,21 +217,27 @@ public class MockFirestoreDatabase {
      */
     public static void teamsPageOnStart(UserDetails currentUser) {
 
+        // get snapshot of current user's doc to retrieve team/teamrouteswalked info
         users.document(currentUser.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
-                    try {
-                        String team = snapshot.get("team").toString();
-                        String teamRoutesWalked = snapshot.get("teamRoutesWalked").toString();
+                    if(snapshot != null) {
+                        String team = (String)snapshot.get("team");
+                        String teamRoutesWalked = (String)snapshot.get("teamRoutesWalked");
                         currentUser.setTeam(team);
                         currentUser.setTeamRoutesWalked(teamRoutesWalked);
-                        Log.d("AHHHHHH", currentUser.getTeam());
-                        populateTeamMateFactory(currentUser, team);
-                    } catch (Exception e) {
-                        Log.d(TAG, "failed to get team page data from firestore: ", e);
+
+                        if(!currentUser.getTeam().equals("empty")) {
+                            populateTeamMateFactory(currentUser, team);
+                        } else {
+                            Log.d(TAG, "current user has no team");
+                        }
+                    } else {
+                        Log.d(TAG, "failed to get team page data from " +
+                                "firestore bc snapshot was null");
                     }
                 } else {
                     Log.d(TAG, "Error getting team on load");
@@ -241,9 +260,9 @@ public class MockFirestoreDatabase {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
                     try {
-                        for (QueryDocumentSnapshot member : task.getResult()) {
-                            String memberEmail = member.get("email").toString();
-                            if(!memberEmail.equals(currentUser.getEmail())) {
+                        for (QueryDocumentSnapshot member : Objects.requireNonNull(task.getResult())) {
+                            String memberEmail = (String)member.get("email");
+                            if(memberEmail != null && !(memberEmail).equals(currentUser.getEmail())) {
                                 TeamMember memberObj = member.toObject(TeamMember.class);
                                 TeamMemberFactory.put(memberEmail, memberObj);
                             }
@@ -268,39 +287,43 @@ public class MockFirestoreDatabase {
      * !!! CALL THIS IN ONSTART OF TEAM ROUTES PAGE !!! (FOR AMRIT)
      * TeamMemberFactory will then have a list of pairs of everyone's routes
      */
-    public static void populateTeamRoutesOnStart(UserDetails currentUser, String teamID) {
-        TeamMemberFactory.resetRoutes();
-        getProposedWalk(teamID);
+    public static void populateTeamRoutesOnStart(UserDetails currentUser) {
+        if(!currentUser.getTeam().equals("empty")) {
+            TeamMemberFactory.resetRoutes();
+            getProposedWalk(currentUser.getTeam());
 
-        users.whereEqualTo("team", teamID).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    try {
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<List<Route>>() {
-                        }.getType();
-                        for (QueryDocumentSnapshot members : task.getResult()) {
-                            String memberEmail = members.getData().get("email").toString();
-                            String routesJSON = members.getData().get("routes").toString();
-                            if ((routesJSON != "") && (memberEmail != currentUser.getEmail())) {
-                                List<Route> membersRoutes = gson.fromJson(routesJSON, type);
-                                for (Route route : membersRoutes) {
-                                    TeamMemberFactory.addRoute(new Pair<>(memberEmail, route));
+            users.whereEqualTo("team", currentUser.getTeam()).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                try {
+                                    Gson gson = new Gson();
+                                    Type type = new TypeToken<List<Route>>() {
+                                    }.getType();
+                                    for (QueryDocumentSnapshot members : Objects.requireNonNull(task.getResult())) {
+                                        String memberEmail = (String) members.getData().get("email");
+                                        String routesJSON = (String) members.getData().get("routes");
+                                        if (!routesJSON.equals("empty") && !memberEmail.equals(currentUser.getEmail())) {
+                                            List<Route> membersRoutes = gson.fromJson(routesJSON, type);
+                                            for (Route route : membersRoutes) {
+                                                TeamMemberFactory.addRoute(new Pair<>(memberEmail, route));
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    Log.d(TAG, "failed to create teamroutes in populateTeamRoutesOnStart " +
+                                            "with exception: ", e);
                                 }
+                            } else {
+                                Log.d(TAG, "failed to get snapshot of users where team " +
+                                        "is equal to teamID in populateTeamRoutesOnStart method");
                             }
                         }
-                    } catch (Exception e) {
-                        Log.d(TAG, "failed to create teamroutes in populateTeamRoutesOnStart " +
-                                "with exception: ", e);
-                    }
-                } else {
-                    Log.d(TAG, "failed to get snapshot of users where team " +
-                            "is equal to teamID in populateTeamRoutesOnStart method");
-                }
-            }
-        });
+                    });
+        } else {
+            Log.d(TAG, "no team routes to populate, user is not on any team");
+        }
     }
     // TODO [END] (TEAM ROUTES PAGE) ---------------------------------------------------------------
 
@@ -318,8 +341,8 @@ public class MockFirestoreDatabase {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
                     // if inviter isn't in a team create one
-                    try {
-                        if (currentUser.getTeam().equals("")) {
+                    if(snapshot != null) {
+                        if (currentUser.getTeam().equals("empty")) {
                             Map<String, String> updateTeam = new HashMap<>();
                             DocumentReference newTeamRef = teams.document();
                             newTeamRef.collection(MEMBERS).document(currentUser.getEmail())
@@ -340,9 +363,9 @@ public class MockFirestoreDatabase {
                         teams.document(currentUser.getTeam())
                                 .collection(MEMBERS)
                                 .document(mock_teammate_email).set(pendingMember);
-                    } catch (Exception e) {
+                    } else {
                         Log.d(TAG, "failed to create team for inviter in " +
-                                "inviteToTeam with exception: ", e);
+                                "inviteToTeam bc snapshot is null");
                     }
                     // TODO SEND NOTIFICATION TO INVITEE ALONG WITH INVITER EMAIL
                 } else {
@@ -363,7 +386,7 @@ public class MockFirestoreDatabase {
         updateStatus.put("pendingStatus", false);
 
         // if invitee was already on a team MERGE
-        if(invitee.getTeam().equals("")) {
+        if(!invitee.getTeam().equals("empty")) {
             Log.d(TAG, "Accepted member does have a team");
 
             teams.document(invitee.getTeam()).collection(MEMBERS)
@@ -371,10 +394,10 @@ public class MockFirestoreDatabase {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()) {
-                                for(QueryDocumentSnapshot document : task.getResult()) {
-                                    String newMembersName = document.get("name").toString();
-                                    String newMembersEmail = document.get("email").toString();
-                                    if(newMembersEmail.equals(invitee.getEmail())) {
+                                for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    String newMembersName = (String)document.get("name");
+                                    String newMembersEmail = (String)document.get("email");
+                                    if(!newMembersEmail.equals(invitee.getEmail())) {
                                         users.document(newMembersEmail).set(updateTeam, SetOptions.merge());
                                         teams.document(inviter.getTeam()).collection(MEMBERS).document(newMembersEmail)
                                                 .set(new TeamMember(newMembersName, newMembersEmail, false));
@@ -388,7 +411,8 @@ public class MockFirestoreDatabase {
                     teams.document(invitee.getTeam()).delete();
             }
         users.document(invitee.getEmail()).set(updateTeam, SetOptions.merge());
-        users.document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
+        teams.document(inviter.getTeam()).collection(MEMBERS).document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
+        //users.document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
     }
 
     /**
@@ -428,15 +452,16 @@ public class MockFirestoreDatabase {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snapshot = task.getResult();
                 if(task.isSuccessful()) {
-                    try {
-                        String poposedWalkJSON = snapshot.get("current proposed walk").toString();
+                    if(snapshot != null) {
+                        String poposedWalkJSON = (String)snapshot.get("current proposed walk");
                         if (poposedWalkJSON != null) {
                             ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(poposedWalkJSON);
                             TeamMemberFactory.setProposedWalk(pw);
+                        } else {
+                            Log.d(TAG, "team has no proposed walk");
                         }
-                    } catch (Exception e) {
-                        Log.d(TAG, "failed to get snapshot of the current proposed walk with " +
-                                "exception: ", e);
+                    } else {
+                        Log.d(TAG, "failed to get snapshot of the current proposed walk");
                     }
                 } else {
                     Log.d(TAG, "failed to get snapshot of teamID " +

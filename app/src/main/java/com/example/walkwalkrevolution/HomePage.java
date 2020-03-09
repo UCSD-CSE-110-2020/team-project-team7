@@ -49,9 +49,13 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         FirebaseApp.initializeApp(this);
         subscribeToNotificationsTopic();
 
-        //Mocking Amrit & Yoshi
-//        MockFirestoreDatabase.homePageOnCreateFireStore("yrussell@gmail.com", "Yoshi Russell");
-        MockFirestoreDatabase.homePageOnCreateFireStore("aksingh@ucsd.edu", "Amrit Singh");
+        // ----------- TESTING ------------ //
+        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserOne@ucsd.edu", "mockUserOne");
+        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserTwo@ucsd.edu", "mockUserTwo");
+        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserThree@ucsd.edu", "mockUserThree");
+        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserFour@ucsd.edu", "mockUserFour");
+        // ----------- TESTING ------------ //
+
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -240,8 +244,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * used to launch the Routes Screen
      */
     public void launchTeammatesPage(){
-        Log.d(TAG, "Launching Routes Screen");
-        MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("aksingh@ucsd.edu"));
+        Log.d(TAG, "Launching Team Page");
+
+        // ----------- TESTING ------------ //
+        MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        // ----------- TESTING ------------ //
+
         Intent intent = new Intent(this, TeammatesPage.class);
         startActivity(intent);
     }

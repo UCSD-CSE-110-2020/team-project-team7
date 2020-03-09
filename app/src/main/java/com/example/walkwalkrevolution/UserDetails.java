@@ -7,9 +7,9 @@ package com.example.walkwalkrevolution;
 public class UserDetails {
     private String name;
     private String email;
-    private String routes = "";
-    private String team = "";
-    private String teamRoutesWalked = "";
+    private String routes = "empty";
+    private String team = "empty";
+    private String teamRoutesWalked = "empty";
 
     UserDetails() {}
 

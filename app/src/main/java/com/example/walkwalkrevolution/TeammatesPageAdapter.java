@@ -13,8 +13,6 @@ public class TeammatesPageAdapter {
 
     public static List<TeamMember> retrieveTeammatesFromCloud(){
 
-        //MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("yrussell@gmail.com"));
-
         Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
 
         List<TeamMember> teammates = new ArrayList<>();

@@ -27,7 +27,9 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
-
+        // ----------- TESTING ------------ //
+        MockFirestoreDatabase.teamCreationOnAccept(UserDetailsFactory.get("mockUserOne@ucsd.edu"), UserDetailsFactory.get("mockUserTwo@ucsd.edu"));
+        // ----------- TESTING ------------ //
 
         initRecyclerView();
 

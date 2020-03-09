@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
+import com.google.firebase.firestore.auth.User;
 
 /**
  * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
@@ -31,11 +32,14 @@ public class RoutesList extends AppCompatActivity {
 
         initRecyclerView();
 
-        // TODO DATABASE TESTING
-        // TODO HARDCODED ID, LATER MOCK_USER_ONE SHOULD BE ACQUIRED THROUGH GOOGLE AUTH
-        // TODO LATER MOCK_TEAMMATE_ID NEEDS TO BE ACQUIRED WHEN INVITING SOMEONE
-        // TODO THESE FUNCTIONS SHOULD BE CALLED AFTER SOMEONE ACCEPTS YOUR INVITE
-//        MockFirestoreDatabase.addTeam("CalvinID", "YoshiID");
+
+        // ----------- TESTING ------------ //
+        MockFirestoreDatabase.routesListOnStartFireStore(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserTwo@ucsd.edu");
+        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserThree@ucsd.edu");
+        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserFour@ucsd.edu");
+        // ----------- TESTING ------------ //
+
 
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 
