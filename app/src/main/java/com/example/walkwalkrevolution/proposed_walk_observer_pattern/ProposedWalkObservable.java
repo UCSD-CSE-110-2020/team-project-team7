@@ -56,7 +56,7 @@ public class ProposedWalkObservable extends Observable {
     }
 
     /**
-     * Clear the currently saved proposed walk to null.
+     * Clear the currently saved proposed walk to null. For withdrawing a walk.
      */
     public void clearProposedWalk() {
         setProposedWalk(null);

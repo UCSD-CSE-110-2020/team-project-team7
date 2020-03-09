@@ -97,7 +97,7 @@ public class SendProposedWalk extends AppCompatActivity {
         MockFirestoreDatabase.storeProposedWalk(proposedWalk, TeamMemberFactory.get("CalvinID"));
 
         Log.d(TAG, "Proposed walk sent..");
-        finish(); // TODO, WHICH ACTIVITY DO WE GO TO AFTER SENDING??
+        finish();
     }
 
     /**
