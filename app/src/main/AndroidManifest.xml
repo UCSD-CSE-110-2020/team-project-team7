@@ -18,7 +18,7 @@
             android:name=".RoutesForm"
             android:exported="true" />
         <activity android:name=".SendProposedWalk" />
-        <activity android:name=".AddTeammate" />
+        <activity android:name=".forms.AddTeammateForm" />
         <activity android:name=".forms.SetDate" />
         <activity android:name=".forms.NotesPage" />
         <activity android:name=".RoutesList" />

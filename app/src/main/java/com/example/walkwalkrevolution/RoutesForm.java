@@ -1,7 +1,5 @@
 package com.example.walkwalkrevolution;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeam;
 import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.forms.NotesPage;
 import com.example.walkwalkrevolution.forms.SetDate;
 import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkFetcherService;
@@ -29,9 +29,6 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
 
 /**
  * Handles interactions with editing details of and saving a
@@ -58,11 +55,14 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private int minutes, seconds;
     private double distance;
 
-    // NOtes taken for the Route
+    // Notes taken for the Route
     private String notes = "";
 
-    Button saveButton;
-    Button notesButton;
+    // true if we came from walk run session and if this user isn't the route's creator
+    private boolean userHasWalkedRoute = false;
+
+    Button saveButton, notesButton;
+
 
 
     // SETTING UP/DESTORYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
@@ -305,14 +305,17 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         displayStepsDistanceTime();
 
         Route route = TreeSetManipulation.getSelectedRoute();
+
         // Walk/Run Session didn't start from Home page
         if(route != null) {
 
+            // This user isn't the route's creator
 //            if(route.creator.getEmail() != account.getEmail()){
 //                intentFromTeamRoutes();
+//                userHasWalkedRoute = true;
 //            }
 //            else{
-//                intentFromRoutesStartButton();
+//               intentFromRoutesStartButton();
 //            } TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
 
             intentFromRoutesStartButton();
@@ -455,16 +458,18 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private Route entriesAsRouteObject(){
         Log.d(TAG, "Successfully passed error checking. Now saving this Route.");
 
-        String routeName = routeNameEditText.getText().toString();
-        String startingPoint = startingPEditText.getText().toString();
-
-        Route savedRoute = new Route(routeName, startingPoint, steps, distance);
-
-        savedRoute.setDate(dateDisplayTextView.getText().toString());
-        savedRoute.setDuration(minutes, seconds);
-        savedRoute.setOptionalFeatures(toggledButtons);
-        savedRoute.setOptionalFeaturesStr(toggledButtonsStr);
-        savedRoute.setNotes(notes);
+        Route savedRoute = Route.RouteBuilder.newInstance()
+                .setName(routeNameEditText.getText().toString())
+                .setStartingPoint(startingPEditText.getText().toString())
+                .setSteps(steps)
+                .setDistance(distance)
+                .setDate(dateDisplayTextView.getText().toString())
+                .setDuration(minutes, seconds)
+                .setOptionalFeatures(toggledButtons)
+                .setOptionalFeaturesStr(toggledButtonsStr)
+                .setNotes(notes)
+                .setUserHasWalkedRoute(userHasWalkedRoute)
+                .buildRoute();
 
         return savedRoute;
     }

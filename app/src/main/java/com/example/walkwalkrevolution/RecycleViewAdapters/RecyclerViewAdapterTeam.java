@@ -21,9 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.FireBaseMessagingService;
 import com.example.walkwalkrevolution.R;
-import com.example.walkwalkrevolution.Route;
 import com.example.walkwalkrevolution.RoutesForm;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.TreeSetManipulation;
 import com.example.walkwalkrevolution.WalkRunSession;
 

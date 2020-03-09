@@ -8,6 +8,7 @@ package com.example.walkwalkrevolution;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

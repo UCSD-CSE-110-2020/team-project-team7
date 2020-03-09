@@ -163,8 +163,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         if(stepsFromMock != -1) {
             setStepCount(stepsFromMock);
             setMiles((Math.floor((stepsFromMock / stepsPerMile) * 100)) / 100);
-            updateStepView(String.valueOf(getStepCount()));
-            updatesMilesView(String.valueOf(getMiles()));
+            updateStepView(String.valueOf(getStepCount()) + " steps");
+            updatesMilesView(String.valueOf(getMiles()) + " miles");
             sc.turnOffAPI = true;   // turn off google api if doing mock
         }
         sc.execute();

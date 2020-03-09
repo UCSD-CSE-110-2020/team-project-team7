@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
+import com.example.walkwalkrevolution.forms.AddTeammateForm;
 
 import java.util.List;
 
@@ -72,8 +73,8 @@ public class TeammatesPage extends AppCompatActivity {
      * Add button clicked, so redirects to AddTeamForm.
      */
     private void redirectToTeammateAddForm(){
-        Log.d(TAG, "+ Clicked --> Going to AddTeammate Form");
-        Intent intent = new Intent(TeammatesPage.this, AddTeammate.class);
+        Log.d(TAG, "+ Clicked --> Going to AddTeammateForm Form");
+        Intent intent = new Intent(TeammatesPage.this, AddTeammateForm.class);
         startActivity(intent);
     }
 

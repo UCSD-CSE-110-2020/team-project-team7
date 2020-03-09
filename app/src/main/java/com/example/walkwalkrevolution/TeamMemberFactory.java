@@ -3,6 +3,7 @@ package com.example.walkwalkrevolution;
 import android.util.Pair;
 
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class TeamMemberFactory {
 
     // List where: key   = member's email
     //             value = member's list of routes
-    private static List<Pair<String,Route>> teamRoutes = new ArrayList<>();
+    private static List<Pair<String, Route>> teamRoutes = new ArrayList<>();
 
     // Team's current proposed walk
     private static ProposedWalk proposedWalk = null;
