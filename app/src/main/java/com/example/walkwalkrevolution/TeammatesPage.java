@@ -27,6 +27,8 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
+
+
         initRecyclerView();
 
         Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);

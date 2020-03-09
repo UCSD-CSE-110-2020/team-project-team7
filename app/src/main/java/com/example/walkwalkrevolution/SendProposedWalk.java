@@ -47,7 +47,6 @@ public class SendProposedWalk extends AppCompatActivity {
             startingPoint = fromIntent.getExtras().getString("startingPoint");
             Log.d(TAG, "Received a Route from the Routes Form with the name: " + routeName);
         }
-
     }
 
 
@@ -108,7 +107,6 @@ public class SendProposedWalk extends AppCompatActivity {
         Log.d(TAG, "No proposed walk sent.");
         finish();
     }
-
 
     // HELPER METHODS -------------------------------------------------------------
 

@@ -11,7 +11,7 @@ import java.util.Observable;
  * Observable that keeps track of a Team's ProposedWalk for several Activity observers.
  * Use addObserver and deleteObserver for registering/deleting.
  */
-public class ProposedWalkObservable extends Observable {
+public  class ProposedWalkObservable extends Observable {
 
     private final String TAG = "ProposedWalkObservable";
 
@@ -21,23 +21,23 @@ public class ProposedWalkObservable extends Observable {
      * Fetch the team's proposed walk from the cloud, if there is one.
      * If it's different from the current proposed walk, set it.
      */
-//    public void fetchProposedWalk() {
-//        // TODO, fetch the is a proposed walk json string from the cloud
-//
-//        // Fetch the proposed walk
-//        ProposedWalk cloudProposedWalk = MockFirestoreDatabase.getProposedWalk(TeamMemberFactory.get("CalvinID"));
-//
-//        Log.d(TAG, "Comparing fetched proposed walk to current...");
-//
-//        if (proposedWalk == null && cloudProposedWalk != null) {
-//            // current proposed walk is null but the one in the cloud isn't
-//            setProposedWalk(cloudProposedWalk);
-//
-//        } else if (proposedWalk != null && !proposedWalk.equals(cloudProposedWalk)) {
-//            // proposed walk exists, but the one in the cloud is different
-//            setProposedWalk(cloudProposedWalk);
-//        }
-//    }
+    public void fetchProposedWalk() {
+        // TODO, fetch the is a proposed walk json string from the cloud
+
+        // Fetch the proposed walk
+        ProposedWalk cloudProposedWalk = TeamMemberFactory.getProposedWalk();
+
+        Log.d(TAG, "Comparing fetched proposed walk to current...");
+
+        if (proposedWalk == null && cloudProposedWalk != null) {
+            // current proposed walk is null but the one in the cloud isn't
+            setProposedWalk(cloudProposedWalk);
+
+        } else if (proposedWalk != null && !proposedWalk.equals(cloudProposedWalk)) {
+            // proposed walk exists, but the one in the cloud is different
+            setProposedWalk(cloudProposedWalk);
+        }
+    }
 
     /**
      * Set the proposed walk instance variable. Notify observers of the change.

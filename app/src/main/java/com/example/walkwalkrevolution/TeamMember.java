@@ -5,19 +5,25 @@ import android.graphics.Color;
 import java.util.Random;
 
 public class TeamMember implements Comparable<TeamMember>{
+/**
+ * Object representing each team member's information
+ * in /TEAMS/{teamID}/MEMBERS/{memberID} in FireStore
+ */
 
     private String name;
-    private String userID;
     private String email;
     private String initials = "";
     private int colorVal;
     private boolean pendingStatus;
     private int proposedWalkStatus;//0 = Pending, 1 = Bad Route, 2 = Bad Time, 3 = Accepted
 
-    TeamMember(String name, String email,  boolean teamStatus) {
+
+    TeamMember() {}
+
+    TeamMember(String name, String email, boolean pendingStatus) {
         this.name = name;
         this.email = email;
-        this.pendingStatus = teamStatus;
+        this.pendingStatus = pendingStatus;
         initialsMaker();
         randomColorGenerator();
     }

@@ -200,7 +200,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
             Log.d(TAG, "Intent NOT from Scheduled Walks Page");
         }
 
-            this.currentUser = proposedWalk.getTeammates().get(2);
+            //this.currentUser = UserDetailsFactory.get("aksingh@ucsd.edu");
             sortTeammatesByStatus();
     }
 

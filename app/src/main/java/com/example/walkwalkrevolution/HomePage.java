@@ -17,6 +17,7 @@ import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.google.firebase.FirebaseApp;
 import com.example.walkwalkrevolution.forms.HeightForm;
 import com.example.walkwalkrevolution.forms.MockPage;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -46,6 +47,11 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Initiallize firebase
         FirebaseApp.initializeApp(this);
+        subscribeToNotificationsTopic();
+
+        //Mocking Amrit & Yoshi
+//        MockFirestoreDatabase.homePageOnCreateFireStore("yrussell@gmail.com", "Yoshi Russell");
+        MockFirestoreDatabase.homePageOnCreateFireStore("aksingh@ucsd.edu", "Amrit Singh");
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -76,9 +82,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         fitnessService.setup();
 
         // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
-        // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE TEAMMEMBER OBJECT REPRESENTING THEM (DONE)
-        // TODO IF THEY ARE NOT IN THE DATABASE CREATE TEAMMEMBER OBJECT AND ADD TO DATABASE (DONE)
-        // TODO HARDCODED HERE BUT LATER WE GET USERID AND EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
+        // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE UserDetail OBJECT REPRESENTING THEM (DONE)
+        // TODO IF THEY ARE NOT IN THE DATABASE CREATE UserDetail OBJECT AND ADD TO DATABASE (DONE)
+        // TODO HARDCODED HERE BUT LATER WE GET EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
@@ -233,6 +239,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      */
     public void launchTeammatesPage(){
         Log.d(TAG, "Launching Routes Screen");
+        MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("aksingh@ucsd.edu"));
         Intent intent = new Intent(this, TeammatesPage.class);
         startActivity(intent);
     }
@@ -295,5 +302,22 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         intent.putExtra("stepCountFromHome", stepCount);
         startActivity(intent);
     }
+
+    /**
+     * subscribes to the team pages notification
+     */
+    public static void subscribeToNotificationsTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("4ZhyI8xmfYpA4nnZ0bHO")
+                .addOnCompleteListener(task -> {
+                            String msg = "Notif subbed!";
+                            if (!task.isSuccessful()) {
+                                msg = "Notif failed :(";
+                            }
+                            Log.d("Sub_Message", msg);
+                        }
+                );
+    }
+
 }
+
 

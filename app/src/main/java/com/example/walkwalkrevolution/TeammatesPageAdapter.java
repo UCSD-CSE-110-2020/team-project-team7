@@ -1,7 +1,11 @@
 package com.example.walkwalkrevolution;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 public class TeammatesPageAdapter {
@@ -9,7 +13,23 @@ public class TeammatesPageAdapter {
 
     public static List<TeamMember> retrieveTeammatesFromCloud(){
 
-        //Use Yoshi's function to call Teammates from cloud
+        //MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("yrussell@gmail.com"));
+
+        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+
+        List<TeamMember> teammates = new ArrayList<>();
+
+        teammates.addAll(map.values());
+
+        return alphabetizeTeammates(teammates);
+    }
+
+    private static List<TeamMember> alphabetizeTeammates(List<TeamMember> teammates){
+        TreeSet<TeamMember> treeSet = new TreeSet<TeamMember>(teammates);
+        return new ArrayList<TeamMember>(treeSet);
+    }
+
+    private List<TeamMember> mockTeammates(){
         List<TeamMember> teammates = new ArrayList<>();
 
         TeamMember member1 = new TeamMember("Aashna Setia", "cido@ucsd.edu",  false);
@@ -31,11 +51,6 @@ public class TeammatesPageAdapter {
         teammates.add(new TeamMember("Yoshi Russel", "aksingh@ucsd.edu",  true));
         teammates.add(new TeamMember("Calvin Nguyen", "aksingh@ucsd.edu",  false));
 
-        return alphabetizeTeammates(teammates);
-    }
-
-    private static List<TeamMember> alphabetizeTeammates(List<TeamMember> teammates){
-        TreeSet<TeamMember> treeSet = new TreeSet<TeamMember>(teammates);
-        return new ArrayList<TeamMember>(treeSet);
+        return teammates;
     }
 }
