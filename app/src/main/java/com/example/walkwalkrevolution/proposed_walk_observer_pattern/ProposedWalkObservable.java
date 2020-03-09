@@ -2,10 +2,8 @@ package com.example.walkwalkrevolution.proposed_walk_observer_pattern;
 
 import android.util.Log;
 
-import com.example.walkwalkrevolution.MockFirestoreDatabase;
 import com.example.walkwalkrevolution.TeamMemberFactory;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
-import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,7 +13,8 @@ import java.util.Observable;
  * Observable that keeps track of a Team's ProposedWalk for several Activity observers.
  * Use addObserver and deleteObserver for registering/deleting.
  */
-public class ProposedWalkObservable {
+
+public  class ProposedWalkObservable extends Observable {
 
     private final static String TAG = "ProposedWalkObservable";
 
@@ -57,7 +56,7 @@ public class ProposedWalkObservable {
      */
     public static void setProposedWalk(ProposedWalk proposedWalk) {
         if (proposedWalk != null) {
-            Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.name);
+            Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.getName());
         }
 
         proposedWalk = proposedWalk;

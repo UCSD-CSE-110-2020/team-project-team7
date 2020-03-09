@@ -1,7 +1,11 @@
 package com.example.walkwalkrevolution;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 public class TeammatesPageAdapter {
@@ -9,12 +13,13 @@ public class TeammatesPageAdapter {
 
     public static List<TeamMember> retrieveTeammatesFromCloud(){
 
-        //Use Yoshi's function to call Teammates from cloud
+        //MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("yrussell@gmail.com"));
+
+        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+
         List<TeamMember> teammates = new ArrayList<>();
 
-        teammates.add(new TeamMember("Titan Ngo", "ttngo@ucsd.edu", "TitanID", "TEAMT", false));
-        teammates.add(new TeamMember("Cindy Do", "cido@ucsd.edu", "CindyID", "TEAMC", true));
-        teammates.add(new TeamMember("Amrit Singh", "aksingh@ucsd.edu", "AmritID", "TEAMA", false));
+        teammates.addAll(map.values());
 
         return alphabetizeTeammates(teammates);
     }
@@ -22,5 +27,30 @@ public class TeammatesPageAdapter {
     private static List<TeamMember> alphabetizeTeammates(List<TeamMember> teammates){
         TreeSet<TeamMember> treeSet = new TreeSet<TeamMember>(teammates);
         return new ArrayList<TeamMember>(treeSet);
+    }
+
+    private List<TeamMember> mockTeammates(){
+        List<TeamMember> teammates = new ArrayList<>();
+
+        TeamMember member1 = new TeamMember("Aashna Setia", "cido@ucsd.edu",  false);
+        member1.setProposedWalkStatus(1);
+        teammates.add(member1);
+
+        TeamMember member2 = new TeamMember("Amrit Singh", "aksingh@ucsd.edu",  true);
+        member2.setProposedWalkStatus(2);
+        teammates.add(member2);
+
+        TeamMember member3 = new TeamMember("Titan Ngo", "ttngo@ucsd.edu",  true);
+        member3.setProposedWalkStatus(3);
+        teammates.add(member3);
+
+        TeamMember member4 = new TeamMember("Harrison Kim", "aksingh@ucsd.edu",  true);
+        member4.setProposedWalkStatus(3);
+        teammates.add(member4);
+
+        teammates.add(new TeamMember("Yoshi Russel", "aksingh@ucsd.edu",  true));
+        teammates.add(new TeamMember("Calvin Nguyen", "aksingh@ucsd.edu",  false));
+
+        return teammates;
     }
 }

@@ -31,16 +31,18 @@ public class TeamMemberFactory {
     public static void put(String userEmail, TeamMember details) {
         members.put(userEmail, details);
     }
+
     // get members from map
     public static TeamMember get(String userEmail) {
         return members.get(userEmail);
     }
 
+    // get all members
+    public static Map<String, TeamMember> getAllMembers() { return members; }
+
     /** -------------------------- Getter/Setter of Team Routes -------------------------------- */
     // add route to list of team routes
-    public static void addRoute(Pair<String, Route> route) {
-        teamRoutes.add(route);
-    }
+    public static void addRoute(Pair<String, Route> route)  { teamRoutes.add(route); }
 
     // get list of team routes
     public static List<Pair<String,Route>> getTeamRoutes() { return teamRoutes; }

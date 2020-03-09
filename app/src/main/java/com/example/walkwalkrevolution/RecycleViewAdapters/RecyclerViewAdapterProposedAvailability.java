@@ -14,27 +14,28 @@ import android.widget.TextView;
 
 import com.example.walkwalkrevolution.R;
 import com.example.walkwalkrevolution.TeamMember;
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerViewAdapterTeammates.ViewHolder>{
+public class RecyclerViewAdapterProposedAvailability extends RecyclerView.Adapter<RecyclerViewAdapterProposedAvailability.ViewHolder>{
 
     private static final String TAG = "RecyclerViewAdapterTeam";
 
-    public List<TeamMember> teammates;
+    private ProposedWalk proposedWalk;
     private Context mContext;
 
     /**
      * Initializes the adapter.
      * @param mContext The page that it will be updating
-     * @param teammates Teammates that need to be displayed
+     * @param proposedWalk Teammates that need to be displayed
      */
-    public RecyclerViewAdapterTeammates(Context mContext, List<TeamMember> teammates) {
+    public RecyclerViewAdapterProposedAvailability(Context mContext, ProposedWalk proposedWalk) {
         this.mContext = mContext;
-        this.teammates = teammates;
+        this.proposedWalk = proposedWalk;
         Log.d(TAG, "Recycler View Adapter Constructor");
 
     }
@@ -50,24 +51,41 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final TeamMember teammate = teammates.get(position);
+        final TeamMember teammate = proposedWalk.getTeammates().get(position);
         Log.d(TAG, "onBindViewHolder: Position " + position + " Teammate Initials: " + teammate.getInitials());
 
         holder.icon.setText(teammate.getInitials());
-        holder.name.setText(teammate.getName());
         holder.icon.getBackground().setColorFilter(teammate.getColorVal(), PorterDuff.Mode.MULTIPLY);
 
-        //Invitation not yet accepted (Grayed & italicized)
-        if(!teammate.getPendingStatus()){
-            holder.parentLayout.getBackground().setColorFilter(Color.parseColor("#9E9E9E"), PorterDuff.Mode.MULTIPLY );
-            holder.name.setTypeface(null, Typeface.ITALIC);
-        }
+        setHolderInformation(holder, teammate.getProposedWalkStatus());
 
+    }
+
+    private void setHolderInformation(ViewHolder holder, int status){
+        switch(status){
+            case 0:
+                holder.name.setText("Pending Response");
+                holder.name.setTypeface(null, Typeface.ITALIC);
+                holder.parentLayout.getBackground().setColorFilter(Color.parseColor("#9E9E9E"), PorterDuff.Mode.MULTIPLY );
+                break;
+            case 1:
+                holder.name.setText("Bad Time");
+                holder.parentLayout.getBackground().setColorFilter(Color.parseColor("#F44336"), PorterDuff.Mode.MULTIPLY );
+                break;
+            case 2:
+                holder.name.setText("Bad Route");
+                holder.parentLayout.getBackground().setColorFilter(Color.parseColor("#F44336"), PorterDuff.Mode.MULTIPLY );
+                break;
+            case 3:
+                holder.name.setText("Accepted");
+                holder.parentLayout.getBackground().setColorFilter(Color.parseColor("#AED581"), PorterDuff.Mode.MULTIPLY );
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return teammates.size();
+        return  proposedWalk.getTeammates().size();
     }
 
     /**

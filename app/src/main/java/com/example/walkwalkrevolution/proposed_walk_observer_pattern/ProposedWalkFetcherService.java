@@ -6,6 +6,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.MockFirestoreDatabase;
+
 /**
  * Handling asynchronous task requests for fetching Proposed Walk data from the cloud.
  * Only runs in ProposedWalkObservers.
@@ -41,7 +43,8 @@ public class ProposedWalkFetcherService extends IntentService {
         super.onDestroy();
     }
 
-    private final int WAIT_TIME = 150; // Constant, how long to wait in between calls to fetches
+    // Constant, how long to wait in between calls to fetches, currently 4000 ms
+    private final int WAIT_TIME = 4000;
 
     /**
      * Call the ProposedWalkObserver's static fetch method to update the Observable based on
@@ -58,6 +61,8 @@ public class ProposedWalkFetcherService extends IntentService {
                     }
 
                     Log.d(TAG, "calling fetch method...");
+                    // TODO
+                    // MockFirestoreDatabase.getProposedWalk(teamID);
                     ProposedWalkObservable.fetchProposedWalk();
                 }
 

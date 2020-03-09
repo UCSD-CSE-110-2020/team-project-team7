@@ -27,6 +27,8 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
+
+
         initRecyclerView();
 
         Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);
@@ -80,8 +82,7 @@ public class TeammatesPage extends AppCompatActivity {
      */
     private void redirectToProposedWalkDetailsForm(){
         Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
-//        startActivity(new Intent(RoutesList.this, HomePage.class));
-//        finish();
+        startActivity(new Intent(TeammatesPage.this, ProposedWalkDetailsPage.class));
     }
 
 }

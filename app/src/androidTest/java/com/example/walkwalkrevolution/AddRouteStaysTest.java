@@ -35,6 +35,10 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * BBD Test MS2
+ * Make sure the team routes stay in the page when adding a new route
+ */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddRouteStaysTest {

@@ -5,17 +5,19 @@ import android.graphics.Color;
 import java.util.Random;
 
 
+public class TeamMember implements Comparable<TeamMember>{
 /**
  * Object representing each team member's information
  * in /TEAMS/{teamID}/MEMBERS/{memberID} in FireStore
  */
-public class TeamMember implements Comparable<TeamMember>{
 
     private String name;
     private String email;
     private String initials = "";
-    private String colorVal;
+    private int colorVal;
     private boolean pendingStatus;
+    private int proposedWalkStatus;//0 = Pending, 1 = Bad Route, 2 = Bad Time, 3 = Accepted
+
 
     TeamMember() {}
 
@@ -55,7 +57,7 @@ public class TeamMember implements Comparable<TeamMember>{
         final int g = (baseGreen + rand.nextInt(256)) / 2;
         final int b = (baseBlue + rand.nextInt(256)) / 2;
 
-        this.colorVal = String.format("#%06X", (0xFFFFFF & Color.rgb(r,g,b)));
+        this.colorVal = Color.rgb(r,g,b);
     }
 
     /**
@@ -64,6 +66,18 @@ public class TeamMember implements Comparable<TeamMember>{
     public String getName() { return this.name; }
     public String getEmail() { return this.email; }
     public String getInitials() { return this.initials; }
-    public String getColorVal() { return this.colorVal; }
+    public int getColorVal() { return this.colorVal; }
     public boolean getPendingStatus() { return this.pendingStatus; }
+    public int getProposedWalkStatus() { return this.proposedWalkStatus; }
+
+    /**
+     * SETTER METHODS
+     */
+    public void setTeam(String teamID) {
+        this.pendingStatus = true;
+    }
+    public void setProposedWalkStatus(int status) {
+        this.proposedWalkStatus = status;
+    }
+
 }
