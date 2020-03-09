@@ -16,6 +16,9 @@ exports.sendInvite = functions.firestore
            title: document.name + ' has sent an invite',
            body: 'Please accept on WWR'
          },
+         data:{
+           act: 'invite_page'
+         },
          topic: context.params.teamId
        };
 
@@ -48,6 +51,9 @@ exports.declineInvite = functions.firestore
            title: document.name + ' has declined the invite',
            body: 'team invite has been denied'
          },
+         data:{
+            act: 'invite_page'
+          },
          topic: context.params.teamId
        };
 

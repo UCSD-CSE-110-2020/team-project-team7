@@ -80,6 +80,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // Get specified FitnessService using fitnessServiceKey from Blueprint
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         fitnessService.setup();
+        checkNotif();
 
         // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
         // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE UserDetail OBJECT REPRESENTING THEM (DONE)
@@ -153,6 +154,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         // Create async task
         sc = new StepCountActivity(fitnessService, testStep);
         sc.updateStep = this;
+        checkNotif();
 
         // if steps were modified from mock page change steps to static mock steps
         SharedPreferences sf = getSharedPreferences("MockSteps" , MODE_PRIVATE);
@@ -316,6 +318,33 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                             Log.d("Sub_Message", msg);
                         }
                 );
+    }
+    public void checkNotif(){
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        Log.d(TAG, "Intent: check notif " + intent.toString());
+        if (intent.getExtras() != null) {
+            Log.d(TAG, "Extras: " + intent.getExtras().toString());
+            Log.d(TAG, "Extras Keyset: " + intent.getExtras().keySet().toString());
+        }else{
+            Log.d(TAG, "Null");
+        }
+        if (intent != null) {
+            String intentStringExtra = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (intentStringExtra != null) {
+                Log.d(TAG, "intentStringExtra: " + intentStringExtra);
+            }
+        }
+        if (bundle != null) {
+            for (String key : bundle.keySet()) {
+                if (bundle.get(key) != null) {
+                    Log.d(TAG, "key: " + key + ", value: " + bundle.get(key).toString());
+                } else {
+                    Log.d(TAG, "key: " + key + ", value: None");
+                }
+            }
+        }
     }
 
 }
