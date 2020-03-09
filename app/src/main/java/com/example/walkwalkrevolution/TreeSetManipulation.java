@@ -51,9 +51,9 @@ public class TreeSetManipulation {
         editor.putString(SHARED_PREFS_TREE_SET, json);
         editor.apply();
 
-        // TODO put routes in DATABASE TEST (FOR AMRIT TO REFER OFF OF)
-        // TODO HARCODED "CalvinID" BUT LATER CAN BE CHANGED TO GETTING GOOGLE AUTH UID
-       // MockFirestoreDatabase.storeRoutes(json, TeamMemberFactory.get("CalvinID"));
+        // ----------- TESTING ------------ //
+        MockFirestoreDatabase.storeUserRoutes(json, UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        // ----------- TESTING ------------ //
 
         Log.d(TAG, "TreeSet Saved");
     }
@@ -68,8 +68,9 @@ public class TreeSetManipulation {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
 
-        // TODO GET ROUTES FROM DATABASE
-       // MockFirestoreDatabase.getUserRoutes(TeamMemberFactory.get("CalvinID"));
+        // ----------- TESTING ------------ //
+        List<Route> userRoutes = MockFirestoreDatabase.getUserRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        // ----------- TESTING ------------ //
 
         Type type = new TypeToken<List<Route>>() {}.getType();
         Log.d("create", json);

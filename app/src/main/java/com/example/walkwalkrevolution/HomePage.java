@@ -50,10 +50,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         subscribeToNotificationsTopic();
 
         // ----------- TESTING ------------ //
-        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserOne@ucsd.edu", "mockUserOne");
-        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserTwo@ucsd.edu", "mockUserTwo");
-        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserThree@ucsd.edu", "mockUserThree");
-        MockFirestoreDatabase.homePageOnCreateFireStore("mockUserFour@ucsd.edu", "mockUserFour");
+        MockFirestoreDatabase.populateUserDetails("mockUserOne@ucsd.edu", "mockUserOne");
+        MockFirestoreDatabase.populateUserDetails("mockUserTwo@ucsd.edu", "mockUserTwo");
+        MockFirestoreDatabase.populateUserDetails("mockUserThree@ucsd.edu", "mockUserThree");
+        MockFirestoreDatabase.populateUserDetails("mockUserFour@ucsd.edu", "mockUserFour");
         // ----------- TESTING ------------ //
 
 
@@ -245,10 +245,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      */
     public void launchTeammatesPage(){
         Log.d(TAG, "Launching Team Page");
-
-        // ----------- TESTING ------------ //
-        MockFirestoreDatabase.teamsPageOnStart(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
-        // ----------- TESTING ------------ //
 
         Intent intent = new Intent(this, TeammatesPage.class);
         startActivity(intent);

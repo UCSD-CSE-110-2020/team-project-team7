@@ -30,6 +30,10 @@ public class TeamRoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_routes_list);
 
+        // ----------- TESTING ------------ //
+        MockFirestoreDatabase.populateTeamRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        // ----------- TESTING ------------ //
+
         initRecyclerView();
 
         Button goToPersonalRoutesPage = (Button) findViewById(R.id.goToPersonalRoutesPage);

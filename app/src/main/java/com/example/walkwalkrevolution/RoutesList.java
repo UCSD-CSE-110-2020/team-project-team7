@@ -34,10 +34,7 @@ public class RoutesList extends AppCompatActivity {
 
 
         // ----------- TESTING ------------ //
-        MockFirestoreDatabase.routesListOnStartFireStore(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
-        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserTwo@ucsd.edu");
-        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserThree@ucsd.edu");
-        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserFour@ucsd.edu");
+        MockFirestoreDatabase.populateUserRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
         // ----------- TESTING ------------ //
 
 
@@ -104,6 +101,8 @@ public class RoutesList extends AppCompatActivity {
      */
     private void saveRoutes(){
         Log.d(TAG, "All Routes from Recycler Saved to SharedPreferences");
+
+
         SharedPreferences prefs = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         TreeSetManipulation.saveTreeSet(prefs, adapter.routes);
     }

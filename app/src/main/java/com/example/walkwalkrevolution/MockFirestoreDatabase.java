@@ -52,245 +52,78 @@ public class MockFirestoreDatabase {
         return single_instance;
     }
 
-    // TODO [START] (HOME PAGE) --------------------------------------------------------------------
+    // TODO [START] (POPULATE STATIC CLASSES) ------------------------------------------------------
     /**
      * !!! CALL ON CREATE OF HOMEPAGE !!! (FOR YOSHI/CALVIN)
      * CHECK IF CURRENT USER EXISTS IN DATABASE
      * -> IN BOTH CASES CREATE USERDETAILS OBJECT REPRESENTING CURRENT USER AND STORE IN
      *    USERDETAILSFACTORY
      */
-    public static void homePageOnCreateFireStore(String currentUserEmail, String currentUserName) {
-        checkUserExists(currentUserEmail, currentUserName);
-    }
-
-    /**
-     * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
-     * Check to see if our current user is in the database
-     */
-    private static void checkUserExists(String mock_user_email, String name) {
+    public static void populateUserDetails(String currentUserEmail, String currentUserName) {
 
         // try to find their document in the database
-        users.document(mock_user_email).get()
+        users.document(currentUserEmail).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists()) {
-                        Log.d(TAG, "user exists");
-
-                        // create userDetails object and put into factory for fast local access
-                        UserDetails currentUser = document.toObject(UserDetails.class);
-                        UserDetailsFactory.put(mock_user_email, currentUser);
-                    } else {
-                        Log.d(TAG, "user doesn't exist");
-
-                        // if the current user does not exist ...
-                        //   create a userDetails obj and add to database
-                        addUserToFireStore(mock_user_email, name);
-                    }
-                } else {
-                    Log.d(TAG, "task failed in checkUserExists: ", task.getException());
-                }
-            }
-        });
-    }
-
-    /**
-     * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
-     * Add new users to the database via google account
-     * @param mock_user_email: make fake email
-     */
-    private static void addUserToFireStore(String mock_user_email, String name) {
-
-        // create userDetails object and put into factory for fast local access
-        UserDetails currentUser = new UserDetails(name, mock_user_email);
-        UserDetailsFactory.put(mock_user_email, currentUser);
-
-        // Create a document on Firestore to store user data
-        users.document(mock_user_email).set(currentUser)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // some Toast message
-                            Log.d(TAG, "add to database was successful");
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()) {
+                                Log.d(TAG, "user exists");
+
+                                // create userDetails object and put into factory for fast local access
+                                UserDetails currentUser = document.toObject(UserDetails.class);
+                                UserDetailsFactory.put(currentUserEmail, currentUser);
+                            } else {
+                                Log.d(TAG, "user doesn't exist");
+
+                                // if the current user does not exist ...
+                                //   create a userDetails obj and add to database
+                                addUserToFireStore(currentUserEmail, currentUserName);
+                            }
                         } else {
-                            // some Toast message
-                            Log.d(TAG, "add to database failed");
+                            Log.d(TAG, "task failed in checkUserExists: ", task.getException());
                         }
                     }
                 });
     }
-    // TODO [END] (HOME PAGE) ----------------------------------------------------------------------
 
-
-    // TODO [START] (ROUTES PAGE) ------------------------------------------------------------------
     /**
      * !!! CALL ONSTART OF ROUTES PAGE !!! (FOR AMRIT)
      * Update UserDetail's routes by grabbing from firestore on activity start
      * @param currentUser
      */
-    public static void routesListOnStartFireStore(UserDetails currentUser) {
+    public static void populateUserRoutes(UserDetails currentUser) {
 
         // Retrieve the routes field value of current User from Database
         users.document(currentUser.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot snapshot = task.getResult();
-                if(task.isSuccessful()) {
-                    if(snapshot != null) {
-                        String routesJSON = (String)snapshot.get("routes");
-                        currentUser.setRoutes(routesJSON);
-                    } else {
-                        Log.d(TAG, "routes was null");
-                    }
-                } else {
-                    Log.d(TAG, "Error getting routeslist on load");
-                }
-            }
-        });
-    }
-
-    /**
-     * !!! PUT THIS IN TREEMANIPULATION.SAVETREE !!! (FOR AMRIT)
-     * Add/update routes to user document on FireStore
-     */
-    public static void storeRoutes(String routesToStore, UserDetails currentUser) {
-
-        // create map to add/update user document with key value pair
-        Map<String, String> routes = new HashMap<>();
-        routes.put("routes", routesToStore);
-
-        try {
-            users.document(currentUser.getEmail()).set(routes, SetOptions.merge());
-        } catch (Exception e) {
-            Log.d(TAG, "failed to store routes: ", e);
-        }
-    }
-
-    /**
-     * !!! PUT THIS IN TREEMANIPULATION.LOADTREE !!! (FOR AMRIT)
-     * Get updated routes from UserDetails as it should always be updated
-     */
-    public static List<Route> getUserRoutes(UserDetails currentUser) {
-
-        // convert routes represented as string to list of routes
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<Route>>() {}.getType();
-        return gson.fromJson(currentUser.getRoutes(), type);
-    }
-
-    /**
-     * WHEN CURRENT USER WALKS A TEAMMATE'S ROUTE STORE INTO TEAMROUTEWALKED FIELD IN CLOUD
-     */
-    public static void storeTeamRoutesWalked(String routesToStore, UserDetails currentUser) {
-
-        // create map to add/update user document with key value pair
-        Map<String, String> teamRoutesWalked = new HashMap<>();
-        teamRoutesWalked.put("teamRoutesWalked", routesToStore);
-
-        try {
-            users.document(currentUser.getEmail()).set(teamRoutesWalked, SetOptions.merge());
-        } catch (Exception e) {
-            Log.d(TAG, "failed to store teamRoutesWalked: ", e);
-        }
-    }
-
-    /**
-     * GET THE CURRENT USER'S ROUTES THAT WERE TAKEN FROM TEAM ROUTES PAGE
-     */
-    public static List<Route> getTeamRoutesWalked(UserDetails currentUser) {
-
-        // convert teamrouteswalked represented as string to list of routes
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<Route>>() {}.getType();
-        return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
-    }
-    // TODO [END] (ROUTES PAGE) --------------------------------------------------------------------
-
-
-    // TODO [START] (TEAM PAGE) --------------------------------------------------------------------
-    /**
-     * !!! CALL ONSTART OF TEAMPAGE !!! (FOR AMRIT)
-     */
-    public static void teamsPageOnStart(UserDetails currentUser) {
-
-        // get snapshot of current user's doc to retrieve team/teamrouteswalked info
-        users.document(currentUser.getEmail()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot snapshot = task.getResult();
-                if(task.isSuccessful()) {
-                    if(snapshot != null) {
-                        String team = (String)snapshot.get("team");
-                        String teamRoutesWalked = (String)snapshot.get("teamRoutesWalked");
-                        currentUser.setTeam(team);
-                        currentUser.setTeamRoutesWalked(teamRoutesWalked);
-
-                        if(!currentUser.getTeam().equals("empty")) {
-                            populateTeamMateFactory(currentUser, team);
-                        } else {
-                            Log.d(TAG, "current user has no team");
-                        }
-                    } else {
-                        Log.d(TAG, "failed to get team page data from " +
-                                "firestore bc snapshot was null");
-                    }
-                } else {
-                    Log.d(TAG, "Error getting team on load");
-                }
-            }
-        });
-    }
-
-    /**
-     * !!! HELPER METHOD FOR ABOVE FUNCTION !!!
-     * populate Map of TeamMates every time we go into TeamPage
-     * @param teamID
-     */
-    private static void populateTeamMateFactory(UserDetails currentUser, String teamID) {
-        TeamMemberFactory.resetMembers();
-
-        teams.document(teamID).collection(MEMBERS).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    try {
-                        for (QueryDocumentSnapshot member : Objects.requireNonNull(task.getResult())) {
-                            String memberEmail = (String)member.get("email");
-                            if(memberEmail != null && !(memberEmail).equals(currentUser.getEmail())) {
-                                TeamMember memberObj = member.toObject(TeamMember.class);
-                                TeamMemberFactory.put(memberEmail, memberObj);
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(task.isSuccessful()) {
+                            if(snapshot != null) {
+                                String routesJSON = (String)snapshot.get("routes");
+                                currentUser.setRoutes(routesJSON);
+                            } else {
+                                Log.d(TAG, "routes was null");
                             }
+                        } else {
+                            Log.d(TAG, "Error getting routeslist on load");
                         }
-                    } catch (Exception e) {
-                        Log.d(TAG, "failed to get create teammembers in populateTeamMateFactory" +
-                                " with exception: ", e);
                     }
-                } else {
-                    Log.d(TAG, "failed to get snapshot of MEMBERS " +
-                            "collection in populateTeamMateFactory");
-                }
-            }
-        });
+                });
     }
-    // TODO [END] (TEAM PAGE) ----------------------------------------------------------------------
 
-
-    // TODO [START] (TEAM ROUTES PAGE) -------------------------------------------------------------
     /**
      * !!! TO ACTUALLY GET THE TEAMROUTES LIST YOU NEED TO CALL TEAMMEMBERFACTORY.GETTEAMROUTES()
      * !!! CALL THIS IN ONSTART OF TEAM ROUTES PAGE !!! (FOR AMRIT)
      * TeamMemberFactory will then have a list of pairs of everyone's routes
      */
-    public static void populateTeamRoutesOnStart(UserDetails currentUser) {
+    public static void populateTeamRoutes(UserDetails currentUser) {
         if(!currentUser.getTeam().equals("empty")) {
             TeamMemberFactory.resetRoutes();
-            getProposedWalk(currentUser.getTeam());
+            populateTeamProposedWalk(currentUser.getTeam());
 
             users.whereEqualTo("team", currentUser.getTeam()).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -325,10 +158,185 @@ public class MockFirestoreDatabase {
             Log.d(TAG, "no team routes to populate, user is not on any team");
         }
     }
-    // TODO [END] (TEAM ROUTES PAGE) ---------------------------------------------------------------
+
+    /**
+     * !!! THIS SHOULD BE CALLED ONCREATE OF TEAMS PAGE !!!
+     * !!! PROPOSED WALK IS SENT TO TEAMMEMBERFACTORY,
+     *     TO GET, CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
+     * Retrieving the proposed walk from database
+     */
+    public static void populateTeamProposedWalk(String teamID) {
+
+        teams.document(teamID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(task.isSuccessful()) {
+                            if(snapshot != null) {
+                                String poposedWalkJSON = (String)snapshot.get("current proposed walk");
+                                if (poposedWalkJSON != null) {
+                                    ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(poposedWalkJSON);
+                                    TeamMemberFactory.setProposedWalk(pw);
+                                } else {
+                                    Log.d(TAG, "team has no proposed walk");
+                                }
+                            } else {
+                                Log.d(TAG, "failed to get snapshot of the current proposed walk");
+                            }
+                        } else {
+                            Log.d(TAG, "failed to get snapshot of teamID " +
+                                    "document in getProposedWalk method");
+                        }
+                    }
+                });
+    }
+
+    /**
+     * !!! CALL ONSTART OF TEAMPAGE !!! (FOR AMRIT)
+     */
+    public static void populateUserTeam(UserDetails currentUser) {
+
+        // get snapshot of current user's doc to retrieve team/teamrouteswalked info
+        users.document(currentUser.getEmail()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        if(task.isSuccessful()) {
+                            if(snapshot != null) {
+                                String team = (String)snapshot.get("team");
+                                String teamRoutesWalked = (String)snapshot.get("teamRoutesWalked");
+                                currentUser.setTeam(team);
+                                currentUser.setTeamRoutesWalked(teamRoutesWalked);
+
+                                if(!currentUser.getTeam().equals("empty")) {
+                                    populateTeamMateFactory(currentUser, team);
+                                } else {
+                                    Log.d(TAG, "current user has no team");
+                                }
+                            } else {
+                                Log.d(TAG, "failed to get team page data from " +
+                                        "firestore bc snapshot was null");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting team on load");
+                        }
+                    }
+                });
+    }
+
+    /**
+     * !!! HELPER METHOD FOR ABOVE FUNCTION !!!
+     * populate Map of TeamMates every time we go into TeamPage
+     * @param teamID
+     */
+    private static void populateTeamMateFactory(UserDetails currentUser, String teamID) {
+        TeamMemberFactory.resetMembers();
+
+        teams.document(teamID).collection(MEMBERS).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            try {
+                                for (QueryDocumentSnapshot member : Objects.requireNonNull(task.getResult())) {
+                                    String memberEmail = (String)member.get("email");
+                                    if(memberEmail != null && !(memberEmail).equals(currentUser.getEmail())) {
+                                        TeamMember memberObj = member.toObject(TeamMember.class);
+                                        TeamMemberFactory.put(memberEmail, memberObj);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.d(TAG, "failed to get create teammembers in populateTeamMateFactory" +
+                                        " with exception: ", e);
+                            }
+                        } else {
+                            Log.d(TAG, "failed to get snapshot of MEMBERS " +
+                                    "collection in populateTeamMateFactory");
+                        }
+                    }
+                });
+    }
+    // TODO [END] (POPULATE STATIC CLASSES) --------------------------------------------------------
 
 
-    // TODO [START] (NOTIFICATIONS) ----------------------------------------------------------------
+    // TODO [START] (STORE INFO TO CLOUD) ----------------------------------------------------------
+    /**
+     * !!! PUT THIS IN TREEMANIPULATION.SAVETREE !!! (FOR AMRIT)
+     * Add/update routes to user document on FireStore
+     */
+    public static void storeUserRoutes(String routesToStore, UserDetails currentUser) {
+
+        // create map to add/update user document with key value pair
+        Map<String, String> routes = new HashMap<>();
+        routes.put("routes", routesToStore);
+
+        try {
+            users.document(currentUser.getEmail()).set(routes, SetOptions.merge());
+        } catch (Exception e) {
+            Log.d(TAG, "failed to store routes: ", e);
+        }
+    }
+
+    /**
+     * WHEN CURRENT USER WALKS A TEAMMATE'S ROUTE STORE INTO TEAMROUTEWALKED FIELD IN CLOUD
+     */
+    public static void storeUserTeamRoutesWalked(String routesToStore, UserDetails currentUser) {
+
+        // create map to add/update user document with key value pair
+        Map<String, String> teamRoutesWalked = new HashMap<>();
+        teamRoutesWalked.put("teamRoutesWalked", routesToStore);
+
+        try {
+            users.document(currentUser.getEmail()).set(teamRoutesWalked, SetOptions.merge());
+        } catch (Exception e) {
+            Log.d(TAG, "failed to store teamRoutesWalked: ", e);
+        }
+    }
+
+    /**
+     * !!! PUT IN SENDPROPOSEDWALK.SENDPROPOSEDWALK() !!! (FOR TITAN)
+     * Store the proposed walk into the cloud teams document and send out notification
+     */
+    public static void storeTeamProposedWalk(ProposedWalk proposedWalk, UserDetails currentUser) {
+
+        String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
+        Map<String, String> newWalkDetails = new HashMap<>();
+        newWalkDetails.put("current proposed walk", proposedWalkJSON);
+        teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
+        // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
+    }
+    // TODO [END] (STORE INFO TO CLOUD) ------------------------------------------------------------
+
+
+    // TODO [START] (GET LIST OF USER'S PERSONAL/TEAM ROUTES) --------------------------------------
+    /**
+     * !!! PUT THIS IN TREEMANIPULATION.LOADTREE !!! (FOR AMRIT)
+     * Get updated routes from UserDetails as it should always be updated
+     */
+    public static List<Route> getUserRoutes(UserDetails currentUser) {
+
+        // convert routes represented as string to list of routes
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Route>>() {}.getType();
+        return gson.fromJson(currentUser.getRoutes(), type);
+    }
+
+    /**
+     * GET THE CURRENT USER'S ROUTES THAT WERE TAKEN FROM TEAM ROUTES PAGE
+     */
+    public static List<Route> getUserTeamRoutesWalked(UserDetails currentUser) {
+
+        // convert teamrouteswalked represented as string to list of routes
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Route>>() {}.getType();
+        return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
+    }
+    // TODO [END] (GET LIST OF USER'S PERSONAL/TEAM ROUTES) ----------------------------------------
+
+
+    // TODO [START] NOTIFICATIONS ------------------------------------------------------------------
     /**
      * WHEN USER INVITES SOMEONE TO THEIR TEAM (FOR HARRISON)
      */
@@ -424,51 +432,31 @@ public class MockFirestoreDatabase {
     // TODO [END] (NOTIFICATIONS) ------------------------------------------------------------------
 
 
-    // TODO [START] (PROPOSED WALKS) ---------------------------------------------------------------
-    /**
-     * !!! PUT IN SENDPROPOSEDWALK.SENDPROPOSEDWALK() !!! (FOR TITAN)
-     * Store the proposed walk into the cloud teams document and send out notification
-     */
-    public static void storeProposedWalk(ProposedWalk proposedWalk, UserDetails currentUser) {
-
-        String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
-        Map<String, String> newWalkDetails = new HashMap<>();
-        newWalkDetails.put("current proposed walk", proposedWalkJSON);
-        teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
-        // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
-    }
 
     /**
-     * !!! THIS SHOULD BE CALLED ONCREATE OF TEAMS PAGE !!!
-     * !!! PROPOSED WALK IS SENT TO TEAMMEMBERFACTORY,
-     *     TO GET, CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
-     * Retrieving the proposed walk from database
+     * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
+     * Add new users to the database via google account
+     * @param mock_user_email: make fake email
      */
-    public static void getProposedWalk(String teamID) {
+    private static void addUserToFireStore(String mock_user_email, String name) {
 
-        teams.document(teamID).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot snapshot = task.getResult();
-                if(task.isSuccessful()) {
-                    if(snapshot != null) {
-                        String poposedWalkJSON = (String)snapshot.get("current proposed walk");
-                        if (poposedWalkJSON != null) {
-                            ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(poposedWalkJSON);
-                            TeamMemberFactory.setProposedWalk(pw);
+        // create userDetails object and put into factory for fast local access
+        UserDetails currentUser = new UserDetails(name, mock_user_email);
+        UserDetailsFactory.put(mock_user_email, currentUser);
+
+        // Create a document on Firestore to store user data
+        users.document(mock_user_email).set(currentUser)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // some Toast message
+                            Log.d(TAG, "add to database was successful");
                         } else {
-                            Log.d(TAG, "team has no proposed walk");
+                            // some Toast message
+                            Log.d(TAG, "add to database failed");
                         }
-                    } else {
-                        Log.d(TAG, "failed to get snapshot of the current proposed walk");
                     }
-                } else {
-                    Log.d(TAG, "failed to get snapshot of teamID " +
-                            "document in getProposedWalk method");
-                }
-            }
-        });
+                });
     }
-    // TODO [END] (PROPOSED WALKS) -----------------------------------------------------------------
 }
