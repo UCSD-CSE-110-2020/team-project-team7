@@ -59,14 +59,13 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private String notes = "";
 
     // true if we came from walk run session and if this user isn't the route's creator
-    private boolean userHasWalkedRoute = false;
+    private boolean userHasWalkedTeamRoute;
 
-    Button saveButton, notesButton;
+    private boolean intentIsFromTeamRoutes;
 
+    Button saveButton, notesButton, proposeWalkButton;
 
-
-    // SETTING UP/DESTORYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
-    private boolean intentFromWalkRunSession;
+    // SETTING UP/DESTROYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +75,6 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         Log.d(TAG, "Starting formSetUp");
         formSetUp();
         Log.d(TAG, "Finished formSetup");
-
-        // Add this activity into the observer pattern
-        ProposedWalkObservable.register(this);
-        // Start the fetcher intent service
-        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
-        startService(intent);
     }
 
     /**
@@ -204,7 +197,6 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 case WalkRunSession.WALK_RUN_INTENT:
                     intentFromWalkRunSession(fromIntent);
                     Log.d(TAG, "Intent Found: Walk/Run Session");
-                    intentFromWalkRunSession = true;
                     break;
                 case RoutesList.ROUTE_CREATE_INTENT:
                     intentFromRoutesCreation();
@@ -310,13 +302,14 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         if(route != null) {
 
             // This user isn't the route's creator
-//            if(route.creator.getEmail() != account.getEmail()){
-//                intentFromTeamRoutes();
-//                userHasWalkedRoute = true;
+//            if (route.creator.getEmail() != account.getEmail()){
+//                userHasWalkedTeamRoute = true;
+            // TODO, display the proposedwalk button?
 //            }
-//            else{
+//            else {
 //               intentFromRoutesStartButton();
-//            } TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
+//            }
+            // TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
 
             intentFromRoutesStartButton();
         }
@@ -358,31 +351,17 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         }
 
         // Display the proposed walk button because we are from the team routes page
-        Button proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
+        proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
         proposeWalkButton.setVisibility(View.VISIBLE);
 
-        // No proposed walk exists, the button is enabled
-        if (this.proposedWalk == null) {
-            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    openSendProposedWalkActivity(v);
-                }
-            });
+        // Add this activity into the observer pattern
+        ProposedWalkObservable.register(this);
+        // Start the fetcher intent service
+        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+        startService(intent);
 
-        } else {
-            // gray out and disable the button if a proposed walk already exists
-            proposeWalkButton.setBackgroundColor(Color.GRAY);
-            proposeWalkButton.getBackground().setAlpha(55);
-
-            Activity thisActivity = this;
-            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    proposeWalkButton.setError("");
-                    Toast.makeText(thisActivity, "A Proposed Walk already exists",
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+        updateProposeWalkButton();
+        intentIsFromTeamRoutes = true;
     }
 
 
@@ -407,6 +386,12 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         Intent intent = new Intent(this, RoutesList.class);
         SharedPreferences sharedPreferences =
                 getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+
+        // If user is saving a team route, else user is saving a personal route
+        if (userHasWalkedTeamRoute) {
+
+        }
+        // TODO, use userHasWalkedTeamRoute boolean
 
         //Anything involving the Routes Page executes here
         if(TreeSetManipulation.getSelectedRoute() != null){
@@ -468,7 +453,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 .setOptionalFeatures(toggledButtons)
                 .setOptionalFeaturesStr(toggledButtonsStr)
                 .setNotes(notes)
-                .setUserHasWalkedRoute(userHasWalkedRoute)
+                .setUserHasWalkedRoute(userHasWalkedTeamRoute)
                 .buildRoute();
 
         return savedRoute;
@@ -517,7 +502,13 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      */
     private void cancel() {
         Log.d(TAG, "Cancel Button clicked --> Redirected to Routes Page");
+
+        // Go back to Personal Routes page or Team Routes page
         Intent intent = new Intent(this, RoutesList.class);
+        if (intentIsFromTeamRoutes) {
+            intent = new Intent(this, TeamRoutesList.class);
+        }
+
         // TODO TEST TO KEEP HOME AS CALLER
         startActivity(intent);
         finish();
@@ -586,7 +577,40 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      */
     @Override
     public void update(ProposedWalkObserver o, Object arg) {
+        Log.d(TAG, "Called Routes Form observer update()");
+
         this.proposedWalk = (ProposedWalk) arg;
+        updateProposeWalkButton();
     }
+
+
+    /**
+     * Updates the proposeWalkButton UI based on the instance var proposedWalk.
+     */
+    private void updateProposeWalkButton() {
+        // No proposed walk exists, the button is enabled
+        if (this.proposedWalk == null) {
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    openSendProposedWalkActivity(v);
+                }
+            });
+
+        } else {
+            // gray out and disable the button if a proposed walk already exists
+            proposeWalkButton.setBackgroundColor(Color.GRAY);
+            proposeWalkButton.getBackground().setAlpha(55);
+
+            Activity thisActivity = this;
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    proposeWalkButton.setError("");
+                    Toast.makeText(thisActivity, "A Proposed Walk already exists",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
 
 }
