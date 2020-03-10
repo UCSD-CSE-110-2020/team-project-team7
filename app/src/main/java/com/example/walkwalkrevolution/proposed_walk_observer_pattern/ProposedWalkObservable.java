@@ -109,4 +109,13 @@ public  class ProposedWalkObservable extends Observable {
         }
     }
 
+
+    /**
+     * Returns the proposedWalk static variable.
+     */
+    public static ProposedWalk getProposedWalk() {
+        return proposedWalk;
+    }
+
+
 }
