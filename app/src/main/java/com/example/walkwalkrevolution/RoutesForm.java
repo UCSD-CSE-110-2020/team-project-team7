@@ -85,11 +85,13 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     protected void onStop(){
         super.onStop();
 
-        // Stop the fetcher intent service
-        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
-        stopService(intent);
+        if (intentIsFromTeamRoutes) {
+            // Stop the fetcher intent service
+            Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+            stopService(intent);
 
-        ProposedWalkObservable.removeObserver(this);
+            ProposedWalkObservable.removeObserver(this);
+        }
     }
 
 
@@ -304,7 +306,6 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
             // This user isn't the route's creator
 //            if (route.creator.getEmail() != account.getEmail()){
 //                userHasWalkedTeamRoute = true;
-            // TODO, display the proposedwalk button?
 //            }
 //            else {
 //               intentFromRoutesStartButton();

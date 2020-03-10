@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
