@@ -2,6 +2,8 @@ package com.example.walkwalkrevolution.proposed_walk_observer_pattern;
 
 import android.util.Log;
 
+import com.example.walkwalkrevolution.CloudCallBack;
+import com.example.walkwalkrevolution.CloudDatabase;
 import com.example.walkwalkrevolution.TeamMemberFactory;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 
@@ -32,20 +34,25 @@ public  class ProposedWalkObservable extends Observable {
      */
     public static void fetchProposedWalk() {
         // Fetch the proposed walk
-        ProposedWalk cloudProposedWalk = TeamMemberFactory.getProposedWalk();
 
-        Log.d(TAG, "Comparing fetched proposed walk to current...");
+        CloudDatabase.populateTeamProposedWalk(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                ProposedWalk cloudProposedWalk = TeamMemberFactory.getProposedWalk();
 
-        if (proposedWalk == null && cloudProposedWalk != null) {
-            // current proposed walk is null but the one in the cloud isn't
-            setProposedWalk(cloudProposedWalk);
+                Log.d(TAG, "Comparing fetched proposed walk to current...");
 
-        } else if (proposedWalk != null && !proposedWalk.equals(cloudProposedWalk)) {
-            // proposed walk exists, but the one in the cloud is different
-            setProposedWalk(cloudProposedWalk);
-        }
+                if (proposedWalk == null && cloudProposedWalk != null) {
+                    // current proposed walk is null but the one in the cloud isn't
+                    setProposedWalk(cloudProposedWalk);
+
+                } else if (proposedWalk != null && !proposedWalk.equals(cloudProposedWalk)) {
+                    // proposed walk exists, but the one in the cloud is different
+                    setProposedWalk(cloudProposedWalk);
+                }
+            }
+        });
     }
-
 
     // MANIPULATION OF PROPOSED WALK DATA VAR ------------------------------------------------------
 
