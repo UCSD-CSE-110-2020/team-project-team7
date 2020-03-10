@@ -165,7 +165,7 @@ public class CloudDatabase {
      *     TO GET, CALL TEAMMEMBERFACTORY.GETPROPOSEDWALK() !!! (FOR TITAN)
      * Retrieving the proposed walk from database
      */
-    private static void populateTeamProposedWalk() {
+    public static void populateTeamProposedWalk(CloudCallBack cb) {
 
         teams.document(currentUser.getTeam()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -178,6 +178,7 @@ public class CloudDatabase {
                                 if (proposedWalkJSON != null) {
                                     ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
                                     TeamMemberFactory.setProposedWalk(pw);
+                                    cb.callBack();
                                 } else {
                                     Log.d(TAG, "team has no proposed walk");
                                 }
@@ -198,7 +199,7 @@ public class CloudDatabase {
      */
     public static void populateTeamMateFactory(CloudCallBack cb) {
 
-        populateTeamProposedWalk();
+        //populateTeamProposedWalk();
         TeamMemberFactory.resetMembers();
         if(!currentUser.getTeam().equals("")) {
             teams.document(currentUser.getTeam()).collection(MEMBERS).get()
