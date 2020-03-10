@@ -27,6 +27,13 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
+        // once team's routes have been fetched from db
+        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
 
         Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);
 
@@ -46,21 +53,6 @@ public class TeammatesPage extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // ----------- TESTING ------------ //
-        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
-            @Override
-            public void callBack() {
-                Log.d("CB", "inside callback");
-                initRecyclerView();
-            }
-        });
-        // ----------- TESTING ------------ //
     }
 
     /**

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
-import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -57,7 +56,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         FirebaseApp.initializeApp(this);
         subscribeToNotificationsTopic();
 
-        // --------------- [START] GOOGLE SIGNIN --------------- //
+        // --------------- [START] GOOGLE SIGN IN --------------- //
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -65,7 +65,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        // --------------- [END]   GOOGLE SIGNIN --------------- //
+
+        // --------------- [END]   GOOGLE SIGN IN --------------- //
 
 
         // retrieve height;
@@ -96,11 +97,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         fitnessService = FitnessServiceFactory.getFS(fitnessServiceKey);
         fitnessService.setup();
         checkNotif();
-
-        // TODO DATABASE TESTING --> CHECK IF CURRENT USER EXISTS IN DATABASE
-        // TODO IF THEY ARE ALREADY IN THE DATABASE JUST CREATE UserDetail OBJECT REPRESENTING THEM (DONE)
-        // TODO IF THEY ARE NOT IN THE DATABASE CREATE UserDetail OBJECT AND ADD TO DATABASE (DONE)
-        // TODO HARDCODED HERE BUT LATER WE GET EMAIL FROM GOOGLE AUTH, NAME ACQUIRED THROUGH HEIGHTFORM
 
         // Async Textviews
         stepCountText = findViewById(R.id.stepCountText);
@@ -271,7 +267,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             timeValue.setText(list.get(2));
         }
     }
-
 
     /**
      * updateStepView, setStepCount, getStepCount implement UpdateStepInterface

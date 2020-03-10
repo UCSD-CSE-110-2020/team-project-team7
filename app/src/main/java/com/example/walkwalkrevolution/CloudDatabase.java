@@ -174,9 +174,9 @@ public class CloudDatabase {
                         DocumentSnapshot snapshot = task.getResult();
                         if(task.isSuccessful()) {
                             if(snapshot != null) {
-                                String poposedWalkJSON = (String)snapshot.get("current proposed walk");
-                                if (poposedWalkJSON != null) {
-                                    ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(poposedWalkJSON);
+                                String proposedWalkJSON = (String)snapshot.get("current proposed walk");
+                                if (proposedWalkJSON != null) {
+                                    ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
                                     TeamMemberFactory.setProposedWalk(pw);
                                 } else {
                                     Log.d(TAG, "team has no proposed walk");

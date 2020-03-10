@@ -30,16 +30,13 @@ public class RoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
 
-
-        // ----------- TESTING ------------ //
+        // Once current user's routes are fetched from database
         CloudDatabase.populateUserRoutes(new CloudCallBack() {
             @Override
             public void callBack() {
                 initRecyclerView();
             }
         });
-        // ----------- TESTING ------------ //
-
 
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 

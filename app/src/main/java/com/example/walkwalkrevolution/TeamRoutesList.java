@@ -30,14 +30,13 @@ public class TeamRoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_routes_list);
 
-        // ----------- TESTING ------------ //
+        // once team's routes have been fetched from db
         CloudDatabase.populateTeamRoutes(new CloudCallBack() {
             @Override
             public void callBack() {
                 initRecyclerView();
             }
         });
-        // ----------- TESTING ------------ //
 
         Button goToPersonalRoutesPage = (Button) findViewById(R.id.goToPersonalRoutesPage);
 

@@ -13,8 +13,6 @@ public class TeammatesPageAdapter {
 
     public static List<TeamMember> retrieveTeammatesFromCloud(){
 
-        Log.d("CB", "inside retreiveTeamMatesFromCloud");
-
         Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
 
         List<TeamMember> teammates = new ArrayList<>();
