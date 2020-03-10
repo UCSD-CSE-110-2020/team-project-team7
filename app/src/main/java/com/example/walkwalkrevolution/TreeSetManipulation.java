@@ -52,7 +52,6 @@ public class TreeSetManipulation {
 //        editor.apply();
 
         // ----------- TESTING ------------ //
-        //MockFirestoreDatabase.storeUserRoutes(json, UserDetailsFactory.get("mockUserOne@ucsd.edu"));
         CloudDatabase.storeUserRoutes(json);
         CloudDatabase.currentUser.setRoutes(json);
         // ----------- TESTING ------------ //

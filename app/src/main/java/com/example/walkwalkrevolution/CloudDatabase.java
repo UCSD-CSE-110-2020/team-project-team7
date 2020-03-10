@@ -122,7 +122,6 @@ public class CloudDatabase {
     public static void populateTeamRoutes(CloudCallBack cb) {
         if(!currentUser.getTeam().equals("")) {
             TeamMemberFactory.resetRoutes();
-            populateTeamProposedWalk();
 
             users.whereEqualTo("team", currentUser.getTeam()).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -197,6 +196,8 @@ public class CloudDatabase {
      * populate Map of TeamMates every time we go into TeamPage
      */
     public static void populateTeamMateFactory(CloudCallBack cb) {
+
+        populateTeamProposedWalk();
         TeamMemberFactory.resetMembers();
         if(!currentUser.getTeam().equals("")) {
             teams.document(currentUser.getTeam()).collection(MEMBERS).get()
