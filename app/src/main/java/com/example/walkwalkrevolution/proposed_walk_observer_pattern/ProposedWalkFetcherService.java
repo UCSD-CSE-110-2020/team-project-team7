@@ -2,11 +2,7 @@ package com.example.walkwalkrevolution.proposed_walk_observer_pattern;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.walkwalkrevolution.MockFirestoreDatabase;
 
 /**
  * Handling asynchronous task requests for fetching Proposed Walk data from the cloud.
