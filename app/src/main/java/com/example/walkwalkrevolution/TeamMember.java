@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import java.util.Random;
 
+
 public class TeamMember implements Comparable<TeamMember>{
 /**
  * Object representing each team member's information

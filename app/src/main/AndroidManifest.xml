@@ -14,11 +14,12 @@
         <activity android:name=".TeamRoutesList" />
         <activity android:name=".TeammatesPage" />
         <activity android:name=".forms.HeightForm" />
-        <activity
-            android:name=".RoutesForm"
-            android:exported="true" />
+        <activity android:name=".RoutesForm" />
+        <service
+            android:name=".proposed_walk_observer_pattern.ProposedWalkFetcherService"
+            android:exported="false"></service>
         <activity android:name=".SendProposedWalk" />
-        <activity android:name=".AddTeammate" />
+        <activity android:name=".forms.AddTeammateForm" />
         <activity android:name=".forms.SetDate" />
         <activity android:name=".forms.NotesPage" />
         <activity android:name=".RoutesList" />

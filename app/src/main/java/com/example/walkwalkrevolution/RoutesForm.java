@@ -1,7 +1,5 @@
 package com.example.walkwalkrevolution;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,27 +12,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeam;
 import com.example.walkwalkrevolution.custom_data_classes.DateTimeFormatter;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.forms.NotesPage;
 import com.example.walkwalkrevolution.forms.SetDate;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkFetcherService;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObserver;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
 
 /**
  * Handles interactions with editing details of and saving a
  * Routes entry on the Routes Form Activity.
  */
-public class RoutesForm extends AppCompatActivity implements Observer {
+public class RoutesForm extends AppCompatActivity implements ProposedWalkObserver {
 
     // Constant for logging
     private static final String TAG = "RoutesForm";
@@ -55,15 +55,17 @@ public class RoutesForm extends AppCompatActivity implements Observer {
     private int minutes, seconds;
     private double distance;
 
-    // NOtes taken for the Route
+    // Notes taken for the Route
     private String notes = "";
 
-    Button saveButton;
-    Button notesButton;
+    // true if we came from walk run session and if this user isn't the route's creator
+    private boolean userHasWalkedTeamRoute;
 
+    private boolean intentIsFromTeamRoutes;
 
-    // SETTING UP GENERAL UI ELEMENTS AND BEHAVIOR -------------------------------------------------
-    private boolean intentFromWalkRunSession;
+    Button saveButton, notesButton, proposeWalkButton;
+
+    // SETTING UP/DESTROYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,24 @@ public class RoutesForm extends AppCompatActivity implements Observer {
         formSetUp();
         Log.d(TAG, "Finished formSetup");
     }
+
+    /**
+     * Upon quitting this intent, stop the fetcher intent service. Remove this Activity as
+     * an observer.
+     */
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        if (intentIsFromTeamRoutes) {
+            // Stop the fetcher intent service
+            Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+            stopService(intent);
+
+            ProposedWalkObservable.removeObserver(this);
+        }
+    }
+
 
     /**
      * Initialize instance vars for most Activity objects. Set up the date. Find out which
@@ -179,7 +199,6 @@ public class RoutesForm extends AppCompatActivity implements Observer {
                 case WalkRunSession.WALK_RUN_INTENT:
                     intentFromWalkRunSession(fromIntent);
                     Log.d(TAG, "Intent Found: Walk/Run Session");
-                    intentFromWalkRunSession = true;
                     break;
                 case RoutesList.ROUTE_CREATE_INTENT:
                     intentFromRoutesCreation();
@@ -280,15 +299,18 @@ public class RoutesForm extends AppCompatActivity implements Observer {
         displayStepsDistanceTime();
 
         Route route = TreeSetManipulation.getSelectedRoute();
+
         // Walk/Run Session didn't start from Home page
         if(route != null) {
 
-//            if(route.creator.getEmail() != account.getEmail()){
-//                intentFromTeamRoutes();
+            // This user isn't the route's creator
+//            if (route.creator.getEmail() != account.getEmail()){
+//                userHasWalkedTeamRoute = true;
 //            }
-//            else{
-//                intentFromRoutesStartButton();
-//            } TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
+//            else {
+//               intentFromRoutesStartButton();
+//            }
+            // TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
 
             intentFromRoutesStartButton();
         }
@@ -330,31 +352,17 @@ public class RoutesForm extends AppCompatActivity implements Observer {
         }
 
         // Display the proposed walk button because we are from the team routes page
-        Button proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
+        proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
         proposeWalkButton.setVisibility(View.VISIBLE);
 
-        // No proposed walk exists, the button is enabled
-        if (this.proposedWalk == null) {
-            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    openSendProposedWalkActivity(v);
-                }
-            });
+        // Add this activity into the observer pattern
+        ProposedWalkObservable.register(this);
+        // Start the fetcher intent service
+        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+        startService(intent);
 
-        } else {
-            // gray out and disable the button if a proposed walk already exists
-            proposeWalkButton.setBackgroundColor(Color.GRAY);
-            proposeWalkButton.getBackground().setAlpha(55);
-
-            Activity thisActivity = this;
-            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    proposeWalkButton.setError("");
-                    Toast.makeText(thisActivity, "A Proposed Walk already exists",
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+        updateProposeWalkButton();
+        intentIsFromTeamRoutes = true;
     }
 
 
@@ -379,6 +387,12 @@ public class RoutesForm extends AppCompatActivity implements Observer {
         Intent intent = new Intent(this, RoutesList.class);
         SharedPreferences sharedPreferences =
                 getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+
+        // If user is saving a team route, else user is saving a personal route
+        if (userHasWalkedTeamRoute) {
+
+        }
+        // TODO, use userHasWalkedTeamRoute boolean
 
         //Anything involving the Routes Page executes here
         if(TreeSetManipulation.getSelectedRoute() != null){
@@ -430,16 +444,18 @@ public class RoutesForm extends AppCompatActivity implements Observer {
     private Route entriesAsRouteObject(){
         Log.d(TAG, "Successfully passed error checking. Now saving this Route.");
 
-        String routeName = routeNameEditText.getText().toString();
-        String startingPoint = startingPEditText.getText().toString();
-
-        Route savedRoute = new Route(routeName, startingPoint, steps, distance);
-
-        savedRoute.setDate(dateDisplayTextView.getText().toString());
-        savedRoute.setDuration(minutes, seconds);
-        savedRoute.setOptionalFeatures(toggledButtons);
-        savedRoute.setOptionalFeaturesStr(toggledButtonsStr);
-        savedRoute.setNotes(notes);
+        Route savedRoute = Route.RouteBuilder.newInstance()
+                .setName(routeNameEditText.getText().toString())
+                .setStartingPoint(startingPEditText.getText().toString())
+                .setSteps(steps)
+                .setDistance(distance)
+                .setDate(dateDisplayTextView.getText().toString())
+                .setDuration(minutes, seconds)
+                .setOptionalFeatures(toggledButtons)
+                .setOptionalFeaturesStr(toggledButtonsStr)
+                .setNotes(notes)
+                .setUserHasWalkedRoute(userHasWalkedTeamRoute)
+                .buildRoute();
 
         return savedRoute;
     }
@@ -487,7 +503,13 @@ public class RoutesForm extends AppCompatActivity implements Observer {
      */
     private void cancel() {
         Log.d(TAG, "Cancel Button clicked --> Redirected to Routes Page");
+
+        // Go back to Personal Routes page or Team Routes page
         Intent intent = new Intent(this, RoutesList.class);
+        if (intentIsFromTeamRoutes) {
+            intent = new Intent(this, TeamRoutesList.class);
+        }
+
         // TODO TEST TO KEEP HOME AS CALLER
         startActivity(intent);
         finish();
@@ -555,8 +577,41 @@ public class RoutesForm extends AppCompatActivity implements Observer {
      * Called in ProposedWalkObservable whenever a change to the Team's ProposedWalk is made.
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(ProposedWalkObserver o, Object arg) {
+        Log.d(TAG, "Called Routes Form observer update()");
+
         this.proposedWalk = (ProposedWalk) arg;
+        updateProposeWalkButton();
     }
+
+
+    /**
+     * Updates the proposeWalkButton UI based on the instance var proposedWalk.
+     */
+    private void updateProposeWalkButton() {
+        // No proposed walk exists, the button is enabled
+        if (this.proposedWalk == null) {
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    openSendProposedWalkActivity(v);
+                }
+            });
+
+        } else {
+            // gray out and disable the button if a proposed walk already exists
+            proposeWalkButton.setBackgroundColor(Color.GRAY);
+            proposeWalkButton.getBackground().setAlpha(55);
+
+            Activity thisActivity = this;
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    proposeWalkButton.setError("");
+                    Toast.makeText(thisActivity, "A Proposed Walk already exists",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
 
 }

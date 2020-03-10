@@ -8,6 +8,7 @@ package com.example.walkwalkrevolution;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,16 +45,17 @@ public class TreeSetManipulation {
      * @param list
      */
     public static void saveTreeSet(SharedPreferences sharedPreferences, List<Route> list){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(list);
         Log.d("json", json);
-        editor.putString(SHARED_PREFS_TREE_SET, json);
-        editor.apply();
+//        editor.putString(SHARED_PREFS_TREE_SET, json);
+//        editor.apply();
 
-        // TODO put routes in DATABASE TEST (FOR AMRIT TO REFER OFF OF)
-        // TODO HARCODED "CalvinID" BUT LATER CAN BE CHANGED TO GETTING GOOGLE AUTH UID
-       // MockFirestoreDatabase.storeRoutes(json, TeamMemberFactory.get("CalvinID"));
+        // ----------- TESTING ------------ //
+        CloudDatabase.storeUserRoutes(json);
+        CloudDatabase.currentUser.setRoutes(json);
+        // ----------- TESTING ------------ //
 
         Log.d(TAG, "TreeSet Saved");
     }
@@ -68,12 +70,15 @@ public class TreeSetManipulation {
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
 
-        // TODO GET ROUTES FROM DATABASE
-       // MockFirestoreDatabase.getUserRoutes(TeamMemberFactory.get("CalvinID"));
+        // ----------- TESTING ------------ //
+        //List<Route> userRoutes = MockFirestoreDatabase.getUserRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        List<Route> userRoutes = CloudDatabase.getUserRoutes();
+        // ----------- TESTING ------------ //
 
         Type type = new TypeToken<List<Route>>() {}.getType();
         Log.d("create", json);
-        return gson.fromJson(json, type);
+        //return gson.fromJson(json, type);
+        return userRoutes;
     }
 
     /**

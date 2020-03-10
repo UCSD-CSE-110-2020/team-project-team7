@@ -65,7 +65,7 @@ public class DateTimeFormatter {
     // TIME FORMATTING -----------------------------------------------------------------
 
     /**
-     * Format inputted ints into a String indicating the time.
+     * Format inputted ints (from a time spinner) into a String indicating the time.
      * Inputted hours are from 0-23.
      * Inputted minutes are from 0-59.
      */

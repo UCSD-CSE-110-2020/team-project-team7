@@ -30,16 +30,13 @@ public class RoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
 
-        initRecyclerView();
-
-
-        // ----------- TESTING ------------ //
-        MockFirestoreDatabase.routesListOnStartFireStore(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
-        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserTwo@ucsd.edu");
-        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserThree@ucsd.edu");
-        MockFirestoreDatabase.inviteToTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"), "mockUserFour@ucsd.edu");
-        // ----------- TESTING ------------ //
-
+        // Once current user's routes are fetched from database
+        CloudDatabase.populateUserRoutes(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
 
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 
@@ -104,6 +101,8 @@ public class RoutesList extends AppCompatActivity {
      */
     private void saveRoutes(){
         Log.d(TAG, "All Routes from Recycler Saved to SharedPreferences");
+
+
         SharedPreferences prefs = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         TreeSetManipulation.saveTreeSet(prefs, adapter.routes);
     }

@@ -122,13 +122,13 @@ public class WalkRunSession extends AppCompatActivity implements UpdateStepTextV
      * getStepCount is called within StepCountActivity.java --> get stepCount
      * updateStepView is called within StepCountActivity.java --> update TextView to stepCount
      */
-    public void updateStepView(String str) { stepCountText.setText(str); }
+    public void updateStepView(String str) { stepCountText.setText(str + " steps"); }
 
     public void setStepCount(long sc) { stepCount = sc; }
 
     public long getStepCount() { return stepCount; }
 
-    public void updatesMilesView(String str) { milesText.setText(str); }
+    public void updatesMilesView(String str) { milesText.setText(str + " miles"); }
 
     public void setMiles(double mi) { milesCount = mi; }
 

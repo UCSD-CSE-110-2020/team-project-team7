@@ -36,7 +36,7 @@ public class RoutesListTest {
                 addButton.performClick();
                 assertThat(addButton.isPressed());
                 Intent intent = Shadows.shadowOf(activity).getNextStartedActivity();
-                assertThat(intent.getComponent()).isEqualTo(new ComponentName(activity, RoutesForm.class));
+                assertThat(intent.getComponent()).isEqualTo(new ComponentName(activity, FireBaseMessagingService.RoutesForm.class));
 
             });
         }

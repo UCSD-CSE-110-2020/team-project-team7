@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
+import com.example.walkwalkrevolution.forms.AddTeammateForm;
 
 import java.util.List;
 
@@ -27,11 +28,13 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
-        // ----------- TESTING ------------ //
-        MockFirestoreDatabase.teamCreationOnAccept(UserDetailsFactory.get("mockUserOne@ucsd.edu"), UserDetailsFactory.get("mockUserTwo@ucsd.edu"));
-        // ----------- TESTING ------------ //
-
-        initRecyclerView();
+        // once team's routes have been fetched from db
+        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
 
         Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);
 
@@ -57,6 +60,8 @@ public class TeammatesPage extends AppCompatActivity {
      * Calls the RecyclerViewAdapter class to create and display all routes to screen.
      */
     private void initRecyclerView(){
+
+
         Log.d(TAG, "Starting initRecyclerView ");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
 
@@ -74,8 +79,8 @@ public class TeammatesPage extends AppCompatActivity {
      * Add button clicked, so redirects to AddTeamForm.
      */
     private void redirectToTeammateAddForm(){
-        Log.d(TAG, "+ Clicked --> Going to AddTeammate Form");
-        Intent intent = new Intent(TeammatesPage.this, AddTeammate.class);
+        Log.d(TAG, "+ Clicked --> Going to AddTeammateForm Form");
+        Intent intent = new Intent(TeammatesPage.this, AddTeammateForm.class);
         startActivity(intent);
     }
 

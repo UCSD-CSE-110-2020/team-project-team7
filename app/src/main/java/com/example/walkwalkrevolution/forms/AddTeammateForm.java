@@ -1,4 +1,4 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,15 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walkwalkrevolution.R;
+
 /**
  * Activity for allowing user to add new teammates.
  */
-public class AddTeammate extends AppCompatActivity {
+public class AddTeammateForm extends AppCompatActivity {
 
     // Constant for logging
-    private static final String TAG = "AddTeammate";
+    private static final String TAG = "AddTeammateForm";
 
     // Activity objects
     private Button saveButton;
