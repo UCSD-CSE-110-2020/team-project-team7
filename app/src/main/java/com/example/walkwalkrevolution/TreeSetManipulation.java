@@ -44,15 +44,17 @@ public class TreeSetManipulation {
      * @param list
      */
     public static void saveTreeSet(SharedPreferences sharedPreferences, List<Route> list){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(list);
         Log.d("json", json);
-        editor.putString(SHARED_PREFS_TREE_SET, json);
-        editor.apply();
+//        editor.putString(SHARED_PREFS_TREE_SET, json);
+//        editor.apply();
 
         // ----------- TESTING ------------ //
-        MockFirestoreDatabase.storeUserRoutes(json, UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        //MockFirestoreDatabase.storeUserRoutes(json, UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        CloudDatabase.storeUserRoutes(json);
+        CloudDatabase.currentUser.setRoutes(json);
         // ----------- TESTING ------------ //
 
         Log.d(TAG, "TreeSet Saved");
@@ -69,12 +71,14 @@ public class TreeSetManipulation {
         String json = sharedPreferences.getString(SHARED_PREFS_TREE_SET, "");
 
         // ----------- TESTING ------------ //
-        List<Route> userRoutes = MockFirestoreDatabase.getUserRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        //List<Route> userRoutes = MockFirestoreDatabase.getUserRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        List<Route> userRoutes = CloudDatabase.getUserRoutes();
         // ----------- TESTING ------------ //
 
         Type type = new TypeToken<List<Route>>() {}.getType();
         Log.d("create", json);
-        return gson.fromJson(json, type);
+        //return gson.fromJson(json, type);
+        return userRoutes;
     }
 
     /**

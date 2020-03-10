@@ -27,11 +27,6 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
-        // ----------- TESTING ------------ //
-        MockFirestoreDatabase.populateUserTeam(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
-        // ----------- TESTING ------------ //
-
-        initRecyclerView();
 
         Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);
 
@@ -53,10 +48,27 @@ public class TeammatesPage extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // ----------- TESTING ------------ //
+        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                Log.d("CB", "inside callback");
+                initRecyclerView();
+            }
+        });
+        // ----------- TESTING ------------ //
+    }
+
     /**
      * Calls the RecyclerViewAdapter class to create and display all routes to screen.
      */
     private void initRecyclerView(){
+
+
         Log.d(TAG, "Starting initRecyclerView ");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
 

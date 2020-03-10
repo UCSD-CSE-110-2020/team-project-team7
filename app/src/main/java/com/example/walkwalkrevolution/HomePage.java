@@ -14,6 +14,12 @@ import android.widget.TextView;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.example.walkwalkrevolution.fitness.GoogleFitAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.example.walkwalkrevolution.forms.HeightForm;
 import com.example.walkwalkrevolution.forms.MockPage;
@@ -23,6 +29,7 @@ import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
+    public static final int RC_SIGN_IN = 55;
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     public final String TAG = "Home Page";
 
@@ -36,7 +43,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public boolean testStep = true;
     public StepCountActivity sc;
     public TextView stepCountText;
-
+    public GoogleSignInClient mGoogleSignInClient;
+    public GoogleSignInAccount currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +57,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         FirebaseApp.initializeApp(this);
         subscribeToNotificationsTopic();
 
-        // ----------- TESTING ------------ //
-        MockFirestoreDatabase.populateUserDetails("mockUserOne@ucsd.edu", "mockUserOne");
-        MockFirestoreDatabase.populateUserDetails("mockUserTwo@ucsd.edu", "mockUserTwo");
-        MockFirestoreDatabase.populateUserDetails("mockUserThree@ucsd.edu", "mockUserThree");
-        MockFirestoreDatabase.populateUserDetails("mockUserFour@ucsd.edu", "mockUserFour");
-        // ----------- TESTING ------------ //
+        // --------------- [START] GOOGLE SIGNIN --------------- //
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // --------------- [END]   GOOGLE SIGNIN --------------- //
 
 
         // retrieve height;
@@ -148,6 +159,17 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ON START", "start called");
         super.onStart();
 
+        // --------------- [START] GOOGLE SIGNIN --------------- //
+        currentUser = GoogleSignIn.getLastSignedInAccount(this);
+        if(currentUser.getEmail() == null) {
+            Log.d("GOOGLEAUTH", "before sign in");
+            signIn();
+        } else {
+            Log.d("GOOGLEAUTH", "signed in apparently, email: " + currentUser.getEmail());
+            CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName());
+        }
+        // --------------- [END]   GOOGLE SIGNIN --------------- //
+
         // check to see if user is new
         SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
         firstLogin(settings);
@@ -192,8 +214,39 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             if (requestCode == fitnessService.getRequestCode()) {
                 fitnessService.updateStepCount();
             }
+            // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+            if (requestCode == RC_SIGN_IN) {
+                // The Task returned from this call is always completed, no need to attach
+                // a listener.
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
+            }
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
+        }
+    }
+
+    /**
+     * google signin method for access to account details
+     */
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    /**
+     * currentUser now holds user's email, uid
+     */
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            currentUser = completedTask.getResult(ApiException.class);
+            CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName());
+
+            Log.d("GOOGLEAUTH", "inside handlesignin, currentUser.getEmail()");
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }
 
@@ -245,7 +298,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      */
     public void launchTeammatesPage(){
         Log.d(TAG, "Launching Team Page");
-
         Intent intent = new Intent(this, TeammatesPage.class);
         startActivity(intent);
     }

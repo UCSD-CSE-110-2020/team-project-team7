@@ -30,11 +30,14 @@ public class RoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
 
-        initRecyclerView();
-
 
         // ----------- TESTING ------------ //
-        MockFirestoreDatabase.populateUserRoutes(UserDetailsFactory.get("mockUserOne@ucsd.edu"));
+        CloudDatabase.populateUserRoutes(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
         // ----------- TESTING ------------ //
 
 
