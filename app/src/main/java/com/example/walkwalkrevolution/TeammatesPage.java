@@ -28,9 +28,13 @@ public class TeammatesPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
-
-
-        initRecyclerView();
+        // once team's routes have been fetched from db
+        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
 
         Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);
 
@@ -56,6 +60,8 @@ public class TeammatesPage extends AppCompatActivity {
      * Calls the RecyclerViewAdapter class to create and display all routes to screen.
      */
     private void initRecyclerView(){
+
+
         Log.d(TAG, "Starting initRecyclerView ");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterPersonal;
+import com.google.firebase.firestore.auth.User;
 
 /**
  * RoutesScreen that holds all the Routes saved on the app, allowing interactivity from user.
@@ -29,13 +30,13 @@ public class RoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_list);
 
-        initRecyclerView();
-
-        // TODO DATABASE TESTING
-        // TODO HARDCODED ID, LATER MOCK_USER_ONE SHOULD BE ACQUIRED THROUGH GOOGLE AUTH
-        // TODO LATER MOCK_TEAMMATE_ID NEEDS TO BE ACQUIRED WHEN INVITING SOMEONE
-        // TODO THESE FUNCTIONS SHOULD BE CALLED AFTER SOMEONE ACCEPTS YOUR INVITE
-//        MockFirestoreDatabase.addTeam("CalvinID", "YoshiID");
+        // Once current user's routes are fetched from database
+        CloudDatabase.populateUserRoutes(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
 
         Button addRouteButton = (Button) findViewById(R.id.addRouteButton);
 
@@ -100,6 +101,8 @@ public class RoutesList extends AppCompatActivity {
      */
     private void saveRoutes(){
         Log.d(TAG, "All Routes from Recycler Saved to SharedPreferences");
+
+
         SharedPreferences prefs = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         TreeSetManipulation.saveTreeSet(prefs, adapter.routes);
     }
