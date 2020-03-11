@@ -227,6 +227,8 @@ public class CloudDatabase {
                             }
                         }
                     });
+        } else {
+            Log.d(TAG, "current user is not on any team");
         }
     }
     // TODO [END] (POPULATE STATIC CLASSES) --------------------------------------------------------
@@ -414,6 +416,7 @@ public class CloudDatabase {
         }
         users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
         teams.document(inviter.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).set(updateStatus, SetOptions.merge());
+        currentUser.setTeam(inviter.getTeam());
         //users.document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
     }
 
