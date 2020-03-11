@@ -437,6 +437,7 @@ public class CloudDatabase {
             }
         });
     }
+
     /**
      * IF INVITEE DECLINES INVITE (FOR HARRISON)
      */
@@ -444,7 +445,6 @@ public class CloudDatabase {
         teams.document(inviter.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).delete();
     }
     // TODO [END] (NOTIFICATIONS) ------------------------------------------------------------------
-
 
     /**
      * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
