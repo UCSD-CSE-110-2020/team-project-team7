@@ -113,6 +113,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void renderUserLayout(){
+        //creator of walk
         if(proposedWalk.getCreator().getEmail().equals(currentUser.getEmail())){
             ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.INVISIBLE);
             ((LinearLayout) findViewById(R.id.buttonsLayoutCreator)).setVisibility(View.VISIBLE);
@@ -121,6 +122,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
                 ((Button) findViewById(R.id.scheduleWalkButton)).setVisibility(View.INVISIBLE);
             }
         }
+        //some teammate
         else{
             ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.VISIBLE);
             ((LinearLayout) findViewById(R.id.buttonsLayoutCreator)).setVisibility(View.INVISIBLE);
@@ -137,6 +139,8 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void withdrawWalk(){
+        this.proposedWalk = null;
+        //TODO Delete walk from database - Call Titan's function
 //        Intent intent = new Intent(ProposedWalkDetailsPage.this, .class);
 //        startActivity(intent);
         Toast.makeText(this, "Successfully Withdrawn", Toast.LENGTH_SHORT).show();
@@ -144,6 +148,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void scheduleWalk(){
         this.proposedWalk.setIsScheduled(true);
+        //TODO save to Database - Call Titan's function
         Intent intent = new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class);
         startActivity(intent);
         Toast.makeText(this, "Successfully Scheduled", Toast.LENGTH_SHORT).show();
@@ -151,6 +156,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void availabilityChanged(int status){
         this.currentUser.setProposedWalkStatus(status);
+        //TODO Save walk to database - or user information
         orangeBackgroundForChosenAvailability();
         sortTeammatesByStatus();
         this.adapter.notifyDataSetChanged();
@@ -184,27 +190,26 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void setProposedWalk(){
 
+        //TODO Call Titan's function
+//        this.proposedWalk = ProposedWalk.getProposedWalk();
+//        sortTeammatesByStatus();
+        // this.currentUser = TODO
+
+
         Intent intent = this.getIntent();
 
         TeamMember creator = new TeamMember("Cindy Do", "cdo@ucsd.edu", true);
 
-        try{
-            String walk = intent.getExtras().getString("Scheduled Walk");
-            this.proposedWalk = ProposedWalkJsonConverter.convertJsonToWalk(walk);
-            Log.d(TAG, "Intent from Scheduled Walks Page");
+        //Call Yoshi's Firebase stuff here
+        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
+        walk.setLocation("Splash Mountain");
+        List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
+        walk.setTeammates(teammates);
+        this.proposedWalk = walk;
+        Log.d(TAG, "Intent NOT from Scheduled Walks Page");
 
-        }catch (Exception e){
-            //Call Yoshi's Firebase stuff here
-            ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
-            walk.setLocation("Splash Mountain");
-            List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
-            walk.setTeammates(teammates);
-            this.proposedWalk = walk;
-            Log.d(TAG, "Intent NOT from Scheduled Walks Page");
-        }
-
-            //this.currentUser = UserDetailsFactory.get("aksingh@ucsd.edu");
-            sortTeammatesByStatus();
+        this.currentUser = teammates.get(3);
+        sortTeammatesByStatus();
     }
 
     private void sortTeammatesByStatus(){

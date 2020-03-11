@@ -10,15 +10,19 @@ import java.util.TreeSet;
 
 public class TeammatesPageAdapter {
 
+    public static int tracker = 0;
+
 
     public static List<TeamMember> retrieveTeammatesFromCloud(){
 
-        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+//        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+//
+//        List<TeamMember> teammates = new ArrayList<>();
+//
+//        teammates.addAll(map.values());
 
-        List<TeamMember> teammates = new ArrayList<>();
 
-        teammates.addAll(map.values());
-
+        List<TeamMember> teammates = mockTeammates();
         return alphabetizeTeammates(teammates);
     }
 
@@ -27,7 +31,7 @@ public class TeammatesPageAdapter {
         return new ArrayList<TeamMember>(treeSet);
     }
 
-    private List<TeamMember> mockTeammates(){
+    private static List<TeamMember> mockTeammates(){
         List<TeamMember> teammates = new ArrayList<>();
 
         TeamMember member1 = new TeamMember("Aashna Setia", "cido@ucsd.edu",  false);
@@ -42,12 +46,21 @@ public class TeammatesPageAdapter {
         member3.setProposedWalkStatus(3);
         teammates.add(member3);
 
-        TeamMember member4 = new TeamMember("Harrison Kim", "aksingh@ucsd.edu",  true);
+        TeamMember member4 = new TeamMember("Harrison Kim", "aksingh@ucsd.edu",  false);
         member4.setProposedWalkStatus(3);
         teammates.add(member4);
 
         teammates.add(new TeamMember("Yoshi Russel", "aksingh@ucsd.edu",  true));
-        teammates.add(new TeamMember("Calvin Nguyen", "aksingh@ucsd.edu",  false));
+        teammates.add(new TeamMember("Calvin Nguyen", "aksingh@ucsd.edu",  true));
+
+        if(tracker == 1){
+            teammates.remove(0);
+            teammates.remove(3);
+        }
+        else if(tracker == 2){
+            member1.setPendingStatus(true);
+            member4.setPendingStatus(true);
+        }
 
         return teammates;
     }
