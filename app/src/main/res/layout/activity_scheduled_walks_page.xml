@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScheduledWalksPage">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewScheduledRoutes"
+    <RelativeLayout
+        android:id="@+id/proposedWalk"
+        android:background="@drawable/route_item_states"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/teammateIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="AS"
+            android:background="@drawable/teammate_icon"
+            />
+
+        <TextView
+            android:id="@+id/proposedWalkName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toRightOf="@id/teammateIcon"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:text="Grizzly Road"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

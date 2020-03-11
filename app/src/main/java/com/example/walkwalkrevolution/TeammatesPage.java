@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
 import com.example.walkwalkrevolution.forms.AddTeammateForm;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
 
-public class TeammatesPage extends AppCompatActivity {
+public class TeammatesPage extends AppCompatActivity implements View.OnClickListener {
 
 
     private static final String TAG = "TeammatesPage";
@@ -29,31 +32,16 @@ public class TeammatesPage extends AppCompatActivity {
         setContentView(R.layout.activity_teammates_page);
 
         // once team's routes have been fetched from db
-        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
-            @Override
-            public void callBack() {
-                initRecyclerView();
-            }
-        });
+//        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+//            @Override
+//            public void callBack() {
+//                initRecyclerView();
+//            }
+//        });
 
-        Button addTeammateButton = (Button) findViewById(R.id.addTeammateButton);
+        setUp();
 
-        addTeammateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                redirectToTeammateAddForm();
-            }
-        });
-
-        Button getProposedWalkButton = (Button) findViewById(R.id.proposedWalkButton);
-
-        getProposedWalkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                redirectToProposedWalkDetailsForm();
-            }
-        });
-
+        initRecyclerView();
     }
 
     /**
@@ -63,16 +51,34 @@ public class TeammatesPage extends AppCompatActivity {
 
 
         Log.d(TAG, "Starting initRecyclerView ");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
 
-        adapter = new RecyclerViewAdapterTeammates(this, loadTeammates());
+    adapter = new RecyclerViewAdapterTeammates(this, loadTeammates());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Log.d(TAG, "Finished initRecyclerView ");
-    }
+}
 
     private List<TeamMember> loadTeammates(){
         return TeammatesPageAdapter.retrieveTeammatesFromCloud();
+    }
+
+    private void setUp(){
+        ((Button) findViewById(R.id.addTeammateButton)).setOnClickListener(this);
+        ((Button) findViewById(R.id.proposedWalkButton)).setOnClickListener(this);
+        ((Button) findViewById(R.id.acceptTeamInvitation)).setOnClickListener(this);
+        ((Button) findViewById(R.id.declineTeamInvitation)).setOnClickListener(this);
+
+        renderLayoutForTeamInvitation();
+
+    }
+
+    private void renderLayoutForTeamInvitation(){
+        UserDetails currentUser = CloudDatabase.currentUser;
+        //if current user has a pending invite, then render pending message visibility to true
+        if(TeammatesPageAdapter.tracker == 0){
+            ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -89,7 +95,40 @@ public class TeammatesPage extends AppCompatActivity {
      */
     private void redirectToProposedWalkDetailsForm(){
         Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
-        startActivity(new Intent(TeammatesPage.this, ProposedWalkDetailsPage.class));
+        startActivity(new Intent(TeammatesPage.this, ScheduledWalksPage.class));
     }
 
+    private void teamInvitationAccepted(){
+        Toast.makeText(this, "Your teams have merged!", Toast.LENGTH_SHORT).show();
+        //need to do some sort of save function here
+        //refresh page
+        TeammatesPageAdapter.tracker = 2;
+        recreate();
+    }
+
+    private void teamInvitationDeclined(){
+        Toast.makeText(this, "Merge declined", Toast.LENGTH_SHORT).show();
+        //need to do some sort of save function here
+        //refresh page
+        TeammatesPageAdapter.tracker = 1;
+        recreate();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.addTeammateButton:
+                redirectToTeammateAddForm();
+                break;
+            case R.id.proposedWalkButton:
+                redirectToProposedWalkDetailsForm();
+                break;
+            case R.id.acceptTeamInvitation:
+                teamInvitationAccepted();
+                break;
+            case R.id.declineTeamInvitation:
+                teamInvitationDeclined();
+                break;
+        }
+    }
 }

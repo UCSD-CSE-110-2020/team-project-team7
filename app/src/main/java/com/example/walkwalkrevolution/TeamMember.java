@@ -79,5 +79,6 @@ public class TeamMember implements Comparable<TeamMember>{
     public void setProposedWalkStatus(int status) {
         this.proposedWalkStatus = status;
     }
+    public void setPendingStatus(boolean pendingStatus) { this.pendingStatus = pendingStatus;}
 
 }
