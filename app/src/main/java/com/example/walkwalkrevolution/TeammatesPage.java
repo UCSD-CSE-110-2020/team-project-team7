@@ -75,8 +75,8 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     private void renderLayoutForTeamInvitation(){
         Intent intent = this.getIntent();
         try{
-            String inviter = intent.getExtras().getString("name");
-            ((TextView) findViewById(R.id.inviteeMessage)).setText("Team Invitation from " + inviter +  "!");
+            String inviterName = intent.getExtras().getString("name");
+            ((TextView) findViewById(R.id.inviteeMessage)).setText("Team Invitation from " + inviterName +  "!");
             ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.VISIBLE);
             Log.d(TAG, "Invitation Notification clicked --> Accept options enabled");
         }catch(Exception e){
@@ -104,17 +104,15 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
 
     private void teamInvitationAccepted(){
         Toast.makeText(this, "Your teams have merged!", Toast.LENGTH_SHORT).show();
-        //need to do some sort of save function here
-        //refresh page
-        TeammatesPageAdapter.tracker = 2;
+        String inviterEmail = this.getIntent().getExtras().getString("email");
+        CloudDatabase.acceptInvite(inviterEmail);
         recreate();
     }
 
     private void teamInvitationDeclined(){
         Toast.makeText(this, "Merge declined", Toast.LENGTH_SHORT).show();
-        //need to do some sort of save function here
-        //refresh page
-        TeammatesPageAdapter.tracker = 1;
+        String inviterEmail = this.getIntent().getExtras().getString("email");
+        CloudDatabase.declineInvite(inviterEmail);
         recreate();
     }
 
