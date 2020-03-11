@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
@@ -32,16 +33,14 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_teammates_page);
 
         // once team's routes have been fetched from db
-//        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
-//            @Override
-//            public void callBack() {
-//                initRecyclerView();
-//            }
-//        });
+        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                initRecyclerView();
+            }
+        });
 
         setUp();
-
-        initRecyclerView();
     }
 
     /**
@@ -74,10 +73,15 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     }
 
     private void renderLayoutForTeamInvitation(){
-        UserDetails currentUser = CloudDatabase.currentUser;
-        //if current user has a pending invite, then render pending message visibility to true
-        if(TeammatesPageAdapter.tracker == 0){
+        Intent intent = this.getIntent();
+        try{
+            String inviter = intent.getExtras().getString("name");
+            ((TextView) findViewById(R.id.inviteeMessage)).setText("Team Invitation from " + inviter +  "!");
             ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.VISIBLE);
+            Log.d(TAG, "Invitation Notification clicked --> Accept options enabled");
+        }catch(Exception e){
+            Log.d(TAG, "No notification received for team invites");
+            return;
         }
     }
 

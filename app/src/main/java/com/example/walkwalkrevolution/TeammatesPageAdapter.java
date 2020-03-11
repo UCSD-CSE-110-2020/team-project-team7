@@ -15,14 +15,14 @@ public class TeammatesPageAdapter {
 
     public static List<TeamMember> retrieveTeammatesFromCloud(){
 
-//        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
-//
-//        List<TeamMember> teammates = new ArrayList<>();
-//
-//        teammates.addAll(map.values());
+        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+
+        List<TeamMember> teammates = new ArrayList<>();
+
+        teammates.addAll(map.values());
 
 
-        List<TeamMember> teammates = mockTeammates();
+//        List<TeamMember> teammates = mockTeammates();
         return alphabetizeTeammates(teammates);
     }
 
