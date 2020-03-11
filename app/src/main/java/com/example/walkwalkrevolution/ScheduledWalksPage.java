@@ -4,8 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterScheduledWalks;
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
@@ -18,40 +25,47 @@ public class ScheduledWalksPage extends AppCompatActivity {
 
     private static final String TAG = "ScheduledWalksPage";
 
-    private RecyclerViewAdapterScheduledWalks adapter;
-    private List<ProposedWalk> scheduledWalks;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduled_walks_page);
 
-        setScheduledWalks();
-
-        initRecyclerView();
+        setUp();
     }
 
-    private void initRecyclerView(){
-        Log.d(TAG, "Starting initRecyclerView ");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewScheduledRoutes);
+    private void setUp(){
+        //Proposed walk = ProposedWalk.getProposedWalk(); TODO
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.proposedWalk);
+        ProposedWalk walk = new ProposedWalk("Grizzly Road", "04/17/2000", "9:00PM", new TeamMember("Amrit Singh", "aksingh@ucsd.edu", false));
+        if(walk == null){
+            layout.setVisibility(View.INVISIBLE);
+            return;
+        }
+        renderWalkOnScreen(walk);
 
-        adapter = new RecyclerViewAdapterScheduledWalks(this, scheduledWalks);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d(TAG, "Finished initRecyclerView ");
+        if(walk.getIsScheduled()){
+            layout.getBackground().setColorFilter(Color.parseColor("#FFC400"), PorterDuff.Mode.MULTIPLY);
+        }
+        else{
+            layout.getBackground().setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.MULTIPLY);
+        }
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchProposedWalkDetailsPage();
+            }
+        });
     }
 
-    private void setScheduledWalks(){
-        TeamMember creator = new TeamMember("Cindy Do", "cdo@ucsd.edu",  true);
-        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
-        walk.setLocation("Splash Mountain");
-        walk.setIsScheduled(true);
-        List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
-        walk.setTeammates(teammates);
+    private void renderWalkOnScreen(ProposedWalk walk){
+        ((TextView) findViewById(R.id.proposedWalkName)).setText(walk.getName());
+        Button icon = (Button)  findViewById(R.id.teammateIcon);
+        icon.setText(walk.getCreator().getInitials());
+        icon.getBackground().setColorFilter(walk.getCreator().getColorVal(), PorterDuff.Mode.MULTIPLY);
+    }
 
-        List<ProposedWalk> list = new ArrayList<>();
-        list.add(walk);
-
-        this.scheduledWalks = list;
+    private void launchProposedWalkDetailsPage(){
+        startActivity(new Intent(ScheduledWalksPage.this, ProposedWalkDetailsPage.class));
     }
 }
