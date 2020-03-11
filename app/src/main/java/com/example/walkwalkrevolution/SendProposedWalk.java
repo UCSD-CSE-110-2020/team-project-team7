@@ -131,7 +131,7 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
         }
 
         // Store the team proposedwalk
-        CloudDatabase.storeTeamProposedWalk(proposedWalk);
+        ProposedWalkObservable.storeProposedWalk(proposedWalk);
 
         Log.d(TAG, "Proposed walk sent..");
 
