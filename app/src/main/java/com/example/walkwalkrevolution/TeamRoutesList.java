@@ -75,7 +75,7 @@ public class TeamRoutesList extends AppCompatActivity {
     }
 
     private List<Route> getTeamRoutes(){
-        return TeamRoutesListAdapter.retrieveTeammatesFromCloud();
+        return TeamRoutesListAdapter.retrieveTeamRoutesFromCloud();
     }
 
     /**

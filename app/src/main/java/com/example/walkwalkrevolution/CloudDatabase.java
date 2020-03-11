@@ -38,6 +38,7 @@ public class CloudDatabase {
     public static CollectionReference users = dataBase.collection(USERS);
     public static CollectionReference teams = dataBase.collection(TEAMS);
     public static UserDetails currentUser;
+    public static TeamMember currentUserMember;
 
     /**
      * MAKE MOCKFIRESTOREDATABASE SINGLETON CLASS
@@ -74,6 +75,7 @@ public class CloudDatabase {
 
                                 // create userDetails object and put into factory for fast local access
                                 currentUser = document.toObject(UserDetails.class);
+                                currentUserMember = new TeamMember(currentUser.getEmail(), currentUser.getName(), true);
                                 UserDetailsFactory.put(currentUserEmail, currentUser);
                                 cb.callBack();
                             } else {

@@ -1,5 +1,7 @@
 package com.example.walkwalkrevolution;
 
+import android.util.Pair;
+
 import com.example.walkwalkrevolution.custom_data_classes.Route;
 
 import java.util.ArrayList;
@@ -8,46 +10,71 @@ import java.util.TreeSet;
 
 public class TeamRoutesListAdapter {
 
-    public static List<Route> retrieveTeammatesFromCloud(){
+    // Stores any team routes that the user has edited (either walked or favorited)
+    public static List<Route> userRoutes;
 
-        //Use Yoshi's function to call Teammates from cloud
-        List<Route> list = new ArrayList<>();
 
-        Route route2 = Route.RouteBuilder.newInstance()
-                .setName("Bryan Avenue")
-                .setStartingPoint("Archer Ave")
-                .setSteps(20)
-                .setDistance(1.4)
-                .setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu",  false))
-                .setUserHasWalkedRoute(true)
-                .buildRoute();
-        list.add(route2);
+    /**
+     * Gets both teamRoutes and team routes walked by the user from the cloud.
+     * Saves them into the static vars, teamRoutes and userRoutes.
+     * Returns a List with teamRoutes and userRoutes combined and sorted alphabetically.
+     */
+    public static List<Route> retrieveTeamRoutesFromCloud(){
+        // Reset static vars
+        userRoutes = CloudDatabase.getUserTeamRoutesWalked();
+        List<Route> teamRoutes = new ArrayList<Route>();
 
-        Route route3 = Route.RouteBuilder.newInstance()
-                .setName("Celt Drive")
-                .setStartingPoint("Grisly Garden")
-                .setSteps(440)
-                .setDistance(30.4)
-                .setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", false))
-                .buildRoute();
-        list.add(route3);
+        List<Pair<String,Route>> teamRoutePairs = TeamMemberFactory.getTeamRoutes();
 
-        Route route1 = Route.RouteBuilder.newInstance()
-                .setName("Arker Walk")
-                .setStartingPoint("Garden Grove")
-                .setSteps(30)
-                .setDistance(2.4)
-                .setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu",  false))
-                .buildRoute();
-        list.add(route1);
+        // Iterate over all team routes received
+        for (Pair<String,Route> pair : teamRoutePairs) {
+            // Add route to teamRoute static var if the user hasn't walked it
+            teamRoutes.add(pair.second);
+        }
 
-        //HOW ARE WE KNOWING WHICH ROUTES THE USER WALKED?????
+        return alphabetizeTeamRoutes(userRoutes, teamRoutes);
 
-        return alphabetizeTeammates(list);
+//        //Use Yoshi's function to call Teammates from cloud
+//        List<Route> list = new ArrayList<>();
+//
+//        Route route2 = Route.RouteBuilder.newInstance()
+//                .setName("Bryan Avenue")
+//                .setStartingPoint("Archer Ave")
+//                .setSteps(20)
+//                .setDistance(1.4)
+//                .setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu",  false))
+//                .setUserHasWalkedRoute(true)
+//                .buildRoute();
+//        list.add(route2);
+//
+//        Route route3 = Route.RouteBuilder.newInstance()
+//                .setName("Celt Drive")
+//                .setStartingPoint("Grisly Garden")
+//                .setSteps(440)
+//                .setDistance(30.4)
+//                .setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", false))
+//                .buildRoute();
+//        list.add(route3);
+//
+//        Route route1 = Route.RouteBuilder.newInstance()
+//                .setName("Arker Walk")
+//                .setStartingPoint("Garden Grove")
+//                .setSteps(30)
+//                .setDistance(2.4)
+//                .setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu",  false))
+//                .buildRoute();
+//        list.add(route1);
     }
 
-    private static List<Route> alphabetizeTeammates(List<Route> routes){
-        TreeSet<Route> treeSet = new TreeSet<Route>(routes);
+
+    /**
+     * Combines userRoutes (the team routes walked by the user) and teamRoutes,
+     * then alphabetizes them.
+     */
+    private static List<Route> alphabetizeTeamRoutes(List<Route> userRoutes, List<Route> teamRoutes){
+        TreeSet<Route> treeSet = new TreeSet<Route>(userRoutes);
+        treeSet.addAll(teamRoutes);
         return new ArrayList<Route>(treeSet);
     }
+
 }

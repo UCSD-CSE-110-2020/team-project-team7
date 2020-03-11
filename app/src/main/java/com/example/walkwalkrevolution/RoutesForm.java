@@ -24,6 +24,7 @@ import com.example.walkwalkrevolution.forms.SetDate;
 import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkFetcherService;
 import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
 import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObserver;
+import com.google.gson.Gson;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
@@ -43,6 +44,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private final int REQUEST_NOTES = 2;
 
     // Edit Texts and Xml Objects
+    Button saveButton, notesButton, proposeWalkButton;
     private EditText routeNameEditText, startingPEditText, minutesEditText, secondsEditText;
     private TextView dateDisplayTextView, stepsView, distanceView;
     private MultiStateToggleButton[] optionalInfo = new MultiStateToggleButton[5];
@@ -58,12 +60,15 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     // Notes taken for the Route
     private String notes = "";
 
+
+    // Team route instance vars ---------------------------
     // true if we came from walk run session and if this user isn't the route's creator
     private boolean userHasWalkedTeamRoute;
+    private TeamMember creator;
+    private Route teamRoute;
 
     private boolean intentIsFromTeamRoutes;
 
-    Button saveButton, notesButton, proposeWalkButton;
 
     // SETTING UP/DESTROYING GENERAL UI ELEMENTS AND BEHAVIOR --------------------------------------
 
@@ -86,7 +91,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         super.onStop();
 
         if (intentIsFromTeamRoutes) {
-            // Stop the fetcher intent service
+            // Stop the fetcher intent service since its only called if we are from TeamRoutes
             Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
             stopService(intent);
 
@@ -209,6 +214,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                     Log.d(TAG, "Intent Found: Details Preview from Personal Routes Page");
                     break;
                 case RecyclerViewAdapterTeam.PREVIEW_DETAILS_INTENT:
+                    intentFromRoutesDetails(); // Load UI as if coming from Personal Routes Page
                     intentFromTeamRoutes();
                     Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
                     break;
@@ -300,17 +306,21 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
         Route route = TreeSetManipulation.getSelectedRoute();
 
-        // Walk/Run Session didn't start from Home page
+        // Walk/Run Session didn't start from Home page, started from Routes page
         if(route != null) {
 
-            // This user isn't the route's creator
-//            if (route.creator.getEmail() != account.getEmail()){
-//                userHasWalkedTeamRoute = true;
-//            }
-//            else {
-//               intentFromRoutesStartButton();
-//            }
-            // TODO NEED ACCESS TO THE CURRENT USER'S EMAIL
+            // Started Team Route Session
+            if (route.creator.getEmail() != CloudDatabase.currentUser.getEmail()){
+                userHasWalkedTeamRoute = true;
+                creator = route.creator;
+                disableEditing(); // Can't edit team route
+            }
+
+            // Personal Route Session
+            else {
+                userHasWalkedTeamRoute = false;
+                creator = CloudDatabase.currentUserMember;
+            }
 
             intentFromRoutesStartButton();
         }
@@ -336,20 +346,11 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      * it should be enabled.
      */
     private void intentFromTeamRoutes() {
-        // Load UI as if coming from Personal Routes Page
-        intentFromRoutesDetails();
+        // Disable editing UI
+        disableEditing();
 
-        // Disable most editing UI
-        routeNameEditText.setEnabled(false);
-        startingPEditText.setEnabled(false);
+        // Make the save button invisible
         saveButton.setVisibility(View.INVISIBLE);
-        notesButton.setVisibility(View.INVISIBLE);
-
-        // Disable toggle buttons
-        for(int i=0; i < optionalInfo.length; i++){
-            // Only allow one choice per toggle button
-            optionalInfo[i].setEnabled(false);
-        }
 
         // Display the proposed walk button because we are from the team routes page
         proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
@@ -362,7 +363,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         startService(intent);
 
         updateProposeWalkButton();
-        intentIsFromTeamRoutes = true;
+        intentIsFromTeamRoutes = true; // For displaying the ProposedWalkButton
     }
 
 
@@ -381,46 +382,71 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
             return;
         }
 
-        Log.d(TAG, "No Errors Found");
+        Log.d(TAG, "No Errors Found for creating a new Route object");
         Route savedRoute = entriesAsRouteObject();
 
-        Intent intent = new Intent(this, RoutesList.class);
-        SharedPreferences sharedPreferences =
-                getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
 
-        // If user is saving a team route, else user is saving a personal route
+        // IF: user is saving a team route, save to the cloud
         if (userHasWalkedTeamRoute) {
+            // Remove the route that originally selected to start this route
+            try {
+                TeamRoutesListAdapter.userRoutes.remove(TreeSetManipulation.getSelectedRoute());
+            } catch (Exception e) {}
 
+            // Add the new route into userRoutes
+            TeamRoutesListAdapter.userRoutes.add(savedRoute);
+            TreeSetManipulation.setSelectedRoute(null);
+
+            Gson gson = new Gson();
+            String json = gson.toJson(TeamRoutesListAdapter.userRoutes);
+            Log.d("json", json);
+
+            // Save the userRoutes into the cloud
+            CloudDatabase.storeUserTeamRoutesWalked(json);
+
+            // Intent to team route page
+            Intent intent = new Intent(this, TeamRoutesList.class);
+            startActivity(intent);
+            finish();
         }
-        // TODO, use userHasWalkedTeamRoute boolean
 
-        //Anything involving the Routes Page executes here
-        if(TreeSetManipulation.getSelectedRoute() != null){
-            boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences,  savedRoute);
-            //updatedEntry is not a duplicate entry (other than the one it was modifying)
-            if(wasUpdated) {
-                Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
+
+        // ELSE: user is saving a personal route
+        else {
+            // Intent to personal routes page
+            Intent intent = new Intent(this, RoutesList.class);
+            SharedPreferences sharedPreferences =
+                    getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
+
+            //Anything involving the Routes Page executes here
+            if(TreeSetManipulation.getSelectedRoute() != null){
+                boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences,  savedRoute);
+                //updatedEntry is not a duplicate entry (other than the one it was modifying)
+                if(wasUpdated) {
+                    Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
+                    lastIntentionalWalkUpdate();
+                    Toast.makeText(this, "Route Successfully Modified", Toast.LENGTH_SHORT).show();
+                    // TODO TEST TO KEEP HOME AS CALLER
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+            }
+            //Start button from Home page was pressed & routes entry is not a duplicate
+            else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)){
+                Log.d(TAG, "Entry Successfully Created - Not a duplicate");
                 lastIntentionalWalkUpdate();
-                Toast.makeText(this, "Route Successfully Modified", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
                 // TODO TEST TO KEEP HOME AS CALLER
                 startActivity(intent);
                 finish();
                 return;
             }
-        }
-        //Start button from Home page was pressed & routes entry is not a duplicate
-        else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)){
-            Log.d(TAG, "Entry Successfully Created - Not a duplicate");
-            lastIntentionalWalkUpdate();
-            Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
-            // TODO TEST TO KEEP HOME AS CALLER
-            startActivity(intent);
-            finish();
-            return;
-        }
-        Log.d(TAG, "Entry Rejected - Duplicate");
-        //Any instance of duplicates entries from either Start buttons
-        Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Entry Rejected - Duplicate");
+            //Any instance of duplicates entries from either Start buttons
+            Toast.makeText(this, "Route Entry Already Exists", Toast.LENGTH_SHORT).show();
+        } // END ELSE
+
     }
 
     private void lastIntentionalWalkUpdate(){
@@ -455,6 +481,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 .setOptionalFeaturesStr(toggledButtonsStr)
                 .setNotes(notes)
                 .setUserHasWalkedRoute(userHasWalkedTeamRoute)
+                .setCreator(creator)
                 .buildRoute();
 
         return savedRoute;
@@ -506,11 +533,10 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
         // Go back to Personal Routes page or Team Routes page
         Intent intent = new Intent(this, RoutesList.class);
-        if (intentIsFromTeamRoutes) {
+        if (intentIsFromTeamRoutes || userHasWalkedTeamRoute) {
             intent = new Intent(this, TeamRoutesList.class);
         }
 
-        // TODO TEST TO KEEP HOME AS CALLER
         startActivity(intent);
         finish();
     }
@@ -544,6 +570,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         intent.putExtra("startingPoint", startingPEditText.getText().toString());
         Log.d(TAG, "Opening Send Proposed Walk activity...");
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -612,6 +639,24 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
             });
         }
     }
+
+
+    /**
+     * Helper that disables all editing UI when viewing details. Called from Team Routes.
+     */
+    private void disableEditing() {
+        routeNameEditText.setEnabled(false);
+        startingPEditText.setEnabled(false);
+        saveButton.setVisibility(View.INVISIBLE);
+        notesButton.setVisibility(View.INVISIBLE);
+
+        // Disable toggle buttons
+        for(int i=0; i < optionalInfo.length; i++){
+            // Only allow one choice per toggle button
+            optionalInfo[i].setEnabled(false);
+        }}
+
+
 
 
 }
