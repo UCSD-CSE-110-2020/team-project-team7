@@ -188,5 +188,24 @@ public class Route implements Comparable<Route> {
             return comparator.compare(this.name, route.name);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        // Edge cases, comparing o to itself or not a proposed walk
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Route)) {
+            return false;
+        }
+
+        // Typecast
+        Route p = (Route) o;
+
+        return name.equals(p.name) && startingPoint.equals(p.startingPoint) && date.equals(p.date)
+                && notes.equals(p.notes) && (steps == p.steps) && (distance == p.distance)
+                && (minutes == p.minutes) && (seconds == p.seconds) && (creator == p.creator);
+    }
+
 }
 
