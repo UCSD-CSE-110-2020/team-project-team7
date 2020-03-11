@@ -53,6 +53,7 @@ public  class ProposedWalkObservable extends Observable {
         });
     }
 
+
     // MANIPULATION OF PROPOSED WALK DATA VAR ------------------------------------------------------
 
     /**
