@@ -134,9 +134,11 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
         ProposedWalkObservable.storeProposedWalk(proposedWalk);
 
         Log.d(TAG, "Proposed walk sent..");
+        Toast.makeText(this, "Proposed walk sent!", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, TeammatesPage.class);
         startActivity(intent);
+        finish();
     }
 
     /**

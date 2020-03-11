@@ -178,7 +178,15 @@ public class Route implements Comparable<Route> {
     @Override
     public int compareTo(Route route) {
         TreeSetComparator comparator = new TreeSetComparator();
-        return comparator.compare(this.name, route.name);
+
+        if (comparator.compare(this.name, route.name) == 0) {
+            // RouteNames are the same, sort lexicographically by email
+            return this.creator.getEmail().toLowerCase().compareTo(route.creator.getEmail().toLowerCase());
+
+        } else {
+            // RoutesNames are diff
+            return comparator.compare(this.name, route.name);
+        }
     }
 }
 

@@ -39,8 +39,8 @@ public class ProposedWalkFetcherService extends IntentService {
         super.onDestroy();
     }
 
-    // Constant, how long to wait in between calls to fetches, currently 3 seconds
-    private final int WAIT_TIME = 3000;
+    // Constant, how long to wait in between calls to fetches, currently 5 seconds
+    private final int WAIT_TIME = 5000;
 
     /**
      * Call the ProposedWalkObserver's static fetch method to update the Observable based on
