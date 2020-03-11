@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.example.walkwalkrevolution.forms.HeightForm;
 import com.example.walkwalkrevolution.forms.MockPage;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
@@ -54,7 +56,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Initiallize firebase
         FirebaseApp.initializeApp(this);
-        subscribeToNotificationsTopic();
+        //subscribeToNotificationsTopic();
 
         // --------------- [START] GOOGLE SIGN IN --------------- //
 
@@ -162,7 +164,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             signIn();
         } else {
             Log.d("GOOGLEAUTH", "signed in apparently, email: " + currentUser.getEmail());
-            CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName());
+            CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName(), new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    subscribeToNotificationsTopic();
+                }
+            });
         }
         // --------------- [END]   GOOGLE SIGNIN --------------- //
 
@@ -236,8 +243,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             currentUser = completedTask.getResult(ApiException.class);
-            CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName());
-
+            CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName(), new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    subscribeToNotificationsTopic();
+                }
+            });
             Log.d("GOOGLEAUTH", "inside handlesignin, currentUser.getEmail()");
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -360,7 +371,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * subscribes to the team pages notification
      */
     public static void subscribeToNotificationsTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("4ZhyI8xmfYpA4nnZ0bHO")
+        FirebaseMessaging.getInstance().subscribeToTopic(CloudDatabase.currentUser.getTeam())
                 .addOnCompleteListener(task -> {
                             String msg = "Notif subbed!";
                             if (!task.isSuccessful()) {
@@ -391,6 +402,11 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             for (String key : bundle.keySet()) {
                 if (bundle.get(key) != null) {
                     Log.d(TAG, "key: " + key + ", value: " + bundle.get(key).toString());
+                    if(bundle.get(key).equals("invite_page")){
+                        Intent team = new Intent(this, TeammatesPage.class);
+                        team.putExtra("name","asdasdsadsadsa");
+                        startActivity(team);
+                    }
                 } else {
                     Log.d(TAG, "key: " + key + ", value: None");
                 }

@@ -59,7 +59,7 @@ public class CloudDatabase {
      * -> IN BOTH CASES CREATE USERDETAILS OBJECT REPRESENTING CURRENT USER AND STORE IN
      *    USERDETAILSFACTORY
      */
-    public static void populateUserDetails(String currentUserEmail, String currentUserName) {
+    public static void populateUserDetails(String currentUserEmail, String currentUserName, CloudCallBack cb) {
 
         // try to find their document in the database
         users.document(currentUserEmail).get()
@@ -74,6 +74,7 @@ public class CloudDatabase {
                                 // create userDetails object and put into factory for fast local access
                                 currentUser = document.toObject(UserDetails.class);
                                 UserDetailsFactory.put(currentUserEmail, currentUser);
+                                cb.callBack();
                             } else {
                                 Log.d(TAG, "user doesn't exist");
 
