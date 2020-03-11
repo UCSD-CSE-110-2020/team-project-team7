@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -327,7 +328,7 @@ public class CloudDatabase {
                                     newTeamRef.collection(MEMBERS).document(currentUser.getEmail())
                                             .set(new TeamMember(currentUser.getName(),
                                                     currentUser.getEmail(),
-                                                    false));
+                                                    true));
                                     currentUser.setTeam(newTeamRef.getId());
                                     updateTeam.put("team", newTeamRef.getId());
                                     users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
@@ -338,7 +339,7 @@ public class CloudDatabase {
                                 pendingTeamMate = snapshot.toObject(UserDetails.class);
                                 TeamMember pendingMember = new TeamMember(pendingTeamMate.getName(),
                                         pendingTeamMate.getEmail(),
-                                        true);
+                                        false);
                                 teams.document(currentUser.getTeam())
                                         .collection(MEMBERS)
                                         .document(mock_teammate_email).set(pendingMember);
@@ -347,6 +348,7 @@ public class CloudDatabase {
                                         "inviteToTeam bc snapshot is null");
                             }
                             // TODO SEND NOTIFICATION TO INVITEE ALONG WITH INVITER EMAIL
+
                         } else {
                             Log.d(TAG, "getting user doc failed in inviteToTeamMethod");
                         }
@@ -354,21 +356,42 @@ public class CloudDatabase {
                 });
     }
 
+    public static void acceptInvite(String inviterEmail) {
+
+        users.document(inviterEmail)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                if(task.isSuccessful()) {
+                    if(snapshot != null) {
+                        UserDetails inviter = snapshot.toObject(UserDetails.class);
+                        teamCreationOnAccept(inviter);
+                    } else {
+                        Log.d(TAG, "snapshot was empty for inviter details");
+                    }
+                } else {
+                    Log.d(TAG, "task failed when retrieving inviter details");
+                }
+            }
+        });
+    }
+
     /**
      * IF INVITEE ACCEPTS INVITE (FOR HARRISON)
      */
-    public static void teamCreationOnAccept(UserDetails invitee) {
+    private static void teamCreationOnAccept(UserDetails inviter) {
 
         Map<String, String> updateTeam = new HashMap<>();
-        updateTeam.put("team", currentUser.getTeam());
+        updateTeam.put("team", inviter.getTeam());
         Map<String, Boolean> updateStatus = new HashMap<>();
-        updateStatus.put("pendingStatus", false);
+        updateStatus.put("pendingStatus", true);
 
-        // if invitee was already on a team MERGE
-        if(!invitee.getTeam().equals("")) {
+        // if current user is already on a team, change everyone on your team's team to new team
+        if(!currentUser.getTeam().equals("")) {
             Log.d(TAG, "Accepted member does have a team");
 
-            teams.document(invitee.getTeam()).collection(MEMBERS)
+            teams.document(currentUser.getTeam()).collection(MEMBERS)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -376,10 +399,10 @@ public class CloudDatabase {
                         for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             String newMembersName = (String)document.get("name");
                             String newMembersEmail = (String)document.get("email");
-                            if(!newMembersEmail.equals(invitee.getEmail())) {
+                            if(!newMembersEmail.equals(currentUser.getEmail())) {
                                 users.document(newMembersEmail).set(updateTeam, SetOptions.merge());
-                                teams.document(currentUser.getTeam()).collection(MEMBERS).document(newMembersEmail)
-                                        .set(new TeamMember(newMembersName, newMembersEmail, false));
+                                teams.document(inviter.getTeam()).collection(MEMBERS).document(newMembersEmail)
+                                        .set(new TeamMember(newMembersName, newMembersEmail, true));
                             }
                         }
                     } else {
@@ -387,21 +410,40 @@ public class CloudDatabase {
                     }
                 }
             });
-            teams.document(invitee.getTeam()).delete();
+            teams.document(currentUser.getTeam()).delete();
         }
-        users.document(invitee.getEmail()).set(updateTeam, SetOptions.merge());
-        teams.document(currentUser.getTeam()).collection(MEMBERS).document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
+        users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
+        teams.document(inviter.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).set(updateStatus, SetOptions.merge());
         //users.document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
     }
 
+    public static void declineInvite(String inviterEmail) {
+
+        users.document(inviterEmail)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                if(task.isSuccessful()) {
+                    if(snapshot != null) {
+                        UserDetails inviter = snapshot.toObject(UserDetails.class);
+                        teamCreationOnDecline(inviter);
+                    } else {
+                        Log.d(TAG, "snapshot is null for inviter ");
+                    }
+                } else {
+                    Log.d(TAG, "task failed in declineInvite");
+                }
+            }
+        });
+    }
     /**
      * IF INVITEE DECLINES INVITE (FOR HARRISON)
      */
-    public static void teamCreationOnDecline(UserDetails invitee) {
-        teams.document(currentUser.getTeam()).collection(MEMBERS).document(invitee.getEmail()).delete();
+    public static void teamCreationOnDecline(UserDetails inviter) {
+        teams.document(inviter.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).delete();
     }
     // TODO [END] (NOTIFICATIONS) ------------------------------------------------------------------
-
 
 
     /**
