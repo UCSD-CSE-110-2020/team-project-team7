@@ -34,7 +34,6 @@ public  class ProposedWalkObservable extends Observable {
      */
     public static void fetchProposedWalk() {
         // Fetch the proposed walk
-
         CloudDatabase.populateTeamProposedWalk(new CloudCallBack() {
             @Override
             public void callBack() {
@@ -118,6 +117,8 @@ public  class ProposedWalkObservable extends Observable {
     }
 
 
+    // GETTER AND SETTER FOR PROPOSED WALK ---------------------------------------------------------
+
     /**
      * Returns the proposedWalk static variable.
      */
@@ -125,5 +126,11 @@ public  class ProposedWalkObservable extends Observable {
         return proposedWalk;
     }
 
+    /**
+     * Store the proposedWalk into the cloud.
+     */
+    public static void storeProposedWalk(ProposedWalk proposedWalk) {
+        CloudDatabase.storeTeamProposedWalk(proposedWalk);
+    }
 
 }
