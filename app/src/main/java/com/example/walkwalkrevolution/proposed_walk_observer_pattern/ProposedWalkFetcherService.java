@@ -58,8 +58,6 @@ public class ProposedWalkFetcherService extends IntentService {
 
                     Log.d(TAG, "calling fetch method...");
 
-
-
                     // Move the Proposed walk through mediators to the ProposedWalkObservable
                     ProposedWalkObservable.fetchProposedWalk();
                 }
