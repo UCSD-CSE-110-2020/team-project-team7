@@ -664,7 +664,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      */
     private void adjustCheckMark() {
         // don't delete check mark if it has been walked
-        if (userHasWalkedTeamRoute || TeamRoutesListAdapter.userRoutes.contains(teamRoute)) {
+        if (TeamRoutesListAdapter.userRoutes.contains(teamRoute)) {
             return;
 
         } else {
