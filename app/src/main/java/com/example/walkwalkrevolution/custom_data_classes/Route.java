@@ -61,7 +61,7 @@ public class Route implements Comparable<Route> {
     // Favoriting
     public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
     public boolean getIsFavorited() { return this.isFavorited; }
-    public void setUserHasWalkedRoute() { this.userHasWalkedRoute = userHasWalkedRoute; }
+    public void setUserHasWalkedRoute(boolean userHasWalkedRoute) { this.userHasWalkedRoute = userHasWalkedRoute; }
 
 
     /**
