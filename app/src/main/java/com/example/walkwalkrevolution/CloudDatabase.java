@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class CloudDatabase {
     public static final String TAG = "CLOUD";
@@ -76,7 +77,7 @@ public class CloudDatabase {
 
                                 // create userDetails object and put into factory for fast local access
                                 currentUser = document.toObject(UserDetails.class);
-                                currentUserMember = new TeamMember(currentUser.getEmail(), currentUser.getName(), true);
+                                currentUserMember = new TeamMember(currentUser.getName(), currentUser.getEmail(), true);
                                 UserDetailsFactory.put(currentUserEmail, currentUser);
                                 cb.callBack();
                             } else {
@@ -171,31 +172,38 @@ public class CloudDatabase {
      * Retrieving the proposed walk from database
      */
     public static void populateTeamProposedWalk(CloudCallBack cb) {
-
-        teams.document(currentUser.getTeam()).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot snapshot = task.getResult();
-                        if(task.isSuccessful()) {
-                            if(snapshot != null) {
-                                String proposedWalkJSON = (String)snapshot.get("current proposed walk");
-                                if (proposedWalkJSON != null) {
-                                    ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
-                                    TeamMemberFactory.setProposedWalk(pw);
-                                    cb.callBack();
+        if(currentUser.getTeam().equals("")) {
+            Log.d(TAG, "user has no proposed walk");
+        } else {
+            teams.document(currentUser.getTeam()).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (task.isSuccessful()) {
+                                if (snapshot.exists()) {
+                                    if (snapshot != null) {
+                                        String proposedWalkJSON = (String) snapshot.get("current proposed walk");
+                                        if (proposedWalkJSON != null) {
+                                            ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
+                                            TeamMemberFactory.setProposedWalk(pw);
+                                            cb.callBack();
+                                        } else {
+                                            Log.d(TAG, "team has no proposed walk");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "failed to get snapshot of the current proposed walk");
+                                    }
                                 } else {
-                                    Log.d(TAG, "team has no proposed walk");
+                                    Log.d(TAG, "current user's team does not have a proposed walk");
                                 }
                             } else {
-                                Log.d(TAG, "failed to get snapshot of the current proposed walk");
+                                Log.d(TAG, "failed to get snapshot of teamID " +
+                                        "document in getProposedWalk method");
                             }
-                        } else {
-                            Log.d(TAG, "failed to get snapshot of teamID " +
-                                    "document in getProposedWalk method");
                         }
-                    }
-                });
+                    });
+        }
     }
 
     /**
@@ -286,6 +294,19 @@ public class CloudDatabase {
         newWalkDetails.put("current proposed walk", proposedWalkJSON);
         teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
         // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
+//        Map<String, String> notify = new HashMap<>();
+//        Log.d("Team_Notif", proposedWalkJSON);
+//        if(proposedWalkJSON.equals("null")) {
+//            Log.d("Team_Notif","WITHDRAWN");
+//            notify.put("notify2", "withdrawn");
+//        } else {
+//            Log.d("Team_Notif","SCHEDULED");
+//            notify.put("notify2", "scheduled");
+//        }
+//
+//        topic.document("topic2")
+//                .collection("messages2")
+//                .document("messages2").set(notify, SetOptions.merge());
     }
 
     /**
@@ -307,6 +328,11 @@ public class CloudDatabase {
      */
     public static void updateCurrentUserInTeam() {
         teams.document(currentUser.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).set(currentUserMember);
+        Map<String, Integer> notif = new HashMap<>();
+        notif.put("notif", currentUserMember.getProposedWalkStatus());
+        topic.document("topic")
+                .collection("messages")
+                .document("messages").set(notif, SetOptions.merge());
     }
 
     // TODO [END] (STORE INFO TO CLOUD) ------------------------------------------------------------

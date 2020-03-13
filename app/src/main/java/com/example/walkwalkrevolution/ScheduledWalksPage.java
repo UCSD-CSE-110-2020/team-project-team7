@@ -28,10 +28,20 @@ public class ScheduledWalksPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "INSIDE SCHEDULED WALKS");
+        ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                setUp();
+                Log.d(TAG, "Called setup");
+            }
+        });
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduled_walks_page);
 
-        setUp();
+
+        //setUp();
     }
 
     private void setUp(){
@@ -39,6 +49,8 @@ public class ScheduledWalksPage extends AppCompatActivity {
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.proposedWalk);
         ProposedWalk walk = ProposedWalkObservable.getProposedWalk();
         //ProposedWalk walk = new ProposedWalk("Grizzly Road", "04/17/2000", "9:00PM", new TeamMember("Amrit Singh", "aksingh@ucsd.edu", false));
+
+        Log.d(TAG, "Walk is NULL: " + ((walk == null) ? true:false));
         if(walk == null){
             layout.setVisibility(View.INVISIBLE);
             return;
@@ -69,5 +81,10 @@ public class ScheduledWalksPage extends AppCompatActivity {
 
     private void launchProposedWalkDetailsPage(){
         startActivity(new Intent(ScheduledWalksPage.this, ProposedWalkDetailsPage.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ScheduledWalksPage.this, TeammatesPage.class));
     }
 }

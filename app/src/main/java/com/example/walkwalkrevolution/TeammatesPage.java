@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
 import com.example.walkwalkrevolution.forms.AddTeammateForm;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
 import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
@@ -43,6 +44,15 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
 
         setUp();
     }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Calls most updated proposed walk
+        //ProposedWalkObservable.fetchProposedWalk();
+    }
+
 
     /**
      * Calls the RecyclerViewAdapter class to create and display all routes to screen.

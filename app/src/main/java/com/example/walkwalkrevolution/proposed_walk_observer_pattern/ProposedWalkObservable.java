@@ -32,7 +32,7 @@ public  class ProposedWalkObservable extends Observable {
      * Fetch the team's proposed walk from the cloud, if there is one.
      * If it's different from the current proposed walk, set it.
      */
-    public static void fetchProposedWalk() {
+    public static void fetchProposedWalk(CloudCallBack cb) {
         // Fetch the proposed walk
         CloudDatabase.populateTeamProposedWalk(new CloudCallBack() {
             @Override
@@ -49,6 +49,7 @@ public  class ProposedWalkObservable extends Observable {
                     // proposed walk exists, but the one in the cloud is different
                     setProposedWalk(cloudProposedWalk);
                 }
+                cb.callBack();
             }
         });
     }
@@ -58,15 +59,26 @@ public  class ProposedWalkObservable extends Observable {
 
     /**
      * Set the proposed walk instance variable. Notify observers of the change.
-     *
-     * @param proposedWalk
      */
-    public static void setProposedWalk(ProposedWalk proposedWalk) {
+    public static void setProposedWalk(ProposedWalk proposedWalkA) {
         if (proposedWalk != null) {
             Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.getName());
         }
 
-        proposedWalk = proposedWalk;
+        proposedWalk = proposedWalkA;
+        notifyObservers(proposedWalk);
+    }
+
+    /**
+     * Set the proposed walk and store it in the cloud.
+     */
+    public static void setProposedWalkInCloud(ProposedWalk proposedWalkA) {
+        if (proposedWalk != null) {
+            Log.d(TAG, "A new proposed walk was set. Named: " + proposedWalk.getName());
+        }
+
+        proposedWalk = proposedWalkA;
+        CloudDatabase.storeTeamProposedWalk(proposedWalk);
         notifyObservers(proposedWalk);
     }
 
@@ -75,6 +87,13 @@ public  class ProposedWalkObservable extends Observable {
      */
     public static void clearProposedWalk() {
         setProposedWalk(null);
+        CloudDatabase.storeTeamProposedWalk(proposedWalk);
+        fetchProposedWalk(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                return;
+            }
+        });
         Log.d(TAG, "Cleared Proposed Walk to null");
     }
 

@@ -384,13 +384,23 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     public static void subscribeToNotificationsTopic() {
             FirebaseMessaging.getInstance().subscribeToTopic("topic")
                     .addOnCompleteListener(task -> {
-                                String msg = "Notif subbed!" + CloudDatabase.currentUser.getTeam();
+                                String msg = "Notif subbed!";
                                 if (!task.isSuccessful()) {
                                     msg = "Notif failed :(";
                                 }
                                 Log.d("Sub_Message", msg);
                             }
                     );
+
+//        FirebaseMessaging.getInstance().subscribeToTopic("topic2")
+//                .addOnCompleteListener(task -> {
+//                            String msg = "Notif2 subbed!";
+//                            if (!task.isSuccessful()) {
+//                                msg = "Notif2 failed :(";
+//                            }
+//                            Log.d("Sub_Message", msg);
+//                        }
+//                );
     }
     public void checkNotif(){
         Intent intent = getIntent();
@@ -411,6 +421,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         }
         if (bundle != null) {
             boolean check = false;
+            boolean details = false;
             String buffer = "";
             for (String key : bundle.keySet()) {
                 if (bundle.get(key) != null) {
@@ -421,6 +432,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                     if(key.equals("email")){
                         buffer = bundle.get(key).toString();
                     }
+                    if(bundle.get(key).equals("proposed_details")){
+                        details = true;
+                    }
                 } else {
                     Log.d(TAG, "key: " + key + ", value: None");
                 }
@@ -429,6 +443,11 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 Intent team = new Intent(this, TeammatesPage.class);
                 Log.d(TAG, buffer);
                 team.putExtra("email", buffer);
+                startActivity(team);
+            }
+
+            if(details){
+                Intent team = new Intent(this, TeammatesPage.class);
                 startActivity(team);
             }
         }

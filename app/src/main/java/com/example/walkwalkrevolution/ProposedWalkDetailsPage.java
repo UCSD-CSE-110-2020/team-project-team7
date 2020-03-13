@@ -80,6 +80,8 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     private void setWalkInformation(){
         Log.d(TAG, "Starting initRecyclerView ");
 
+        initializeFields();
+
         TextView walkName = (TextView) findViewById(R.id.walkName);
         walkName.setText("Route: " + proposedWalk.getName());
         walkName.setEnabled(false);
@@ -116,16 +118,30 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
         badRoute.setOnClickListener(this);
         accept.setOnClickListener(this);
 
-        initializeFields();
-
         orangeBackgroundForChosenAvailability();
     }
 
     private void initializeFields(){
+        this.proposedWalk = ProposedWalkObservable.getProposedWalk();
         Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
         this.teammates = new ArrayList<>();
         teammates.addAll(map.values());
         this.currentUser = CloudDatabase.currentUserMember;
+
+        if(!currentUser.getEmail().equals(proposedWalk.getCreator().getEmail())){
+            Log.d(TAG, "Not a User");
+            teammates.add(currentUser);
+
+            TeamMember thisIsCreator = proposedWalk.getCreator();
+            for(TeamMember member: teammates){
+                if(member.getEmail().equals(proposedWalk.getCreator().getEmail())){
+                    Log.d(TAG, "Remove member " +  member.getName());
+                    thisIsCreator = member;
+                }
+            }
+            teammates.remove(thisIsCreator);
+        }
+        sortTeammatesByStatus();
 
     }
 
@@ -157,13 +173,17 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void withdrawWalk(){
         ProposedWalkObservable.clearProposedWalk();
+        for(TeamMember member: teammates){
+            member.setProposedWalkStatus(0);
+        }
+        CloudDatabase.storeTeam();
         startActivity(new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class));
         Toast.makeText(this, "Successfully Withdrawn", Toast.LENGTH_SHORT).show();
     }
 
     private void scheduleWalk(){
         this.proposedWalk.setIsScheduled(true);
-        ProposedWalkObservable.setProposedWalk(this.proposedWalk);
+        ProposedWalkObservable.setProposedWalkInCloud(this.proposedWalk);
         Intent intent = new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class);
         startActivity(intent);
         Toast.makeText(this, "Successfully Scheduled", Toast.LENGTH_SHORT).show();
@@ -236,21 +256,27 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.googleMaps:
+                Log.d(TAG, "Google Maps Clicked");
                 launchGoogleMaps();
                 break;
             case R.id.scheduleWalkButton:
+                Log.d(TAG, "Schedule Walk");
                 scheduleWalk();
                 break;
             case R.id.withdrawWalkButton:
+                Log.d(TAG, "Withdraw Walk");
                 withdrawWalk();
                 break;
             case R.id.badTime:
+                Log.d(TAG, "Bad Time Clicked");
                 availabilityChanged(1);
                 break;
             case R.id.badRoute:
+                Log.d(TAG, "Bad Route Clicked");
                 availabilityChanged(2);
                 break;
             case R.id.Accept:
+                Log.d(TAG, "Accept Clicked");
                 availabilityChanged(3);
                 break;
         }

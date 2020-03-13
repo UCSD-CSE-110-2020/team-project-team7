@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.walkwalkrevolution.CloudCallBack;
+
 /**
  * Handling asynchronous task requests for fetching Proposed Walk data from the cloud.
  * Only runs in ProposedWalkObservers.
@@ -59,7 +61,12 @@ public class ProposedWalkFetcherService extends IntentService {
                     Log.d(TAG, "calling fetch method...");
 
                     // Move the Proposed walk through mediators to the ProposedWalkObservable
-                    ProposedWalkObservable.fetchProposedWalk();
+                    ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
+                        @Override
+                        public void callBack() {
+                            return;
+                        }
+                    });
                 }
 
             }

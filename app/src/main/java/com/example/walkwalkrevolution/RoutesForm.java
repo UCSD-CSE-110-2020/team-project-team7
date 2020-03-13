@@ -63,7 +63,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
     // Team route instance vars ---------------------------
     // true if we came from walk run session and if this user isn't the route's creator
-    private boolean userHasWalkedTeamRoute;
+    private boolean userHasWalkedTeamRoute = false;
     private TeamMember creator;
     private Route teamRoute;
 
@@ -219,6 +219,13 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 case RecyclerViewAdapterTeam.PREVIEW_DETAILS_INTENT:
                     intentFromRoutesDetails(); // Load UI as if coming from Personal Routes Page
                     intentFromTeamRoutes();
+                    teamRoute = TreeSetManipulation.getSelectedRoute();
+                    ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
+                        @Override
+                        public void callBack() {
+                            return;
+                        }
+                    });
                     saveButton.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
                     break;
@@ -315,8 +322,11 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         // Walk/Run Session didn't start from Home page, started from Routes page
         if (teamRoute != null) {
 
+            Log.d(TAG, "team route: " + teamRoute.creator.getEmail());
+            Log.d(TAG, "current user route: " + CloudDatabase.currentUser.getEmail());
+
             // Started Team Route Session
-            if (teamRoute.creator.getEmail() != CloudDatabase.currentUser.getEmail()) {
+            if (!teamRoute.creator.getEmail().trim().equals(CloudDatabase.currentUser.getEmail().trim())) {
                 userHasWalkedTeamRoute = true;
                 creator = teamRoute.creator;
                 disableEditing(); // Can't edit team route
@@ -662,11 +672,8 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      * Adjust the checkmark so that it appears only when the user has walked a team route.
      */
     private void adjustCheckMark() {
-        // don't delete check mark if it has been walked
-        if (TeamRoutesListAdapter.userRoutes.contains(teamRoute)) {
-            return;
-
-        } else {
+        // delete check mark if it hasn't been walked
+        if (teamRoute == null || !teamRoute.userHasWalkedRoute) {
             routeNameEditText.setCompoundDrawables(null, null, null,null);
         }
     }

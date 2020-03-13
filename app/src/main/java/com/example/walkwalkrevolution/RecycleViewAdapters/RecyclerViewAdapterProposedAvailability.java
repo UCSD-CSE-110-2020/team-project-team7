@@ -52,7 +52,7 @@ public class RecyclerViewAdapterProposedAvailability extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final TeamMember teammate = teammates.get(position);
-        Log.d(TAG, "onBindViewHolder: Position " + position + " Teammate Initials: " + teammate.getInitials());
+        Log.d(TAG, "onBindViewHolder: Position " + position + " Teammate Initials: " + teammate.getInitials() + " Status: " + teammate.getProposedWalkStatus());
 
         holder.icon.setText(teammate.getInitials());
         holder.icon.getBackground().setColorFilter(teammate.getColorVal(), PorterDuff.Mode.MULTIPLY);
