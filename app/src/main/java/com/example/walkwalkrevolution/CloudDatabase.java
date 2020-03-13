@@ -283,6 +283,28 @@ public class CloudDatabase {
         teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
         // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
     }
+
+    /**
+     * Store all teamMembers back into database
+     */
+    public static void storeTeam() {
+
+        Map<String, TeamMember> members = TeamMemberFactory.getAllMembers();
+
+        for(Map.Entry<String, TeamMember> member : members.entrySet()) {
+            teams.document(currentUser.getTeam())
+                    .collection(MEMBERS).document(member.getValue().getEmail()).set(member.getValue());
+        }
+        updateCurrentUserInTeam();
+    }
+
+    /**
+     * update specific teamMember in database
+     */
+    public static void updateCurrentUserInTeam() {
+        teams.document(currentUser.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).set(currentUserMember);
+    }
+
     // TODO [END] (STORE INFO TO CLOUD) ------------------------------------------------------------
 
 
