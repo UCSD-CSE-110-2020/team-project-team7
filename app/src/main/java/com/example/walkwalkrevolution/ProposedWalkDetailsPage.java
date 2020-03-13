@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,9 +30,11 @@ import com.google.android.gms.common.api.GoogleApiActivity;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class ProposedWalkDetailsPage extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,6 +42,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     RecyclerViewAdapterProposedAvailability adapter;
     ProposedWalk proposedWalk;
+    List<TeamMember> teammates;
     TeamMember currentUser;
 
     Button badTime, badRoute, accept;
@@ -48,11 +52,14 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proposed_walk_details_page);
 
-        setProposedWalk();
-        setWalkInformation();
-        initRecyclerView();
-
-        renderUserLayout();
+        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+            @Override
+            public void callBack() {
+                setWalkInformation();
+                initRecyclerView();
+                renderUserLayout();
+            }
+        });
     }
 
     /**
@@ -63,7 +70,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewTeammates);
 
         //create the adapter and set the recylerview to update the screen
-        adapter = new RecyclerViewAdapterProposedAvailability(this, proposedWalk);
+        adapter = new RecyclerViewAdapterProposedAvailability(this, teammates);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -109,7 +116,17 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
         badRoute.setOnClickListener(this);
         accept.setOnClickListener(this);
 
+        initializeFields();
+
         orangeBackgroundForChosenAvailability();
+    }
+
+    private void initializeFields(){
+        Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+        this.teammates = new ArrayList<>();
+        teammates.addAll(map.values());
+        this.currentUser = CloudDatabase.currentUserMember;
+
     }
 
     private void renderUserLayout(){
@@ -154,7 +171,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void availabilityChanged(int status){
         this.currentUser.setProposedWalkStatus(status);
-        //TODO Save walk to database - or user information
+        CloudDatabase.updateCurrentUserInTeam();
         orangeBackgroundForChosenAvailability();
         sortTeammatesByStatus();
         this.adapter.notifyDataSetChanged();
@@ -212,7 +229,7 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void sortTeammatesByStatus(){
-        Collections.sort(proposedWalk.getTeammates(), new TeammateStatusComparator<>() );
+        Collections.sort(teammates, new TeammateStatusComparator<>() );
     }
 
     @Override

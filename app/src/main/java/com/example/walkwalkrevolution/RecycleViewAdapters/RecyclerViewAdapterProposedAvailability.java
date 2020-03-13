@@ -25,17 +25,17 @@ public class RecyclerViewAdapterProposedAvailability extends RecyclerView.Adapte
 
     private static final String TAG = "RecyclerViewAdapterTeam";
 
-    private ProposedWalk proposedWalk;
+    private List<TeamMember> teammates;
     private Context mContext;
 
     /**
      * Initializes the adapter.
      * @param mContext The page that it will be updating
-     * @param proposedWalk Teammates that need to be displayed
+     * @param teammates Teammates that need to be displayed
      */
-    public RecyclerViewAdapterProposedAvailability(Context mContext, ProposedWalk proposedWalk) {
+    public RecyclerViewAdapterProposedAvailability(Context mContext, List<TeamMember> teammates) {
         this.mContext = mContext;
-        this.proposedWalk = proposedWalk;
+        this.teammates = teammates;
         Log.d(TAG, "Recycler View Adapter Constructor");
 
     }
@@ -51,7 +51,7 @@ public class RecyclerViewAdapterProposedAvailability extends RecyclerView.Adapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final TeamMember teammate = proposedWalk.getTeammates().get(position);
+        final TeamMember teammate = teammates.get(position);
         Log.d(TAG, "onBindViewHolder: Position " + position + " Teammate Initials: " + teammate.getInitials());
 
         holder.icon.setText(teammate.getInitials());
@@ -85,7 +85,7 @@ public class RecyclerViewAdapterProposedAvailability extends RecyclerView.Adapte
 
     @Override
     public int getItemCount() {
-        return  proposedWalk.getTeammates().size();
+        return  teammates.size();
     }
 
     /**
