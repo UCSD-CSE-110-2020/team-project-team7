@@ -124,7 +124,7 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
         Log.d(TAG, "Creating a ProposedWalk with date: " + date + "and time: " + time);
 
         // Create the proposed walk use entered data and what was on the Route Form
-        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time);
+        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time, CloudDatabase.currentUserMember);
         if (startingPoint != null) {
             proposedWalk.setLocation(startingPoint);
         }
