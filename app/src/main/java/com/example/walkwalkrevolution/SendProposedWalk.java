@@ -34,7 +34,6 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
 
     // Route name, saved from RoutesForm
     private String routeName, startingPoint;
-    private TeamMember creator;
 
     // Saves a proposed walk from the cloud if there is one
     private ProposedWalk cloudProposedWalk;
@@ -125,7 +124,7 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
         Log.d(TAG, "Creating a ProposedWalk with date: " + date + "and time: " + time);
 
         // Create the proposed walk use entered data and what was on the Route Form
-        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time, creator);
+        ProposedWalk proposedWalk = new ProposedWalk(routeName, date, time);
         if (startingPoint != null) {
             proposedWalk.setLocation(startingPoint);
         }

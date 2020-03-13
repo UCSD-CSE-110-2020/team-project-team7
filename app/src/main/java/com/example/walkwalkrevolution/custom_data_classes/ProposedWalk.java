@@ -47,9 +47,6 @@ public class ProposedWalk {
     public void setIsScheduled(boolean isScheduled) {
         this.isScheduled = isScheduled;
     }
-    public void setTeammates(List<TeamMember> teammates) {
-        this.teammates = teammates;
-    }
 
     public String getName() {
         return name;
@@ -62,9 +59,6 @@ public class ProposedWalk {
     }
     public String getLocation() {
         return location;
-    }
-    public List<TeamMember> getTeammates() {
-        return teammates;
     }
     public TeamMember getCreator() {
         return creator;
