@@ -139,16 +139,14 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void withdrawWalk(){
-        this.proposedWalk = null;
-        //TODO Delete walk from database - Call Titan's function
-//        Intent intent = new Intent(ProposedWalkDetailsPage.this, .class);
-//        startActivity(intent);
+        ProposedWalkObservable.clearProposedWalk();
+        startActivity(new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class));
         Toast.makeText(this, "Successfully Withdrawn", Toast.LENGTH_SHORT).show();
     }
 
     private void scheduleWalk(){
         this.proposedWalk.setIsScheduled(true);
-        //TODO save to Database - Call Titan's function
+        ProposedWalkObservable.setProposedWalk(this.proposedWalk);
         Intent intent = new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class);
         startActivity(intent);
         Toast.makeText(this, "Successfully Scheduled", Toast.LENGTH_SHORT).show();
@@ -189,27 +187,28 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void setProposedWalk(){
-
-        //TODO Call Titan's function
-//        this.proposedWalk = ProposedWalk.getProposedWalk();
+//
+//        //TODO Call Titan's function
+////        this.proposedWalk = ProposedWalk.getProposedWalk();
+////        sortTeammatesByStatus();
+//        // this.currentUser = TODO
+//
+//
+//        Intent intent = this.getIntent();
+//
+//        TeamMember creator = new TeamMember("Cindy Do", "cdo@ucsd.edu", true);
+//
+//        //Call Yoshi's Firebase stuff here
+//        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
+//        walk.setLocation("Splash Mountain");
+//        List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
+//        walk.setTeammates(teammates);
+//        this.proposedWalk = walk;
+//        Log.d(TAG, "Intent NOT from Scheduled Walks Page");
+//
+//        CloudDatabase.cu
+//        this.currentUser = teammates.get(3);
 //        sortTeammatesByStatus();
-        // this.currentUser = TODO
-
-
-        Intent intent = this.getIntent();
-
-        TeamMember creator = new TeamMember("Cindy Do", "cdo@ucsd.edu", true);
-
-        //Call Yoshi's Firebase stuff here
-        ProposedWalk walk = new ProposedWalk("Grizzly Lane", "3/19/20", "2:39 PM", creator);
-        walk.setLocation("Splash Mountain");
-        List<TeamMember> teammates = TeammatesPageAdapter.retrieveTeammatesFromCloud();
-        walk.setTeammates(teammates);
-        this.proposedWalk = walk;
-        Log.d(TAG, "Intent NOT from Scheduled Walks Page");
-
-        this.currentUser = teammates.get(3);
-        sortTeammatesByStatus();
     }
 
     private void sortTeammatesByStatus(){
