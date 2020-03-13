@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -218,6 +217,9 @@ public class CloudDatabase {
                                             TeamMember memberObj = member.toObject(TeamMember.class);
                                             TeamMemberFactory.put(memberEmail, memberObj);
                                         }
+                                        else if(memberEmail.equals(currentUser.getEmail())) {
+                                            currentUserMember = member.toObject(TeamMember.class);
+                                        }
                                     }
                                     cb.callBack();
                                 } catch (Exception e) {
@@ -230,6 +232,8 @@ public class CloudDatabase {
                             }
                         }
                     });
+        } else {
+            Log.d(TAG, "current user is not on any team");
         }
     }
     // TODO [END] (POPULATE STATIC CLASSES) --------------------------------------------------------
@@ -261,7 +265,7 @@ public class CloudDatabase {
         // create map to add/update user document with key value pair
         Map<String, String> teamRoutesWalked = new HashMap<>();
         teamRoutesWalked.put("teamRoutesWalked", routesToStore);
-
+        currentUser.setTeamRoutesWalked(routesToStore);
         try {
             users.document(currentUser.getEmail()).set(teamRoutesWalked, SetOptions.merge());
         } catch (Exception e) {
@@ -417,6 +421,7 @@ public class CloudDatabase {
         }
         users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
         teams.document(inviter.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).set(updateStatus, SetOptions.merge());
+        currentUser.setTeam(inviter.getTeam());
         //users.document(invitee.getEmail()).set(updateStatus, SetOptions.merge());
     }
 
@@ -440,6 +445,7 @@ public class CloudDatabase {
             }
         });
     }
+
     /**
      * IF INVITEE DECLINES INVITE (FOR HARRISON)
      */
@@ -447,7 +453,6 @@ public class CloudDatabase {
         teams.document(inviter.getTeam()).collection(MEMBERS).document(currentUser.getEmail()).delete();
     }
     // TODO [END] (NOTIFICATIONS) ------------------------------------------------------------------
-
 
     /**
      * !!! HELPER METHOD FOR FUNCTION ABOVE !!!
