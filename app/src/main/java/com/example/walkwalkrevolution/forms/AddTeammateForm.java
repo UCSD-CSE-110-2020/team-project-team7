@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walkwalkrevolution.CloudDatabase;
 import com.example.walkwalkrevolution.R;
 
 /**
@@ -67,7 +68,7 @@ public class AddTeammateForm extends AppCompatActivity {
 
         // TODO, Amrit says to upload teammate to the cloud, not pass as an intent extra,
         // she will be rendering Team page based on whats in the cloud
-
+        CloudDatabase.inviteToTeam(nameEditText.getText().toString());
 
         Log.d(TAG, "Teammate saved.");
         finish();

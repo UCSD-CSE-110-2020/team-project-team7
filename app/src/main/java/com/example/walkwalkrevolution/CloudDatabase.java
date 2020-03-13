@@ -364,8 +364,8 @@ public class CloudDatabase {
                                 }
 
                                 // get invitee's info to create TeamMember object to store in new team
-                                UserDetails pendingTeamMate = new UserDetails();
-                                pendingTeamMate = snapshot.toObject(UserDetails.class);
+                                // UserDetails pendingTeamMate = new UserDetails();
+                                UserDetails pendingTeamMate = snapshot.toObject(UserDetails.class);
                                 TeamMember pendingMember = new TeamMember(pendingTeamMate.getName(),
                                         pendingTeamMate.getEmail(),
                                         false);

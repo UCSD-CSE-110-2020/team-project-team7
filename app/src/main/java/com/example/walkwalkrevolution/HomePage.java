@@ -159,7 +159,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // --------------- [START] GOOGLE SIGNIN --------------- //
         currentUser = GoogleSignIn.getLastSignedInAccount(this);
-        if(currentUser.getEmail() == null) {
+        if(currentUser == null || currentUser.getEmail() == null) {
             Log.d("GOOGLEAUTH", "before sign in");
             signIn();
         } else {
@@ -168,14 +168,16 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 @Override
                 public void callBack() {
                     subscribeToNotificationsTopic();
+                    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+                    firstLogin(settings);
                 }
             });
         }
         // --------------- [END]   GOOGLE SIGNIN --------------- //
 
         // check to see if user is new
-        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-        firstLogin(settings);
+        //SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        //firstLogin(settings);
 
         // get latest walk
         displayLastWalk();
@@ -371,15 +373,17 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * subscribes to the team pages notification
      */
     public static void subscribeToNotificationsTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic(CloudDatabase.currentUser.getTeam())
-                .addOnCompleteListener(task -> {
-                            String msg = "Notif subbed!";
-                            if (!task.isSuccessful()) {
-                                msg = "Notif failed :(";
+        if(!CloudDatabase.currentUser.getTeam().equals("")) {
+            FirebaseMessaging.getInstance().subscribeToTopic(CloudDatabase.currentUser.getTeam())
+                    .addOnCompleteListener(task -> {
+                                String msg = "Notif subbed!";
+                                if (!task.isSuccessful()) {
+                                    msg = "Notif failed :(";
+                                }
+                                Log.d("Sub_Message", msg);
                             }
-                            Log.d("Sub_Message", msg);
-                        }
-                );
+                    );
+        }
     }
     public void checkNotif(){
         Intent intent = getIntent();
