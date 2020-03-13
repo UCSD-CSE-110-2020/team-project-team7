@@ -108,10 +108,11 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
             public void onFavoriteCurrentRoute(int p) {
                 Log.d(TAG, "Button Clicked --> onFavoriteCurrentRoute Called ");
                 Route routeSelected = routes.get(p);
-                routeSelected.toggleIsFavorited();
+                TeamRoutesListAdapter.userRoutes.remove(p);
 
-                TeamRoutesListAdapter.userRoutes.remove(routeSelected);
-                TeamRoutesListAdapter.userRoutes.add(routeSelected);
+                routeSelected.toggleIsFavorited();
+                routeSelected.setUserHasWalkedRoute(true);
+                TeamRoutesListAdapter.userRoutes.add(p, routeSelected);
 
                 notifyDataSetChanged();
 

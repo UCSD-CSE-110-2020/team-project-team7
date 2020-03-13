@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:drawableEnd="@drawable/icons8_checkmark_border_24"
                 android:inputType="textPersonName" />
 
         </LinearLayout>

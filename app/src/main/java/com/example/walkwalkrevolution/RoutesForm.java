@@ -87,7 +87,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      * an observer.
      */
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
 
         if (intentIsFromTeamRoutes) {
@@ -104,7 +104,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      * Initialize instance vars for most Activity objects. Set up the date. Find out which
      * intent called this Activity.
      */
-    private void formSetUp(){
+    private void formSetUp() {
         // Handle onClickListeners for Buttons
         saveButton = (Button) findViewById(R.id.SaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +147,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         optionalInfo[4].setElements(new CharSequence[]{"Easy", "Medium", "Hard"});
 
         // Set up listeners for all toggle buttons to update information in the toggleButtons array
-        for(int i=0; i < optionalInfo.length; i++){
+        for (int i = 0; i < optionalInfo.length; i++) {
             // Only allow one choice per toggle button
             optionalInfo[i].enableMultipleChoice(false);
 
@@ -166,6 +166,9 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
         // Find out which intent we are from
         checkIntent();
+
+        // Make the check mark disappear if this is not walked tema route
+        adjustCheckMark();
     }
 
     /**
@@ -183,7 +186,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Find on which intent opened this Activity and fill up the page correspondingly.
      */
-    private void checkIntent(){
+    private void checkIntent() {
         Log.d(TAG, "Checking for Intents");
 
         // Check which intent we are from
@@ -195,7 +198,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 fromIntentStr = fromIntent.getExtras().getString("From_Intent");
                 fromIntentStr.length();
 
-            }catch(NullPointerException e) {
+            } catch (NullPointerException e) {
                 Log.d(TAG, "Null Pointer Exception Caught");
                 return;
             }
@@ -228,7 +231,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Currently creating a brand new Route (from the plus button on Routes page).
      */
-    private void intentFromRoutesCreation(){
+    private void intentFromRoutesCreation() {
         stepsView.setText(steps + " s");
         distanceView.setText(distance + " mi");
 
@@ -238,7 +241,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Viewing a previously made Route from Routes page.
      */
-    private void intentFromRoutesDetails(){
+    private void intentFromRoutesDetails() {
         Route routeToDetail = TreeSetManipulation.getSelectedRoute();
 
         // Extract steps, distance, time into instance vars and display them
@@ -270,7 +273,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Display toggle button information.
      */
-    private void displayToggleInfo(Route route){
+    private void displayToggleInfo(Route route) {
         try {
             for (int i = 0; i < route.optionalFeatures.length; i++) {
                 int value = route.optionalFeatures[i];
@@ -280,8 +283,8 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                     optionalInfo[i].setValue(value - 1);
                 }
             }
+        } catch (Exception e) {
         }
-        catch(Exception e){}
     }
 
     /**
@@ -298,7 +301,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Stopped a walk Run Session.
      */
-    private void intentFromWalkRunSession(Intent fromIntent){
+    private void intentFromWalkRunSession(Intent fromIntent) {
         // Get data from walk/run session
         steps = fromIntent.getLongExtra("steps", 0);
         distance = fromIntent.getDoubleExtra("distance", 0);
@@ -307,15 +310,15 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
         displayStepsDistanceTime();
 
-        Route route = TreeSetManipulation.getSelectedRoute();
+        teamRoute = TreeSetManipulation.getSelectedRoute();
 
         // Walk/Run Session didn't start from Home page, started from Routes page
-        if(route != null) {
+        if (teamRoute != null) {
 
             // Started Team Route Session
-            if (route.creator.getEmail() != CloudDatabase.currentUser.getEmail()){
+            if (teamRoute.creator.getEmail() != CloudDatabase.currentUser.getEmail()) {
                 userHasWalkedTeamRoute = true;
-                creator = route.creator;
+                creator = teamRoute.creator;
                 disableEditing(); // Can't edit team route
             }
 
@@ -332,7 +335,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Prefilling some information for a session that is started from the Routes page.
      */
-    private void intentFromRoutesStartButton(){
+    private void intentFromRoutesStartButton() {
         Route routeBeingWalked = TreeSetManipulation.getSelectedRoute();
 
         // Prefill information for everything but Steps, Distance, and Time
@@ -380,7 +383,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private void attemptToSave() {
         Log.d(TAG, "Save Button Clicked --> attempting to save");
 
-        if(errorCheckingRequiredFields()){
+        if (errorCheckingRequiredFields()) {
             Log.d(TAG, "Errors Found");
             return;
         }
@@ -392,9 +395,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         // IF: user is saving a team route, save to the cloud
         if (userHasWalkedTeamRoute) {
             // Remove the route that originally selected to start this route
-            try {
-                TeamRoutesListAdapter.userRoutes.remove(TreeSetManipulation.getSelectedRoute());
-            } catch (Exception e) {}
+            TeamRoutesListAdapter.userRoutes.remove(TreeSetManipulation.getSelectedRoute());
 
             // Add the new route into userRoutes
             TeamRoutesListAdapter.userRoutes.add(savedRoute);
@@ -418,10 +419,10 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                     getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
 
             //Anything involving the Routes Page executes here
-            if(TreeSetManipulation.getSelectedRoute() != null){
-                boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences,  savedRoute);
+            if (TreeSetManipulation.getSelectedRoute() != null) {
+                boolean wasUpdated = TreeSetManipulation.updateRouteInTreeSet(sharedPreferences, savedRoute);
                 //updatedEntry is not a duplicate entry (other than the one it was modifying)
-                if(wasUpdated) {
+                if (wasUpdated) {
                     Log.d(TAG, "Entry Successfully Updated - Not a duplicate");
                     lastIntentionalWalkUpdate();
                     Toast.makeText(this, "Route Successfully Modified", Toast.LENGTH_SHORT).show();
@@ -432,10 +433,10 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 }
             }
             //Start button from Home page was pressed & routes entry is not a duplicate
-            else if(TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)){
+            else if (TreeSetManipulation.addRouteInTreeSet(sharedPreferences, savedRoute)) {
                 Log.d(TAG, "Entry Successfully Created - Not a duplicate");
                 lastIntentionalWalkUpdate();
-                Toast.makeText(this,"Route Successfully Added" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Route Successfully Added", Toast.LENGTH_SHORT).show();
                 // TODO TEST TO KEEP HOME AS CALLER
                 startActivity(intent);
                 finish();
@@ -448,16 +449,15 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
 
     }
 
-    private void lastIntentionalWalkUpdate(){
+    private void lastIntentionalWalkUpdate() {
         //add in if statement for intentionalWalk to do walk/run sessions walks that are saved
         SharedPreferences prefs = getSharedPreferences(LastIntentionalWalk.SHARED_PREFS_INTENTIONAL_WALK, MODE_PRIVATE);
         List<String> list = new ArrayList<>();
-        list.add(""+steps);
-        list.add(""+distance);
-        if(seconds < 10){
-            list.add(minutes + ":0" +  seconds);
-        }
-        else{
+        list.add("" + steps);
+        list.add("" + distance);
+        if (seconds < 10) {
+            list.add(minutes + ":0" + seconds);
+        } else {
             list.add(minutes + ":" + seconds);
         }
         LastIntentionalWalk.saveLastWalk(prefs, list);
@@ -466,7 +466,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Get the filled in entries and returns a newly created Route object based on form entries.
      */
-    private Route entriesAsRouteObject(){
+    private Route entriesAsRouteObject() {
         Log.d(TAG, "Successfully passed error checking. Now saving this Route.");
 
         Route savedRoute = Route.RouteBuilder.newInstance()
@@ -489,7 +489,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     /**
      * Error checking and formatting for required feels, such as routeName and startingPoint.
      */
-    private boolean errorCheckingRequiredFields(){
+    private boolean errorCheckingRequiredFields() {
         Log.d(TAG, "Checking entry fields for errors...");
 
         // Get fields in EditTexts and TextViews
@@ -498,7 +498,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         String inputSeconds = secondsEditText.getText().toString();
 
         // If minutes and seconds are not empty, parse them into integers
-        if (!inputMinutes.equals(""))  {
+        if (!inputMinutes.equals("")) {
             minutes = Integer.parseInt(inputMinutes);
         }
         if (!inputSeconds.equals("")) {
@@ -579,14 +579,14 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_DATE:
-                if(resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     String dateStr = data.getStringExtra("newDate");
                     dateDisplayTextView.setText(dateStr);
                     Log.d(TAG, "Saved data from the SetData activity");
                 }
                 break;
             case REQUEST_NOTES:
-                if(resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     notes = data.getStringExtra("newNotes");
                     Log.d(TAG, "Saved data from the NotesPage activity");
                 }
@@ -649,10 +649,27 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         notesButton.setVisibility(View.INVISIBLE);
 
         // Disable toggle buttons
-        for(int i=0; i < optionalInfo.length; i++){
+        for (int i = 0; i < optionalInfo.length; i++) {
             // Only allow one choice per toggle button
             optionalInfo[i].setEnabled(false);
-        }}
+        }
+    }
+
+
+    // BEHAVIOR FOR CHECKMARK ----------------------------------------------------------------------
+
+    /**
+     * Adjust the checkmark so that it appears only when the user has walked a team route.
+     */
+    private void adjustCheckMark() {
+        // don't delete check mark if it has been walked
+        if (TeamRoutesListAdapter.userRoutes.contains(teamRoute)) {
+            return;
+
+        } else {
+            routeNameEditText.setCompoundDrawables(null, null, null,null);
+        }
+    }
 
 
 
