@@ -3,6 +3,7 @@ package com.example.walkwalkrevolution;
 import android.util.Pair;
 
 import com.example.walkwalkrevolution.custom_data_classes.Route;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,12 @@ public class TeamRoutesListAdapter {
         TreeSet<Route> treeSet = new TreeSet<Route>(userRoutes);
         treeSet.addAll(teamRoutes);
         return new ArrayList<Route>(treeSet);
+    }
+
+    public static void saveWalkedUserRoutes(){
+        Gson gson = new Gson();
+        String json = gson.toJson(userRoutes);
+        CloudDatabase.storeUserTeamRoutesWalked(json);
     }
 
 }

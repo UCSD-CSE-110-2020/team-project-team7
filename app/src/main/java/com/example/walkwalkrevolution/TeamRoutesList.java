@@ -101,5 +101,6 @@ public class TeamRoutesList extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        TeamRoutesListAdapter.saveWalkedUserRoutes();
     }
 }
