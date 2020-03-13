@@ -397,12 +397,8 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
             TeamRoutesListAdapter.userRoutes.add(savedRoute);
             TreeSetManipulation.setSelectedRoute(null);
 
-            Gson gson = new Gson();
-            String json = gson.toJson(TeamRoutesListAdapter.userRoutes);
-            Log.d("json", json);
-
             // Save the userRoutes into the cloud
-            CloudDatabase.storeUserTeamRoutesWalked(json);
+            TeamRoutesListAdapter.saveWalkedUserRoutes();
 
             // Intent to team route page
             Intent intent = new Intent(this, TeamRoutesList.class);
