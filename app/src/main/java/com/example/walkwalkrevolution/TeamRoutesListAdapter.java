@@ -34,37 +34,6 @@ public class TeamRoutesListAdapter {
         }
 
         return alphabetizeTeamRoutes(userRoutes, teamRoutes);
-
-//        //Use Yoshi's function to call Teammates from cloud
-//        List<Route> list = new ArrayList<>();
-//
-//        Route route2 = Route.RouteBuilder.newInstance()
-//                .setName("Bryan Avenue")
-//                .setStartingPoint("Archer Ave")
-//                .setSteps(20)
-//                .setDistance(1.4)
-//                .setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu",  false))
-//                .setUserHasWalkedRoute(true)
-//                .buildRoute();
-//        list.add(route2);
-//
-//        Route route3 = Route.RouteBuilder.newInstance()
-//                .setName("Celt Drive")
-//                .setStartingPoint("Grisly Garden")
-//                .setSteps(440)
-//                .setDistance(30.4)
-//                .setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", false))
-//                .buildRoute();
-//        list.add(route3);
-//
-//        Route route1 = Route.RouteBuilder.newInstance()
-//                .setName("Arker Walk")
-//                .setStartingPoint("Garden Grove")
-//                .setSteps(30)
-//                .setDistance(2.4)
-//                .setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu",  false))
-//                .buildRoute();
-//        list.add(route1);
     }
 
 
@@ -82,6 +51,40 @@ public class TeamRoutesListAdapter {
         Gson gson = new Gson();
         String json = gson.toJson(userRoutes);
         CloudDatabase.storeUserTeamRoutesWalked(json);
+    }
+
+    private  List<Route> mockTeamRoutes(){
+                //Use Yoshi's function to call Teammates from cloud
+        List<Route> list = new ArrayList<>();
+
+        Route route2 = Route.RouteBuilder.newInstance()
+                .setName("Bryan Avenue")
+                .setStartingPoint("Archer Ave")
+                .setSteps(20)
+                .setDistance(1.4)
+                .setCreator(new TeamMember("Titan Ngo", "ttngo@ucsd.edu",  false))
+                .setUserHasWalkedRoute(true)
+                .buildRoute();
+        list.add(route2);
+
+        Route route3 = Route.RouteBuilder.newInstance()
+                .setName("Celt Drive")
+                .setStartingPoint("Grisly Garden")
+                .setSteps(440)
+                .setDistance(30.4)
+                .setCreator(new TeamMember("Cindy Do", "cido@ucsd.edu", false))
+                .buildRoute();
+        list.add(route3);
+
+        Route route1 = Route.RouteBuilder.newInstance()
+                .setName("Arker Walk")
+                .setStartingPoint("Garden Grove")
+                .setSteps(30)
+                .setDistance(2.4)
+                .setCreator(new TeamMember("Amrit Singh", "aksingh@ucsd.edu",  false))
+                .buildRoute();
+        list.add(route1);
+        return list;
     }
 
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterScheduledWalks;
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
+import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,8 @@ public class ScheduledWalksPage extends AppCompatActivity {
     private void setUp(){
         //Proposed walk = ProposedWalk.getProposedWalk(); TODO
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.proposedWalk);
-        ProposedWalk walk = new ProposedWalk("Grizzly Road", "04/17/2000", "9:00PM", new TeamMember("Amrit Singh", "aksingh@ucsd.edu", false));
+        ProposedWalk walk = ProposedWalkObservable.getProposedWalk();
+        //ProposedWalk walk = new ProposedWalk("Grizzly Road", "04/17/2000", "9:00PM", new TeamMember("Amrit Singh", "aksingh@ucsd.edu", false));
         if(walk == null){
             layout.setVisibility(View.INVISIBLE);
             return;
