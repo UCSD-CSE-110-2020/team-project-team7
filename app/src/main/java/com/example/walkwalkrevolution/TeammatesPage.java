@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,13 +76,13 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     private void renderLayoutForTeamInvitation(){
         Intent intent = this.getIntent();
         try{
-            String inviterName = intent.getExtras().getString("name");
+            String inviterName = intent.getExtras().getString("email");
             ((TextView) findViewById(R.id.inviteeMessage)).setText("Team Invitation from " + inviterName +  "!");
             ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.VISIBLE);
             Log.d(TAG, "Invitation Notification clicked --> Accept options enabled");
         }catch(Exception e){
             Log.d(TAG, "No notification received for team invites");
-            return;
+            ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.GONE);
         }
     }
 
@@ -103,17 +104,32 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     }
 
     private void teamInvitationAccepted(){
-        Toast.makeText(this, "Your teams have merged!", Toast.LENGTH_SHORT).show();
         String inviterEmail = this.getIntent().getExtras().getString("email");
-        CloudDatabase.acceptInvite(inviterEmail);
-        recreate();
+        this.getIntent().removeExtra("email");
+        SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
+        CloudDatabase.populateUserDetails(CurrentUserLocalStorage.getCurrentUserEmail(sharedPreferences), CurrentUserLocalStorage.getCurrentUserEmail(sharedPreferences), new CloudCallBack() {
+            @Override
+                public void callBack() {
+                    CloudDatabase.acceptInvite(inviterEmail);
+                    recreate();
+                }
+        });
+        Toast.makeText(this, "Your teams have merged!", Toast.LENGTH_SHORT).show();
+
     }
 
     private void teamInvitationDeclined(){
-        Toast.makeText(this, "Merge declined", Toast.LENGTH_SHORT).show();
         String inviterEmail = this.getIntent().getExtras().getString("email");
-        CloudDatabase.declineInvite(inviterEmail);
-        recreate();
+        this.getIntent().removeExtra("email");
+        SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
+        CloudDatabase.populateUserDetails(CurrentUserLocalStorage.getCurrentUserEmail(sharedPreferences), CurrentUserLocalStorage.getCurrentUserEmail(sharedPreferences), new CloudCallBack() {
+            @Override
+            public void callBack() {
+                CloudDatabase.declineInvite(inviterEmail);
+                recreate();
+            }
+        });
+        Toast.makeText(this, "Merge declined", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -132,5 +148,10 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
                 teamInvitationDeclined();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(TeammatesPage.this, HomePage.class));
     }
 }

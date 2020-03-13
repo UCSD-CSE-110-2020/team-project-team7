@@ -31,11 +31,13 @@ public class CloudDatabase {
     public static final String TAG = "CLOUD";
     public static final String USERS = "Users";
     public static final String TEAMS = "Teams";
+    public static final String TOPIC = "topic";
     public static final String MEMBERS = "Members";
 
     public static FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
     public static CollectionReference users = dataBase.collection(USERS);
     public static CollectionReference teams = dataBase.collection(TEAMS);
+    public static CollectionReference topic = dataBase.collection(TOPIC);
     public static UserDetails currentUser;
     public static TeamMember currentUserMember;
 
@@ -332,7 +334,13 @@ public class CloudDatabase {
         // convert teamrouteswalked represented as string to list of routes
         Gson gson = new Gson();
         Type type = new TypeToken<List<Route>>() {}.getType();
-        return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
+        if(currentUser.getTeamRoutesWalked().equals("null")) {
+            Log.d(TAG, "NULL " + currentUser.getTeamRoutesWalked());
+            return new ArrayList<>();
+        } else {
+            Log.d(TAG, currentUser.getTeamRoutesWalked());
+            return gson.fromJson(currentUser.getTeamRoutesWalked(), type);
+        }
     }
     // TODO [END] (GET LIST OF USER'S PERSONAL/TEAM ROUTES) ----------------------------------------
 
@@ -342,51 +350,66 @@ public class CloudDatabase {
      * WHEN USER INVITES SOMEONE TO THEIR TEAM (FOR HARRISON)
      */
     public static void inviteToTeam(String mock_teammate_email) {
-
+        Log.d("AHHHH", mock_teammate_email);
         users.document(mock_teammate_email).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot snapshot = task.getResult();
                         if(task.isSuccessful()) {
-                            // if inviter isn't in a team create one
-                            if(snapshot != null) {
-                                if (currentUser.getTeam().equals("")) {
-                                    Map<String, String> updateTeam = new HashMap<>();
-                                    DocumentReference newTeamRef = teams.document();
-                                    newTeamRef.collection(MEMBERS).document(currentUser.getEmail())
-                                            .set(new TeamMember(currentUser.getName(),
-                                                    currentUser.getEmail(),
-                                                    true));
-                                    currentUser.setTeam(newTeamRef.getId());
-                                    updateTeam.put("team", newTeamRef.getId());
-                                    users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
+                            if (snapshot.exists()) {
+                                // if inviter isn't in a team create one
+                                if (snapshot != null) {
+                                    Log.d(TAG, snapshot.toString());
+
+                                    if (currentUser.getTeam().equals("")) {
+                                        Map<String, String> updateTeam = new HashMap<>();
+                                        DocumentReference newTeamRef = teams.document();
+                                        newTeamRef.collection(MEMBERS).document(currentUser.getEmail())
+                                                .set(new TeamMember(currentUser.getName(),
+                                                        currentUser.getEmail(),
+                                                        true));
+                                        currentUser.setTeam(newTeamRef.getId());
+                                        updateTeam.put("team", newTeamRef.getId());
+                                        users.document(currentUser.getEmail()).set(updateTeam, SetOptions.merge());
+                                    }
+
+                                    // get invitee's info to create TeamMember object to store in new team
+                                    UserDetails pendingTeamMate = new UserDetails();
+                                    pendingTeamMate = snapshot.toObject(UserDetails.class);
+                                    TeamMember pendingMember = new TeamMember(pendingTeamMate.getName(),
+                                            pendingTeamMate.getEmail(),
+                                            false);
+                                    teams.document(currentUser.getTeam())
+                                            .collection(MEMBERS)
+                                            .document(mock_teammate_email).set(pendingMember);
+
+                                    Map<String, String> updateTopic = new HashMap<>();
+                                    updateTopic.put("name", currentUser.getName());
+                                    updateTopic.put("email", currentUser.getEmail());
+                                    topic.document("topic")
+                                            .collection("messages")
+                                            .document("messages")
+                                            .set(updateTopic, SetOptions.merge());
+
+                                } else {
+                                    Log.d(TAG, "failed to create team for inviter in " +
+                                            "inviteToTeam bc snapshot is null");
                                 }
+                                // TODO SEND NOTIFICATION TO INVITEE ALONG WITH INVITER EMAIL
 
-                                // get invitee's info to create TeamMember object to store in new team
-                                // UserDetails pendingTeamMate = new UserDetails();
-                                UserDetails pendingTeamMate = snapshot.toObject(UserDetails.class);
-                                TeamMember pendingMember = new TeamMember(pendingTeamMate.getName(),
-                                        pendingTeamMate.getEmail(),
-                                        false);
-                                teams.document(currentUser.getTeam())
-                                        .collection(MEMBERS)
-                                        .document(mock_teammate_email).set(pendingMember);
                             } else {
-                                Log.d(TAG, "failed to create team for inviter in " +
-                                        "inviteToTeam bc snapshot is null");
+                                Log.d(TAG, "getting user doc failed in inviteToTeamMethod");
                             }
-                            // TODO SEND NOTIFICATION TO INVITEE ALONG WITH INVITER EMAIL
-
                         } else {
-                            Log.d(TAG, "getting user doc failed in inviteToTeamMethod");
+                            Log.d(TAG, "user doesn't exist");
                         }
                     }
                 });
     }
 
     public static void acceptInvite(String inviterEmail) {
-
+        Log.d("OOOOOOWWW", inviterEmail);
         users.document(inviterEmail)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

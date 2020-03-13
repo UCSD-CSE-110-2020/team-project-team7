@@ -1,5 +1,6 @@
 package com.example.walkwalkrevolution;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.example.walkwalkrevolution.custom_data_classes.Route;
@@ -13,6 +14,7 @@ public class TeamRoutesListAdapter {
 
     // Stores any team routes that the user has edited (either walked or favorited)
     public static List<Route> userRoutes;
+    private static final String TAG = "TeamRoutesListAdapter";
 
 
     /**
@@ -31,6 +33,7 @@ public class TeamRoutesListAdapter {
         for (Pair<String,Route> pair : teamRoutePairs) {
             // Add route to teamRoute static var if the user hasn't walked it
             teamRoutes.add(pair.second);
+            Log.d(TAG, pair.second.name);
         }
 
         return alphabetizeTeamRoutes(userRoutes, teamRoutes);
@@ -42,8 +45,14 @@ public class TeamRoutesListAdapter {
      * then alphabetizes them.
      */
     private static List<Route> alphabetizeTeamRoutes(List<Route> userRoutes, List<Route> teamRoutes){
-        TreeSet<Route> treeSet = new TreeSet<Route>(userRoutes);
-        treeSet.addAll(teamRoutes);
+        TreeSet<Route> treeSet = new TreeSet<>();
+        if(userRoutes.size() > 0){
+            treeSet.addAll(userRoutes);
+
+        }
+        if(teamRoutes.size() > 0){
+            treeSet.addAll(teamRoutes);
+        }
         return new ArrayList<Route>(treeSet);
     }
 

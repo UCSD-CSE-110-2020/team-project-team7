@@ -164,6 +164,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             signIn();
         } else {
             Log.d("GOOGLEAUTH", "signed in apparently, email: " + currentUser.getEmail());
+
+            SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
+            CurrentUserLocalStorage.firstTimeLogin(sharedPreferences, currentUser.getDisplayName(), currentUser.getEmail());
+
             CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName(), new CloudCallBack() {
                 @Override
                 public void callBack() {
@@ -245,6 +249,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             currentUser = completedTask.getResult(ApiException.class);
+
+            SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
+            CurrentUserLocalStorage.firstTimeLogin(sharedPreferences, currentUser.getDisplayName(), currentUser.getEmail());
+
             CloudDatabase.populateUserDetails(currentUser.getEmail(), currentUser.getDisplayName(), new CloudCallBack() {
                 @Override
                 public void callBack() {
@@ -369,21 +377,20 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         startActivity(intent);
     }
 
+
     /**
      * subscribes to the team pages notification
      */
     public static void subscribeToNotificationsTopic() {
-        if(!CloudDatabase.currentUser.getTeam().equals("")) {
-            FirebaseMessaging.getInstance().subscribeToTopic(CloudDatabase.currentUser.getTeam())
+            FirebaseMessaging.getInstance().subscribeToTopic("topic")
                     .addOnCompleteListener(task -> {
-                                String msg = "Notif subbed!";
+                                String msg = "Notif subbed!" + CloudDatabase.currentUser.getTeam();
                                 if (!task.isSuccessful()) {
                                     msg = "Notif failed :(";
                                 }
                                 Log.d("Sub_Message", msg);
                             }
                     );
-        }
     }
     public void checkNotif(){
         Intent intent = getIntent();
@@ -403,17 +410,26 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             }
         }
         if (bundle != null) {
+            boolean check = false;
+            String buffer = "";
             for (String key : bundle.keySet()) {
                 if (bundle.get(key) != null) {
                     Log.d(TAG, "key: " + key + ", value: " + bundle.get(key).toString());
                     if(bundle.get(key).equals("invite_page")){
-                        Intent team = new Intent(this, TeammatesPage.class);
-                        team.putExtra("name","asdasdsadsadsa");
-                        startActivity(team);
+                        check = true;
+                    }
+                    if(key.equals("email")){
+                        buffer = bundle.get(key).toString();
                     }
                 } else {
                     Log.d(TAG, "key: " + key + ", value: None");
                 }
+            }
+            if(check){
+                Intent team = new Intent(this, TeammatesPage.class);
+                Log.d(TAG, buffer);
+                team.putExtra("email", buffer);
+                startActivity(team);
             }
         }
     }

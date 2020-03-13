@@ -4,7 +4,7 @@ admin.initializeApp();
 
 // checks to see if there has been a new user invited
 exports.sendInvite = functions.firestore
-   .document('Teams/{teamId}/Members/{memberId}')
+   .document('topic/{topicId}/messages/{message}')
    .onCreate((snap, context) => {
      // Get an object with the current document value.
      // If the document does not exist, it has been deleted.
@@ -17,15 +17,16 @@ exports.sendInvite = functions.firestore
            body: 'Please accept on WWR'
          },
          data:{
-           act: 'invite_page'
+           act: 'invite_page',
+           email: document.email
          },
-         topic: context.params.teamId
+         topic: context.params.topicId
        };
 
        return admin.messaging().send(message)
          .then((response) => {
            // Response is a message ID string.
-           console.log('team invite has been sent! ' + document.name, response);
+           console.log('team invite has been sent! ' + document.name + ' ' + document.email, response);
            return response;
          })
          .catch((error) => {
@@ -39,7 +40,7 @@ exports.sendInvite = functions.firestore
 
 // checks to see if the user declined the team request
 exports.declineInvite = functions.firestore
-   .document('Teams/{teamId}/Members/{memberId}')
+   .document('topic/{topicId}/messages/{message}')
    .onDelete((snap, context) => {
      // Get an object with the current document value.
      // If the document does not exist, it has been deleted.
@@ -51,10 +52,7 @@ exports.declineInvite = functions.firestore
            title: document.name + ' has declined the invite',
            body: 'team invite has been denied'
          },
-         data:{
-            act: 'invite_page'
-          },
-         topic: context.params.teamId
+         topic: context.params.topicId
        };
 
        return admin.messaging().send(message)
@@ -71,4 +69,3 @@ exports.declineInvite = functions.firestore
 
      return "document was null or empty";
    });
-

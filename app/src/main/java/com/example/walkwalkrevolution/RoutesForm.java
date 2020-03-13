@@ -216,6 +216,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 case RecyclerViewAdapterTeam.PREVIEW_DETAILS_INTENT:
                     intentFromRoutesDetails(); // Load UI as if coming from Personal Routes Page
                     intentFromTeamRoutes();
+                    saveButton.setVisibility(View.INVISIBLE);
                     Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
                     break;
                 default:
@@ -230,6 +231,8 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private void intentFromRoutesCreation(){
         stepsView.setText(steps + " s");
         distanceView.setText(distance + " mi");
+
+        creator = CloudDatabase.currentUserMember;
     }
 
     /**
@@ -477,7 +480,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                 .setOptionalFeaturesStr(toggledButtonsStr)
                 .setNotes(notes)
                 .setUserHasWalkedRoute(userHasWalkedTeamRoute)
-                .setCreator(creator)
+                .setCreator(creator == null ? CloudDatabase.currentUserMember : creator)
                 .buildRoute();
 
         return savedRoute;
@@ -643,7 +646,6 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
     private void disableEditing() {
         routeNameEditText.setEnabled(false);
         startingPEditText.setEnabled(false);
-        saveButton.setVisibility(View.INVISIBLE);
         notesButton.setVisibility(View.INVISIBLE);
 
         // Disable toggle buttons

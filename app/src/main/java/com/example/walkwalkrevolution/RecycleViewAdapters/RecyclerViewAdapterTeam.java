@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkwalkrevolution.CloudDatabase;
 import com.example.walkwalkrevolution.FireBaseMessagingService;
 import com.example.walkwalkrevolution.R;
 import com.example.walkwalkrevolution.RoutesForm;
@@ -183,6 +184,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
             holder.favoriteRoute.setBackground(mContext.getResources().getDrawable(R.drawable.routes_list_start_button_states));
         }
 
+        Log.d(TAG, "Creator Null: " + ((route.creator == null) ? "true": "false"));
         holder.icon.setText(route.creator.getInitials());
         holder.icon.getBackground().setColorFilter(route.creator.getColorVal(), PorterDuff.Mode.MULTIPLY);
 
