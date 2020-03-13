@@ -96,4 +96,10 @@ public class TeamRoutesList extends AppCompatActivity {
         startActivity(new Intent(TeamRoutesList.this, HomePage.class));
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
 }

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.walkwalkrevolution.FireBaseMessagingService;
 import com.example.walkwalkrevolution.R;
 import com.example.walkwalkrevolution.RoutesForm;
+import com.example.walkwalkrevolution.TeamRoutesListAdapter;
 import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.TreeSetManipulation;
 import com.example.walkwalkrevolution.WalkRunSession;
@@ -107,7 +108,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
                 Log.d(TAG, "Button Clicked --> onFavoriteCurrentRoute Called ");
                 Route routeSelected = routes.get(p);
                 routeSelected.toggleIsFavorited();
-
+                TeamRoutesListAdapter.userRoutes.add()
                 notifyDataSetChanged();
 
                 if(routeSelected.getIsFavorited()){
