@@ -17,7 +17,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,6 +37,7 @@ public class CloudDatabase {
     public static CollectionReference users = dataBase.collection(USERS);
     public static CollectionReference teams = dataBase.collection(TEAMS);
     public static UserDetails currentUser;
+    public static TeamMember currentUserMember;
 
     /**
      * MAKE MOCKFIRESTOREDATABASE SINGLETON CLASS
@@ -214,6 +214,9 @@ public class CloudDatabase {
                                         if (memberEmail != null && !(memberEmail).equals(currentUser.getEmail())) {
                                             TeamMember memberObj = member.toObject(TeamMember.class);
                                             TeamMemberFactory.put(memberEmail, memberObj);
+                                        }
+                                        else if(memberEmail.equals(currentUser.getEmail())) {
+                                            currentUserMember = member.toObject(TeamMember.class);
                                         }
                                     }
                                     cb.callBack();
