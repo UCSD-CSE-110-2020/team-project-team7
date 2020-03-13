@@ -392,10 +392,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         // IF: user is saving a team route, save to the cloud
         if (userHasWalkedTeamRoute) {
             // Remove the route that originally selected to start this route
-            try {
-                TeamRoutesListAdapter.userRoutes.remove(TreeSetManipulation.getSelectedRoute());
-            } catch (Exception e) {
-            }
+            TeamRoutesListAdapter.userRoutes.remove(TreeSetManipulation.getSelectedRoute());
 
             // Add the new route into userRoutes
             TeamRoutesListAdapter.userRoutes.add(savedRoute);

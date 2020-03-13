@@ -28,7 +28,7 @@ public class Route implements Comparable<Route> {
 
     // Team functionality
     public final TeamMember creator;
-    public final boolean userHasWalkedRoute;
+    public boolean userHasWalkedRoute;
 
     // Toggable instance var
     public boolean isFavorited;
@@ -61,6 +61,7 @@ public class Route implements Comparable<Route> {
     // Favoriting
     public void toggleIsFavorited() { this.isFavorited = !isFavorited; }
     public boolean getIsFavorited() { return this.isFavorited; }
+    public void setUserHasWalkedRoute() { this.userHasWalkedRoute = userHasWalkedRoute; }
 
 
     /**
