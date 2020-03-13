@@ -109,6 +109,7 @@ public class RecyclerViewAdapterTeam extends RecyclerView.Adapter<RecyclerViewAd
                 Route routeSelected = routes.get(p);
                 routeSelected.toggleIsFavorited();
 
+                
                 TeamRoutesListAdapter.userRoutes.remove(routeSelected);
                 TeamRoutesListAdapter.userRoutes.add(routeSelected);
 
