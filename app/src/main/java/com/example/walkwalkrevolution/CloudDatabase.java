@@ -260,7 +260,7 @@ public class CloudDatabase {
         // create map to add/update user document with key value pair
         Map<String, String> teamRoutesWalked = new HashMap<>();
         teamRoutesWalked.put("teamRoutesWalked", routesToStore);
-
+        currentUser.setTeamRoutesWalked(routesToStore);
         try {
             users.document(currentUser.getEmail()).set(teamRoutesWalked, SetOptions.merge());
         } catch (Exception e) {
