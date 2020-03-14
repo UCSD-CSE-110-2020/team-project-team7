@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -60,6 +62,24 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         if(MOCK_TESTING) {
             UserDetails mockCurrentUser = new UserDetails("Yoshi", "Yoshi@gmail.com");
             UserDetailsFactory.put("currentUser", mockCurrentUser);
+
+            TeamMember mockedMember = new TeamMember("Amrit Singh", "aksingh@ucsd.edu", true);
+            Route mockedRoute = Route.RouteBuilder.newInstance()
+                    .setName("Route 2")
+                    .setStartingPoint("start2")
+                    .setSteps(40)
+                    .setDistance(23.8)
+                    .setDate("3/4/20")
+                    .setDuration(4, 10)
+                    .setOptionalFeatures(null)
+                    .setOptionalFeaturesStr(null)
+                    .setNotes("notes")
+                    .setUserHasWalkedRoute(true)
+                    .setCreator(mockedMember)
+                    .buildRoute();
+            TeamMemberFactory.put("aksingh@ucsd.edu",mockedMember );
+            TeamMemberFactory.addRoute(new Pair<>("aksingh@ucsd.edu",mockedRoute));
+
         }else{
             // Initiallize firebase
             FirebaseApp.initializeApp(this);

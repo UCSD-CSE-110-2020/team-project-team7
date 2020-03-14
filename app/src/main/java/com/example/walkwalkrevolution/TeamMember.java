@@ -21,7 +21,7 @@ public class TeamMember implements Comparable<TeamMember>{
 
     TeamMember() {}
 
-    TeamMember(String name, String email, boolean pendingStatus) {
+    public TeamMember(String name, String email, boolean pendingStatus) {
         this.name = name;
         this.email = email;
         this.pendingStatus = pendingStatus;

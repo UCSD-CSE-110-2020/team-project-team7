@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -109,5 +110,4 @@ public class TeamRoutesListAdapter {
         list.add(route1);
         return list;
     }
-
 }

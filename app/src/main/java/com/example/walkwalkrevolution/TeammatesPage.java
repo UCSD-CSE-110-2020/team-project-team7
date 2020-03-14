@@ -15,9 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeammates;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.forms.AddTeammateForm;
-import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
 
@@ -25,6 +24,8 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
 
 
     private static final String TAG = "TeammatesPage";
+
+    private static boolean mockInviteGotten = false;
 
     RecyclerViewAdapterTeammates adapter;
 
@@ -89,6 +90,16 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     }
 
     private void renderLayoutForTeamInvitation(){
+        if(HomePage.MOCK_TESTING){
+            if(mockInviteGotten){
+                ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.GONE);
+            }else{
+                ((TextView) findViewById(R.id.inviteeMessage)).setText("Team Invitation from " + "Harrison Kim" +  "!");
+                ((LinearLayout) findViewById(R.id.acceptDeclineTeamInvitation)).setVisibility(View.VISIBLE);
+                mockInviteGotten = true;
+            }
+            return;
+        }
         Intent intent = this.getIntent();
         try{
             String inviterName = intent.getExtras().getString("email");
@@ -119,6 +130,12 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     }
 
     private void teamInvitationAccepted(){
+        if(HomePage.MOCK_TESTING){
+            TeamMember mockedMember = new TeamMember("Harrison Kim", "hkim@ucsd.edu", true);
+            TeamMemberFactory.put("hkim@ucsd.edu",mockedMember );
+            recreate();
+            return;
+        }
         String inviterEmail = this.getIntent().getExtras().getString("email");
         this.getIntent().removeExtra("email");
         SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
@@ -134,6 +151,10 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
     }
 
     private void teamInvitationDeclined(){
+        if(HomePage.MOCK_TESTING){
+            recreate();
+            return;
+        }
         String inviterEmail = this.getIntent().getExtras().getString("email");
         this.getIntent().removeExtra("email");
         SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
