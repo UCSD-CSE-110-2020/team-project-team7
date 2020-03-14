@@ -34,7 +34,7 @@ import java.util.List;
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     //Default set to non-testing
     public final static boolean MOCK_TESTING = true;
-    public final static boolean is_Proposed_Walk_Creator = true;
+    public final static boolean is_Proposed_Walk_Creator = false;
     private static boolean isFirstTime = true;
 
 
@@ -128,7 +128,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             // Build a GoogleSignInClient with the options specified by gso.
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         }
-        
+
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
