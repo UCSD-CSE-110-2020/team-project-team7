@@ -4,8 +4,10 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.example.walkwalkrevolution.custom_data_classes.Route;
+import com.google.firebase.firestore.auth.User;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
@@ -23,8 +25,16 @@ public class TeamRoutesListAdapter {
      * Returns a List with teamRoutes and userRoutes combined and sorted alphabetically.
      */
     public static List<Route> retrieveTeamRoutesFromCloud(){
-        // Reset static vars
-        userRoutes = CloudDatabase.getUserTeamRoutesWalked();
+
+        if(HomePage.MOCK_TESTING){
+            String json = UserDetailsFactory.get("currentUser").getTeamRoutesWalked();
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Route>>() {}.getType();
+            userRoutes = gson.fromJson(json, type);
+        }else{
+            userRoutes = CloudDatabase.getUserTeamRoutesWalked();
+        }
+
         List<Route> teamRoutes = new ArrayList<Route>();
 
         List<Pair<String,Route>> teamRoutePairs = TeamMemberFactory.getTeamRoutes();
@@ -37,6 +47,16 @@ public class TeamRoutesListAdapter {
         }
 
         return alphabetizeTeamRoutes(userRoutes, teamRoutes);
+    }
+
+    public static void saveWalkedUserRoutes(){
+        Gson gson = new Gson();
+        String json = gson.toJson(userRoutes);
+        if(HomePage.MOCK_TESTING){
+            UserDetailsFactory.get("currentUser").setTeamRoutesWalked(json);
+        }else{
+            CloudDatabase.storeUserTeamRoutesWalked(json);
+        }
     }
 
 
@@ -54,12 +74,6 @@ public class TeamRoutesListAdapter {
             treeSet.addAll(teamRoutes);
         }
         return new ArrayList<Route>(treeSet);
-    }
-
-    public static void saveWalkedUserRoutes(){
-        Gson gson = new Gson();
-        String json = gson.toJson(userRoutes);
-        CloudDatabase.storeUserTeamRoutesWalked(json);
     }
 
     private  List<Route> mockTeamRoutes(){

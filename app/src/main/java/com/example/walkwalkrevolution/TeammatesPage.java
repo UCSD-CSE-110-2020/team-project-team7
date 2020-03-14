@@ -34,13 +34,18 @@ public class TeammatesPage extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teammates_page);
 
-        // once team's routes have been fetched from db
-        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
-            @Override
-            public void callBack() {
-                initRecyclerView();
-            }
-        });
+        if(HomePage.MOCK_TESTING){
+            initRecyclerView();
+        }
+        else {
+            // once team's routes have been fetched from db
+            CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    initRecyclerView();
+                }
+            });
+        }
 
         setUp();
     }

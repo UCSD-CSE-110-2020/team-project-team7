@@ -30,13 +30,18 @@ public class TeamRoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_routes_list);
 
-        // once team's routes have been fetched from db
-        CloudDatabase.populateTeamRoutes(new CloudCallBack() {
-            @Override
-            public void callBack() {
-                initRecyclerView();
-            }
-        });
+        if(HomePage.MOCK_TESTING){
+            initRecyclerView();
+        }
+        else {
+            // once team's routes have been fetched from db
+            CloudDatabase.populateTeamRoutes(new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    initRecyclerView();
+                }
+            });
+        }
 
         Button goToPersonalRoutesPage = (Button) findViewById(R.id.goToPersonalRoutesPage);
 
@@ -100,7 +105,6 @@ public class TeamRoutesList extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
         TeamRoutesListAdapter.saveWalkedUserRoutes();
     }
 }
