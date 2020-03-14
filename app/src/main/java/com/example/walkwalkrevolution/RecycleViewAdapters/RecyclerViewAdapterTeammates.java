@@ -58,8 +58,8 @@ public class RecyclerViewAdapterTeammates extends RecyclerView.Adapter<RecyclerV
         holder.icon.getBackground().setColorFilter(teammate.getColorVal(), PorterDuff.Mode.MULTIPLY);
 
         //Invitation not yet accepted (Grayed & italicized)
-        if(!teammate.getTeamStatus()){
-            holder.parentLayout.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY );
+        if(!teammate.getPendingStatus()){
+            holder.parentLayout.getBackground().setColorFilter(Color.parseColor("#9E9E9E"), PorterDuff.Mode.MULTIPLY );
             holder.name.setTypeface(null, Typeface.ITALIC);
         }
 

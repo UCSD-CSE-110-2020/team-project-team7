@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.walkwalkrevolution.RecycleViewAdapters.RecyclerViewAdapterTeam;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +30,18 @@ public class TeamRoutesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_routes_list);
 
-        initRecyclerView();
+        if(HomePage.MOCK_TESTING){
+            initRecyclerView();
+        }
+        else {
+            // once team's routes have been fetched from db
+            CloudDatabase.populateTeamRoutes(new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    initRecyclerView();
+                }
+            });
+        }
 
         Button goToPersonalRoutesPage = (Button) findViewById(R.id.goToPersonalRoutesPage);
 
@@ -69,7 +80,7 @@ public class TeamRoutesList extends AppCompatActivity {
     }
 
     private List<Route> getTeamRoutes(){
-        return TeamRoutesListAdapter.retrieveTeammatesFromCloud();
+        return TeamRoutesListAdapter.retrieveTeamRoutesFromCloud();
     }
 
     /**
@@ -89,5 +100,11 @@ public class TeamRoutesList extends AppCompatActivity {
         Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
         startActivity(new Intent(TeamRoutesList.this, HomePage.class));
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        TeamRoutesListAdapter.saveWalkedUserRoutes();
     }
 }

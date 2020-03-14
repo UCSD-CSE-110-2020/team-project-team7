@@ -5,7 +5,7 @@ import java.util.Comparator;
 /**
  * Comparator used for TreeSetManipulation.java - compares Routes in TreeSet by their names.
  */
-class TreeSetComparator implements Comparator<String> {
+public class TreeSetComparator implements Comparator<String> {
 
 //    /**
 //     * Mantains alphabetical order. Capitilized routes rank higher than non-captilized ones with same name.

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:context=".ProposedWalkDetailsPage">
+
+        <RelativeLayout
+            android:id="@+id/walkInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:background="@drawable/proposed_walk_details_border"
+            >
+            <Button
+                android:id="@+id/creatorIcon"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:text="AS"
+                android:background="@drawable/teammate_icon"
+                />
+            <LinearLayout
+                android:id="@+id/linearLayoutInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:layout_toRightOf="@+id/creatorIcon"
+
+                android:gravity="start"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/walkName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Route: Grizzy Road"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/walkDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Date: 1/1/2020"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/walkTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Time: 2:40PM"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/walkLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Location: Disney Avenue"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTeammates"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:layout_below="@+id/walkInformation"
+            android:background="@drawable/proposed_walk_details_border"
+            android:layout_width="match_parent"
+            android:layout_height="400dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonsLayout"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/recyclerViewTeammates"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/scheduleWalkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/routes_list_start_button_states"
+                android:layout_weight="1"
+                android:text="Schedule Walk" />
+
+            <Button
+                android:id="@+id/withdrawWalkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/routes_list_start_button_states"
+                android:layout_weight="1"
+                android:text="Withdraw Walk" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

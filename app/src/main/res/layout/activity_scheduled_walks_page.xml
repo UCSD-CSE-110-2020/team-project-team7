@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScheduledWalksPage">
+
+    <Button
+        android:id="@+id/goToHomePage2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/routes_list_start_button_states"
+        android:drawableLeft="@drawable/icons8_home_24"
+        android:text="Home" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/proposedWalkHeaderText"
+        android:fontFamily="casual"
+        android:text="Proposed Walks"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000000"
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/proposedWalk"
+        android:background="@drawable/route_item_states"
+        android:layout_below="@+id/proposedWalkHeaderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/teammateIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="AS"
+            android:background="@drawable/teammate_icon"
+            />
+
+        <TextView
+            android:id="@+id/proposedWalkName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toRightOf="@id/teammateIcon"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:text="Grizzly Road"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

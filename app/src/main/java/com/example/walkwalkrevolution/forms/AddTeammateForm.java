@@ -1,8 +1,9 @@
-package com.example.walkwalkrevolution;
+package com.example.walkwalkrevolution.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -10,13 +11,21 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walkwalkrevolution.CloudDatabase;
+import com.example.walkwalkrevolution.HomePage;
+import com.example.walkwalkrevolution.R;
+import com.example.walkwalkrevolution.TeamMember;
+import com.example.walkwalkrevolution.TeamMemberFactory;
+import com.example.walkwalkrevolution.custom_data_classes.Route;
+
+
 /**
  * Activity for allowing user to add new teammates.
  */
-public class AddTeammate extends AppCompatActivity {
+public class AddTeammateForm extends AppCompatActivity {
 
     // Constant for logging
-    private static final String TAG = "AddTeammate";
+    private static final String TAG = "AddTeammateForm";
 
     // Activity objects
     private Button saveButton;
@@ -61,11 +70,28 @@ public class AddTeammate extends AppCompatActivity {
             return;
         }
 
-        // TODO, ERROR CHECKING, CHECK IF NAME/EMAIL IS VALID
+        if(HomePage.MOCK_TESTING){
+            TeamMember mockedMember = new TeamMember("Titan Ngo", "ttngo@ucsd.edu", false);
+            Route mockedRoute = Route.RouteBuilder.newInstance()
+                    .setName("Route 1")
+                    .setStartingPoint("start1")
+                    .setSteps(100)
+                    .setDistance(18.9)
+                    .setDate("3/4/20")
+                    .setDuration(2, 21)
+                    .setOptionalFeatures(null)
+                    .setOptionalFeaturesStr(null)
+                    .setNotes("notes")
+                    .setUserHasWalkedRoute(false)
+                    .setCreator(mockedMember)
+                    .buildRoute();
+            TeamMemberFactory.put(emailEditText.getText().toString(),mockedMember );
+            TeamMemberFactory.addRoute(new Pair<>(emailEditText.getText().toString(),mockedRoute));
 
-        // TODO, Amrit says to upload teammate to the cloud, not pass as an intent extra,
-        // she will be rendering Team page based on whats in the cloud
-
+        }else{
+            // she will be rendering Team page based on whats in the cloud
+            CloudDatabase.inviteToTeam(emailEditText.getText().toString());
+        }
 
         Log.d(TAG, "Teammate saved.");
         finish();

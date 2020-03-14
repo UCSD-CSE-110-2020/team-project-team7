@@ -6,10 +6,82 @@
     android:layout_height="match_parent"
     tools:context=".TeammatesPage">
 
+    <LinearLayout
+        android:id="@+id/acceptDeclineTeamInvitation"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/proposed_walk_details_border"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/inviteeMessage"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:padding="10dp"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            android:text="Team Invitation from Yoshi Russel!"
+            android:drawableTint="@android:color/holo_red_light"
+            android:drawableLeft="@android:drawable/ic_dialog_email"
+            android:drawablePadding="15dp"
+        />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/acceptTeamInvitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#2196F3"
+                android:layout_marginEnd="10dp"
+                android:foregroundGravity="clip_horizontal"
+                android:layout_weight="1"
+                android:text="ACCEPT" />
+
+            <Button
+                android:id="@+id/declineTeamInvitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#2196F3"
+                android:foregroundGravity="clip_horizontal"
+                android:layout_weight="1"
+                android:text="DECLINE" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/acceptDeclineTeamInvitation"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/teammatesHeader"
+        android:textColor="#000000"
+        android:fontFamily="casual"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Teammates"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTeammates"
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/teammatesHeader"
+        />
 
     <Button
         android:id="@+id/addTeammateButton"
