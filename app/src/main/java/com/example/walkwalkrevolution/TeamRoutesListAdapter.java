@@ -28,10 +28,7 @@ public class TeamRoutesListAdapter {
     public static List<Route> retrieveTeamRoutesFromCloud(){
 
         if(HomePage.MOCK_TESTING){
-            String json = UserDetailsFactory.get("currentUser").getTeamRoutesWalked();
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Route>>() {}.getType();
-            userRoutes = gson.fromJson(json, type);
+            userRoutes = new ArrayList<Route>();
         }else{
             userRoutes = CloudDatabase.getUserTeamRoutesWalked();
         }

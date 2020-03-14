@@ -33,8 +33,8 @@ import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     //Default set to non-testing
-    public final static boolean MOCK_TESTING = false;
-    public final static boolean is_Proposed_Walk_Creator = false;
+    public final static boolean MOCK_TESTING = true;
+    public final static boolean is_Proposed_Walk_Creator = true;
     private static boolean isFirstTime = true;
 
 
@@ -107,12 +107,14 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             TeamMemberFactory.addRoute(new Pair<>("aksingh@ucsd.edu",mockedRoute2));
 
             ProposedWalk mock = null;
-            if(HomePage.is_Proposed_Walk_Creator){
+            if(!HomePage.is_Proposed_Walk_Creator){
                 TeamMember creatorMock = TeamMemberFactory.get("aksingh@ucsd.edu");
+                Log.d(TAG, "Teammember null: " + (creatorMock == null));
                 mock = new ProposedWalk("Ash Road", "03/13/2020", "12:00 PM", creatorMock);
             }else{
-                TeamMember creatorMock = TeamMemberFactory.get("Yoshi@gmail.com");
-                mock = new ProposedWalk("Ash Road", "03/13/2020", "12:00 PM", creatorMock);
+                UserDetails user = UserDetailsFactory.get("currentUser");
+                Log.d(TAG, "user null: " + (user == null));
+                mock = new ProposedWalk("Ash Road", "03/13/2020", "12:00 PM", new TeamMember(user.getName(), user.getEmail(), true));
             }
             TeamMemberFactory.setProposedWalk(mock);
 
@@ -206,7 +208,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onStop();
 
         // stop async task
-        sc.cancel(true);
+        if (!HomePage.MOCK_TESTING) {
+            sc.cancel(true);
+        }
     }
 
     @Override

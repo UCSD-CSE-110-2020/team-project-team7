@@ -54,11 +54,14 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
             Log.d(TAG, "Received a Route from the Routes Form with the name: " + routeName);
         }
 
-        // Start the fetcher intent service
-        Intent intent = new Intent(SendProposedWalk.this, ProposedWalkFetcherService.class);
-        startService(intent);
+        if (!HomePage.MOCK_TESTING) {
+            // Start the fetcher intent service
+            Intent intent = new Intent(SendProposedWalk.this, ProposedWalkFetcherService.class);
+            startService(intent);
 
-        ProposedWalkObservable.register(this);
+            ProposedWalkObservable.register(this);
+        }
+
     }
 
 
@@ -94,11 +97,14 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
     protected void onStop(){
         super.onStop();
 
-        // Stop the fetcher intent service
-        Intent intent = new Intent(SendProposedWalk.this, ProposedWalkFetcherService.class);
-        stopService(intent);
+        if (!HomePage.MOCK_TESTING) {
+            // Stop the fetcher intent service
+            Intent intent = new Intent(SendProposedWalk.this, ProposedWalkFetcherService.class);
+            stopService(intent);
 
-        ProposedWalkObservable.removeObserver(this);
+            ProposedWalkObservable.removeObserver(this);
+        }
+
     }
 
 
@@ -113,6 +119,7 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
             Intent intent = new Intent(this, TeammatesPage.class);
             startActivity(intent);
             finish();
+            return;
         }
 
         // Check if a proposed walk was already made, this happens if someone else made a proposed

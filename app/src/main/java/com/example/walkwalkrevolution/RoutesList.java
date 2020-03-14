@@ -35,7 +35,7 @@ public class RoutesList extends AppCompatActivity {
         setContentView(R.layout.activity_routes_list);
 
         if (HomePage.MOCK_TESTING) {
-
+            initRecyclerView();
         } else {
             // Once current user's routes are fetched from database
             CloudDatabase.populateUserRoutes(new CloudCallBack() {
@@ -114,7 +114,9 @@ public class RoutesList extends AppCompatActivity {
      */
     private void saveRoutes() {
         Log.d(TAG, "All Routes from Recycler Saved to SharedPreferences");
-
+        if(HomePage.MOCK_TESTING){
+            return;
+        }
 
         SharedPreferences prefs = getSharedPreferences(TreeSetManipulation.SHARED_PREFS_TREE_SET, MODE_PRIVATE);
         TreeSetManipulation.saveTreeSet(prefs, adapter.routes);
@@ -148,7 +150,7 @@ public class RoutesList extends AppCompatActivity {
     private List<Route> mockTreeSet() {
         ArrayList<Route> routeList = new ArrayList<Route>();
 
-        UserDetails user = UserDetailsFactory.get("Yoshi@gmail.com");
+        UserDetails user = UserDetailsFactory.get("currentUser");
 
         routeList.add(Route.RouteBuilder.newInstance()
                 .setName("Canyon Hike")

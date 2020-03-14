@@ -382,9 +382,9 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
             // Start the fetcher intent service
             Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
             startService(intent);
-            updateProposeWalkButton();
         }
 
+        updateProposeWalkButton();
         intentIsFromTeamRoutes = true; // For displaying the ProposedWalkButton
     }
 
@@ -631,6 +631,15 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
      * Updates the proposeWalkButton UI based on the instance var proposedWalk.
      */
     private void updateProposeWalkButton() {
+        if (MOCK_TESTING) {
+            proposeWalkButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    openSendProposedWalkActivity(v);
+                }
+            });
+            return;
+        }
+
         // No proposed walk exists, the button is enabled
         if (this.proposedWalk == null) {
             proposeWalkButton.setOnClickListener(new View.OnClickListener() {

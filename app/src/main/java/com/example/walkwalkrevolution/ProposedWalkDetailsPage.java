@@ -133,7 +133,20 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
             this.proposedWalk = TeamMemberFactory.getProposedWalk();
             UserDetails user = UserDetailsFactory.get("currentUser");
             this.currentUser = new TeamMember( user.getEmail(), user.getName(), true);
+            Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
+            this.teammates = new ArrayList<>();
+            teammates.addAll(map.values());
 
+            if(HomePage.is_Proposed_Walk_Creator){
+                TeamMember thisIsCreator = null;
+                for(TeamMember member: teammates){
+                    if(member.getEmail().equals(proposedWalk.getCreator().getEmail())){
+                        Log.d(TAG, "Remove member " +  member.getName());
+                        thisIsCreator = member;
+                    }
+                }
+                teammates.remove(thisIsCreator);
+            }
         }else{
             this.proposedWalk = ProposedWalkObservable.getProposedWalk();
             this.currentUser = CloudDatabase.currentUserMember;
@@ -162,6 +175,21 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void renderUserLayout(){
         //creator of walk
+        if(HomePage.MOCK_TESTING){
+            if(HomePage.is_Proposed_Walk_Creator){
+                ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.INVISIBLE);
+                ((LinearLayout) findViewById(R.id.buttonsLayoutCreator)).setVisibility(View.VISIBLE);
+
+                if(proposedWalk.getIsScheduled()){
+                    ((Button) findViewById(R.id.scheduleWalkButton)).setVisibility(View.INVISIBLE);
+                }
+            }
+            else{
+                ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.VISIBLE);
+                ((LinearLayout) findViewById(R.id.buttonsLayoutCreator)).setVisibility(View.INVISIBLE);
+            }
+            return;
+        }
         if(proposedWalk.getCreator().getEmail().equals(currentUser.getEmail())){
             ((LinearLayout) findViewById(R.id.buttonsLayoutUser)).setVisibility(View.INVISIBLE);
             ((LinearLayout) findViewById(R.id.buttonsLayoutCreator)).setVisibility(View.VISIBLE);
