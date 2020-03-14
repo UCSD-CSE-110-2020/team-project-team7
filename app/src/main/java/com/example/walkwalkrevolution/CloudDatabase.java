@@ -289,9 +289,13 @@ public class CloudDatabase {
      */
     public static void storeTeamProposedWalk(ProposedWalk proposedWalk) {
 
-        String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
         Map<String, String> newWalkDetails = new HashMap<>();
-        newWalkDetails.put("current proposed walk", proposedWalkJSON);
+        if(proposedWalk == null) {
+            newWalkDetails.put("current proposed walk", "");
+        } else {
+            String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
+            newWalkDetails.put("current proposed walk", proposedWalkJSON);
+        }
         teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
         // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
 //        Map<String, String> notify = new HashMap<>();
