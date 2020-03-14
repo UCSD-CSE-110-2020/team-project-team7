@@ -33,8 +33,8 @@ import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     //Default set to non-testing
-    public final static boolean MOCK_TESTING = true;
-    public final static boolean is_Proposed_Walk_Creator = true;
+    public static boolean MOCK_TESTING = true;
+    public static boolean is_Proposed_Walk_Creator = true;
     private static boolean isFirstTime = true;
 
 
@@ -60,6 +60,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
+
+        if(isFirstTime){
+            Log.d("Welcome", "LoginPage");
+            Boolean value = this.getIntent().getBooleanExtra("testService",true);
+            Boolean creator = this.getIntent().getBooleanExtra("creator", true);
+            MOCK_TESTING = value;
+            is_Proposed_Walk_Creator = creator;
+
+        }
 
         //TODO - MOCK TESTING DONE HERE FOR CURRENT USER
         if(MOCK_TESTING) {
@@ -120,6 +129,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         }else{
             // Initiallize firebase
+            Log.d("Firebase", "Firebase");
             FirebaseApp.initializeApp(this);
 
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -146,6 +156,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Check from String extra if a test FitnessService is being passed
         fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        fitnessServiceKey = "TEST_SERVICE";
         if(fitnessServiceKey == null) {
             fitnessServiceKey = "GOOGLE_FIT";
             testStep = false;
@@ -288,6 +299,9 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     protected void onDestroy() {
         Log.d("HOMEPAGE ON DESTROY", "being destroy");
         super.onDestroy();
+        if(HomePage.MOCK_TESTING){
+            return;
+        }
         if(!sc.isCancelled()) {
             sc.cancel(true);
         }
