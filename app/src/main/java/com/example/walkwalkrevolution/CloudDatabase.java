@@ -184,12 +184,13 @@ public class CloudDatabase {
                                 if (snapshot.exists()) {
                                     if (snapshot != null) {
                                         String proposedWalkJSON = (String) snapshot.get("current proposed walk");
-                                        if (proposedWalkJSON != null) {
+                                        if (proposedWalkJSON != "") {
                                             ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
                                             TeamMemberFactory.setProposedWalk(pw);
                                             cb.callBack();
                                         } else {
                                             Log.d(TAG, "team has no proposed walk");
+                                            TeamMemberFactory.setProposedWalk(null);
                                         }
                                     } else {
                                         Log.d(TAG, "failed to get snapshot of the current proposed walk");
