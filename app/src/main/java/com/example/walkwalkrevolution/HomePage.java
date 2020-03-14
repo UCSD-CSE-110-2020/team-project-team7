@@ -54,22 +54,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
         //launchFirstSession();
 
-        // Initiallize firebase
-        FirebaseApp.initializeApp(this);
-        //subscribeToNotificationsTopic();
-
-        // --------------- [START] GOOGLE SIGN IN --------------- //
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // --------------- [END]   GOOGLE SIGN IN --------------- //
-
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -141,6 +125,17 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 launchTeammatesPage();
             }
         });
+
+        // Initiallize firebase
+        FirebaseApp.initializeApp(this);
+
+        // --------------- [START] GOOGLE SIGN IN --------------- //
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // --------------- [END]   GOOGLE SIGN IN --------------- //
     }
 
     @Override

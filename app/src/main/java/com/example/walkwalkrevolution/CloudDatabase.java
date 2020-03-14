@@ -78,7 +78,6 @@ public class CloudDatabase {
                                 // create userDetails object and put into factory for fast local access
                                 currentUser = document.toObject(UserDetails.class);
                                 currentUserMember = new TeamMember(currentUser.getName(), currentUser.getEmail(), true);
-                                UserDetailsFactory.put(currentUserEmail, currentUser);
                                 cb.callBack();
                             } else {
                                 Log.d(TAG, "user doesn't exist");
@@ -173,7 +172,7 @@ public class CloudDatabase {
      */
     public static void populateTeamProposedWalk(CloudCallBack cb) {
         if(currentUser.getTeam().equals("")) {
-            Log.d(TAG, "user has no proposed walk");
+            Log.d(TAG, "user has no proposed walk because they are not on a team!");
         } else {
             teams.document(currentUser.getTeam()).get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -184,7 +183,7 @@ public class CloudDatabase {
                                 if (snapshot.exists()) {
                                     if (snapshot != null) {
                                         String proposedWalkJSON = (String) snapshot.get("current proposed walk");
-                                        if (proposedWalkJSON != "") {
+                                        if (!proposedWalkJSON.equals("")) {
                                             ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
                                             TeamMemberFactory.setProposedWalk(pw);
                                             cb.callBack();
@@ -213,7 +212,6 @@ public class CloudDatabase {
      */
     public static void populateTeamMateFactory(CloudCallBack cb) {
 
-        //populateTeamProposedWalk();
         TeamMemberFactory.resetMembers();
         if(!currentUser.getTeam().equals("")) {
             teams.document(currentUser.getTeam()).collection(MEMBERS).get()
