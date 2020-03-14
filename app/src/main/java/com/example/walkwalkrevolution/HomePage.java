@@ -386,15 +386,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                             }
                     );
 
-//        FirebaseMessaging.getInstance().subscribeToTopic("topic2")
-//                .addOnCompleteListener(task -> {
-//                            String msg = "Notif2 subbed!";
-//                            if (!task.isSuccessful()) {
-//                                msg = "Notif2 failed :(";
-//                            }
-//                            Log.d("Sub_Message", msg);
-//                        }
-//                );
+        FirebaseMessaging.getInstance().subscribeToTopic("topic2")
+                .addOnCompleteListener(task -> {
+                            String msg = "Notif2 subbed!";
+                            if (!task.isSuccessful()) {
+                                msg = "Notif2 failed :(";
+                            }
+                            Log.d("Sub_Message", msg);
+                        }
+                );
     }
     public void checkNotif(){
         Intent intent = getIntent();

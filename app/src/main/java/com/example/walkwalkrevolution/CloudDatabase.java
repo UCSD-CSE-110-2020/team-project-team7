@@ -291,27 +291,29 @@ public class CloudDatabase {
     public static void storeTeamProposedWalk(ProposedWalk proposedWalk) {
 
         Map<String, String> newWalkDetails = new HashMap<>();
+        Map<String, String> notify = new HashMap<>();
         if(proposedWalk == null) {
             newWalkDetails.put("current proposed walk", "");
+            Log.d("notification for withdraw","withdraw");
+            notify.put("notify", "withdrawn");
+
         } else {
             String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
             newWalkDetails.put("current proposed walk", proposedWalkJSON);
+            if(proposedWalk.getIsScheduled()) {
+                Log.d("notification for schedule", "scheduled");
+                notify.put("notify", "scheduled");
+            } else {
+                Log.d("notification for proposedWalk made", "proposed");
+                notify.put("notify", "proposed");
+            }
         }
         teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
+
         // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
-//        Map<String, String> notify = new HashMap<>();
-//        Log.d("Team_Notif", proposedWalkJSON);
-//        if(proposedWalkJSON.equals("null")) {
-//            Log.d("Team_Notif","WITHDRAWN");
-//            notify.put("notify2", "withdrawn");
-//        } else {
-//            Log.d("Team_Notif","SCHEDULED");
-//            notify.put("notify2", "scheduled");
-//        }
-//
-//        topic.document("topic2")
-//                .collection("messages2")
-//                .document("messages2").set(notify, SetOptions.merge());
+        topic.document("topic2")
+                .collection("messages2")
+                .document("messages2").set(notify, SetOptions.merge());
     }
 
     /**
