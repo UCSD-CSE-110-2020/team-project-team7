@@ -33,8 +33,8 @@ import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     //Default set to non-testing
-    public static boolean MOCK_TESTING = true;
-    public static boolean is_Proposed_Walk_Creator = true;
+    public static boolean MOCK_TESTING = false;
+    public static boolean is_Proposed_Walk_Creator = false;
     private static boolean isFirstTime = true;
 
 
@@ -63,11 +63,10 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         if(isFirstTime){
             Log.d("Welcome", "LoginPage");
-            Boolean value = this.getIntent().getBooleanExtra("testService",true);
-            Boolean creator = this.getIntent().getBooleanExtra("creator", true);
+            Boolean value = this.getIntent().getBooleanExtra("testService",false);
+            Boolean creator = this.getIntent().getBooleanExtra("creator", false);
             MOCK_TESTING = value;
             is_Proposed_Walk_Creator = creator;
-
         }
 
         //TODO - MOCK TESTING DONE HERE FOR CURRENT USER
@@ -156,7 +155,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         // Check from String extra if a test FitnessService is being passed
         fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-        fitnessServiceKey = "TEST_SERVICE";
+        //fitnessServiceKey = "TEST_SERVICE";
         if(fitnessServiceKey == null) {
             fitnessServiceKey = "GOOGLE_FIT";
             testStep = false;

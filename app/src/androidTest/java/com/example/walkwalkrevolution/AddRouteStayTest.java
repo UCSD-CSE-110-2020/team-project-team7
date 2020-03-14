@@ -11,12 +11,12 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddingTeamMateTest {
+public class AddRouteStayTest {
 
     @Rule
     public ActivityTestRule<HomePage> mActivityTestRule = new ActivityTestRule<>(HomePage.class);
 
     @Test
-    public void addingTeamMateTest1() {
+    public void addRouteStayTest() {
     }
 }
