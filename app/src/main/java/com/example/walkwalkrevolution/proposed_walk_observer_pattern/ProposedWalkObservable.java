@@ -34,6 +34,8 @@ public  class ProposedWalkObservable extends Observable {
      */
     public static void fetchProposedWalk(CloudCallBack cb) {
         // Fetch the proposed walk
+        Log.d(TAG, "calling Cloud database populate team proposed walk...");
+
         CloudDatabase.populateTeamProposedWalk(new CloudCallBack() {
             @Override
             public void callBack() {

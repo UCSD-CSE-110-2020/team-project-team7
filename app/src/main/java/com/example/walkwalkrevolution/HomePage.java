@@ -52,7 +52,6 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
-        //launchFirstSession();
 
         // Initiallize firebase
         FirebaseApp.initializeApp(this);
@@ -172,8 +171,8 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 @Override
                 public void callBack() {
                     subscribeToNotificationsTopic();
-                    SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-                    firstLogin(settings);
+                    evokeFirstLogin();
+                    Log.d("FIRST LOGIN", "CALLED FIRST LOGIN");
                 }
             });
         }
@@ -453,6 +452,14 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         }
     }
 
+
+    /**
+     * Helper method to evoke first login if necessary
+     */
+    private void evokeFirstLogin() {
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        firstLogin(settings);
+    }
 }
 
 
