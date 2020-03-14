@@ -29,6 +29,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
+    //Default set to non-testing
+    public final static boolean MOCK_TESTING = false;
 
     public static final int RC_SIGN_IN = 55;
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -54,21 +56,20 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
         Log.d("HOMEPAGE ONCREATE", "creating homepage");
         //launchFirstSession();
 
-        // Initiallize firebase
-        FirebaseApp.initializeApp(this);
-        //subscribeToNotificationsTopic();
+        //TODO - MOCK TESTING DONE HERE FOR CURRENT USER
+        if(MOCK_TESTING) {
+            UserDetails mockCurrentUser = new UserDetails("Yoshi", "Yoshi@gmail.com");
+            UserDetailsFactory.put("currentUser", mockCurrentUser);
+        }else{
+            // Initiallize firebase
+            FirebaseApp.initializeApp(this);
 
-        // --------------- [START] GOOGLE SIGN IN --------------- //
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // --------------- [END]   GOOGLE SIGN IN --------------- //
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            // Build a GoogleSignInClient with the options specified by gso.
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        }
 
 
         // retrieve height;
@@ -156,6 +157,13 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     protected void onStart() {
         Log.d("HOMEPAGE ON START", "start called");
         super.onStart();
+
+        if(MOCK_TESTING){
+            UserDetails currUser = UserDetailsFactory.get("currentUser");
+            SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
+            CurrentUserLocalStorage.firstTimeLogin(sharedPreferences, currUser.getName(), currUser.getEmail());
+            return;
+        }
 
         // --------------- [START] GOOGLE SIGNIN --------------- //
         currentUser = GoogleSignIn.getLastSignedInAccount(this);
@@ -247,6 +255,13 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
      * currentUser now holds user's email, uid
      */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        //TODO - MOCK TESTING DONE HERE FOR USER SIGN IN
+        if(MOCK_TESTING){
+            UserDetails currUser = UserDetailsFactory.get("currentUser");
+            SharedPreferences sharedPreferences = getSharedPreferences(CurrentUserLocalStorage.SHARED_PREFS_CURRENT_USER_INFO, MODE_PRIVATE);
+            CurrentUserLocalStorage.firstTimeLogin(sharedPreferences, currUser.getName(), currUser.getEmail());
+            return;
+        }
         try {
             currentUser = completedTask.getResult(ApiException.class);
 

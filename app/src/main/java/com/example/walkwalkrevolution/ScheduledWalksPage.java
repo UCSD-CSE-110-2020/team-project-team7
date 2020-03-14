@@ -47,6 +47,7 @@ public class ScheduledWalksPage extends AppCompatActivity {
     private void setUp(){
         //Proposed walk = ProposedWalk.getProposedWalk(); TODO
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.proposedWalk);
+        TextView header = (TextView)  findViewById(R.id.proposedWalkHeaderText);
         ProposedWalk walk = ProposedWalkObservable.getProposedWalk();
         //ProposedWalk walk = new ProposedWalk("Grizzly Road", "04/17/2000", "9:00PM", new TeamMember("Amrit Singh", "aksingh@ucsd.edu", false));
 
@@ -59,6 +60,7 @@ public class ScheduledWalksPage extends AppCompatActivity {
 
         if(walk.getIsScheduled()){
             layout.getBackground().setColorFilter(Color.parseColor("#FFC400"), PorterDuff.Mode.MULTIPLY);
+            header.setText("Scheduled Walks");
         }
         else{
             layout.getBackground().setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.MULTIPLY);
