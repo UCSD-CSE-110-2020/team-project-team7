@@ -118,39 +118,39 @@ exports.teamUpdate = functions.firestore
      return "document was null or empty";
    });
 
-//
-//exports.proposedWalk = functions.firestore
-//   .document('topic/topic2/messages2/{message}')
-//   .onUpdate((change, context) => {
-//     // Get an object with the current document value.
-//     // If the document does not exist, it has been deleted.
-//     const document = change.after.exists ? change.after.data() : null;
-//
-//     if (document) {
-//
-//       var message = {
-//         notification: {
-//           title: 'the creator has ' + document.notify2 + ' the walk',
-//           body: 'check the scheduled walks page for more details'
-//         },
-//         data:{
-//            act: 'proposed_details'
-//         },
-//         topic: context.params.topic2
-//       };
-//
-//       return admin.messaging().send(message)
-//         .then((response) => {
-//           // Response is a message ID string.
-//           console.log('team propose has been sent! ' + document.notify2, response);
-//           return response;
-//         })
-//         .catch((error) => {
-//           console.log('team propose has an uh oh', error);
-//           return error;
-//         });
-//     }
-//
-//     return "document was null or empty";
-//   });
+
+exports.proposedWalk = functions.firestore
+   .document('topic/{topicId}/messages2/{message}')
+   .onWrite((change, context) => {
+     // Get an object with the current document value.
+     // If the document does not exist, it has been deleted.
+     const document = change.after.exists ? change.after.data() : null;
+
+     if (document) {
+
+       var message = {
+         notification: {
+           title: 'the creator has ' + document.notify + ' the walk',
+           body: 'check the scheduled walks page for more details'
+         },
+         data:{
+            act: 'proposed_details'
+         },
+         topic: context.params.topicId
+       };
+
+       return admin.messaging().send(message)
+         .then((response) => {
+           // Response is a message ID string.
+           console.log('team propose has been sent! ' + document.notify, response);
+           return response;
+         })
+         .catch((error) => {
+           console.log('team propose has an uh oh', error);
+           return error;
+         });
+     }
+
+     return "document was null or empty";
+   });
 

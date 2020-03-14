@@ -128,7 +128,7 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
             // Build a GoogleSignInClient with the options specified by gso.
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         }
-
+        
 
         // retrieve height;
         final SharedPreferences getHeight = getSharedPreferences("height", 0);
@@ -200,6 +200,17 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                 launchTeammatesPage();
             }
         });
+
+        // Initiallize firebase
+        FirebaseApp.initializeApp(this);
+
+        // --------------- [START] GOOGLE SIGN IN --------------- //
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // --------------- [END]   GOOGLE SIGN IN --------------- //
     }
 
     @Override
@@ -467,15 +478,15 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                             }
                     );
 
-//        FirebaseMessaging.getInstance().subscribeToTopic("topic2")
-//                .addOnCompleteListener(task -> {
-//                            String msg = "Notif2 subbed!";
-//                            if (!task.isSuccessful()) {
-//                                msg = "Notif2 failed :(";
-//                            }
-//                            Log.d("Sub_Message", msg);
-//                        }
-//                );
+        FirebaseMessaging.getInstance().subscribeToTopic("topic2")
+                .addOnCompleteListener(task -> {
+                            String msg = "Notif2 subbed!";
+                            if (!task.isSuccessful()) {
+                                msg = "Notif2 failed :(";
+                            }
+                            Log.d("Sub_Message", msg);
+                        }
+                );
     }
     public void checkNotif(){
         Intent intent = getIntent();

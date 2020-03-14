@@ -78,7 +78,6 @@ public class CloudDatabase {
                                 // create userDetails object and put into factory for fast local access
                                 currentUser = document.toObject(UserDetails.class);
                                 currentUserMember = new TeamMember(currentUser.getName(), currentUser.getEmail(), true);
-                                UserDetailsFactory.put(currentUserEmail, currentUser);
                                 cb.callBack();
                             } else {
                                 Log.d(TAG, "user doesn't exist");
@@ -173,7 +172,7 @@ public class CloudDatabase {
      */
     public static void populateTeamProposedWalk(CloudCallBack cb) {
         if(currentUser.getTeam().equals("")) {
-            Log.d(TAG, "user has no proposed walk");
+            Log.d(TAG, "user has no proposed walk because they are not on a team!");
         } else {
             teams.document(currentUser.getTeam()).get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -184,11 +183,12 @@ public class CloudDatabase {
                                 if (snapshot.exists()) {
                                     if (snapshot != null) {
                                         String proposedWalkJSON = (String) snapshot.get("current proposed walk");
-                                        if (proposedWalkJSON != null) {
+                                        if (!proposedWalkJSON.equals("")) {
                                             ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
                                             TeamMemberFactory.setProposedWalk(pw);
                                         } else {
                                             Log.d(TAG, "team has no proposed walk");
+                                            TeamMemberFactory.setProposedWalk(null);
                                         }
                                     } else {
                                         Log.d(TAG, "failed to get snapshot of the current proposed walk");
@@ -214,7 +214,6 @@ public class CloudDatabase {
      */
     public static void populateTeamMateFactory(CloudCallBack cb) {
 
-        //populateTeamProposedWalk();
         TeamMemberFactory.resetMembers();
         if(!currentUser.getTeam().equals("")) {
             teams.document(currentUser.getTeam()).collection(MEMBERS).get()
@@ -291,24 +290,30 @@ public class CloudDatabase {
      */
     public static void storeTeamProposedWalk(ProposedWalk proposedWalk) {
 
-        String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
         Map<String, String> newWalkDetails = new HashMap<>();
-        newWalkDetails.put("current proposed walk", proposedWalkJSON);
+        Map<String, String> notify = new HashMap<>();
+        if(proposedWalk == null) {
+            newWalkDetails.put("current proposed walk", "");
+            Log.d("notification for withdraw","withdraw");
+            notify.put("notify", "withdrawn");
+
+        } else {
+            String proposedWalkJSON = ProposedWalkJsonConverter.convertWalkToJson(proposedWalk);
+            newWalkDetails.put("current proposed walk", proposedWalkJSON);
+            if(proposedWalk.getIsScheduled()) {
+                Log.d("notification for schedule", "scheduled");
+                notify.put("notify", "scheduled");
+            } else {
+                Log.d("notification for proposedWalk made", "proposed");
+                notify.put("notify", "proposed");
+            }
+        }
         teams.document(currentUser.getTeam()).set(newWalkDetails, SetOptions.merge());
+
         // TODO TRIGGER CLOUD FUNCTION TO NOTIFY ALL TEAMMEMBERS
-//        Map<String, String> notify = new HashMap<>();
-//        Log.d("Team_Notif", proposedWalkJSON);
-//        if(proposedWalkJSON.equals("null")) {
-//            Log.d("Team_Notif","WITHDRAWN");
-//            notify.put("notify2", "withdrawn");
-//        } else {
-//            Log.d("Team_Notif","SCHEDULED");
-//            notify.put("notify2", "scheduled");
-//        }
-//
-//        topic.document("topic2")
-//                .collection("messages2")
-//                .document("messages2").set(notify, SetOptions.merge());
+        topic.document("topic2")
+                .collection("messages2")
+                .document("messages2").set(notify, SetOptions.merge());
     }
 
     /**
