@@ -40,7 +40,14 @@ public class ScheduledWalksPage extends AppCompatActivity {
             }
         });
 
+        Button goToHomePage = (Button) findViewById(R.id.goToHomePage2);
 
+        goToHomePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                redirectToHomePage();
+            }
+        });
         //setUp();
     }
 
@@ -88,5 +95,14 @@ public class ScheduledWalksPage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(ScheduledWalksPage.this, TeammatesPage.class));
+    }
+
+    /**
+     * Home button clicked, so redirects to HomePage. Saves routes before switching pages.
+     */
+    private void redirectToHomePage(){
+        Log.d(TAG, "HomeButton Clicked --> Going to HomePage");
+        startActivity(new Intent(ScheduledWalksPage.this, HomePage.class));
+        finish();
     }
 }
