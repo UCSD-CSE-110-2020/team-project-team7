@@ -32,13 +32,17 @@ public class ScheduledWalksPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduled_walks_page);
 
-        ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
-            @Override
-            public void callBack() {
-                setUp();
-                Log.d(TAG, "Called setup");
-            }
-        });
+        if(HomePage.MOCK_TESTING){
+            setUp();
+        }else{
+            ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    setUp();
+                    Log.d(TAG, "Called setup");
+                }
+            });
+        }
 
         Button goToHomePage = (Button) findViewById(R.id.goToHomePage2);
 
@@ -55,7 +59,7 @@ public class ScheduledWalksPage extends AppCompatActivity {
         //Proposed walk = ProposedWalk.getProposedWalk(); TODO
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.proposedWalk);
         TextView header = (TextView)  findViewById(R.id.proposedWalkHeaderText);
-        ProposedWalk walk = ProposedWalkObservable.getProposedWalk();
+        ProposedWalk walk = getProposedWalk();
         //ProposedWalk walk = new ProposedWalk("Grizzly Road", "04/17/2000", "9:00PM", new TeamMember("Amrit Singh", "aksingh@ucsd.edu", false));
 
         Log.d(TAG, "Walk is NULL: " + ((walk == null) ? true:false));
@@ -79,6 +83,13 @@ public class ScheduledWalksPage extends AppCompatActivity {
                 launchProposedWalkDetailsPage();
             }
         });
+    }
+
+    private ProposedWalk getProposedWalk(){
+        if(HomePage.MOCK_TESTING){
+            return TeamMemberFactory.getProposedWalk();
+        }
+        return ProposedWalkObservable.getProposedWalk();
     }
 
     private void renderWalkOnScreen(ProposedWalk walk){

@@ -27,6 +27,7 @@ import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.custom_data_classes.ProposedWalkJsonConverter;
 import com.example.walkwalkrevolution.proposed_walk_observer_pattern.ProposedWalkObservable;
 import com.google.android.gms.common.api.GoogleApiActivity;
+import com.google.firebase.firestore.auth.User;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 
@@ -52,14 +53,20 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proposed_walk_details_page);
 
-        CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
-            @Override
-            public void callBack() {
-                setWalkInformation();
-                initRecyclerView();
-                renderUserLayout();
-            }
-        });
+        if(HomePage.MOCK_TESTING){
+            setWalkInformation();
+            initRecyclerView();
+            renderUserLayout();
+        }else{
+            CloudDatabase.populateTeamMateFactory(new CloudCallBack() {
+                @Override
+                public void callBack() {
+                    setWalkInformation();
+                    initRecyclerView();
+                    renderUserLayout();
+                }
+            });
+        }
     }
 
     /**
@@ -122,11 +129,19 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void initializeFields(){
-        this.proposedWalk = ProposedWalkObservable.getProposedWalk();
+        if(HomePage.MOCK_TESTING){
+            this.proposedWalk = TeamMemberFactory.getProposedWalk();
+            UserDetails user = UserDetailsFactory.get("currentUser");
+            this.currentUser = new TeamMember( user.getEmail(), user.getName(), true);
+
+        }else{
+            this.proposedWalk = ProposedWalkObservable.getProposedWalk();
+            this.currentUser = CloudDatabase.currentUserMember;
+        }
+
         Map<String, TeamMember> map = TeamMemberFactory.getAllMembers();
         this.teammates = new ArrayList<>();
         teammates.addAll(map.values());
-        this.currentUser = CloudDatabase.currentUserMember;
 
         if(!currentUser.getEmail().equals(proposedWalk.getCreator().getEmail())){
             Log.d(TAG, "Not a User");
@@ -172,6 +187,15 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void withdrawWalk(){
+        if(HomePage.MOCK_TESTING){
+            TeamMemberFactory.setProposedWalk(null);
+            for(TeamMember member: teammates){
+                member.setProposedWalkStatus(0);
+            }
+            startActivity(new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class));
+            Toast.makeText(this, "Successfully Withdrawn", Toast.LENGTH_SHORT).show();
+            return;
+        }
         ProposedWalkObservable.clearProposedWalk();
         for(TeamMember member: teammates){
             member.setProposedWalkStatus(0);
@@ -182,6 +206,16 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
     }
 
     private void scheduleWalk(){
+        if(HomePage.MOCK_TESTING){
+            proposedWalk.setIsScheduled(true);
+            TeamMemberFactory.setProposedWalk(proposedWalk);
+            for(TeamMember member: teammates){
+                member.setProposedWalkStatus(0);
+            }
+            startActivity(new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class));
+            Toast.makeText(this, "Successfully Scheduled", Toast.LENGTH_SHORT).show();
+            return;
+        }
         this.proposedWalk.setIsScheduled(true);
         ProposedWalkObservable.setProposedWalkInCloud(this.proposedWalk);
         Intent intent = new Intent(ProposedWalkDetailsPage.this, ScheduledWalksPage.class);
@@ -191,7 +225,9 @@ public class ProposedWalkDetailsPage extends AppCompatActivity implements View.O
 
     private void availabilityChanged(int status){
         this.currentUser.setProposedWalkStatus(status);
-        CloudDatabase.updateCurrentUserInTeam();
+        if(!HomePage.MOCK_TESTING){
+            CloudDatabase.updateCurrentUserInTeam();
+        }
         orangeBackgroundForChosenAvailability();
         sortTeammatesByStatus();
         this.adapter.notifyDataSetChanged();

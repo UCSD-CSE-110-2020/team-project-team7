@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.walkwalkrevolution.custom_data_classes.ProposedWalk;
 import com.example.walkwalkrevolution.custom_data_classes.Route;
 import com.example.walkwalkrevolution.fitness.FitnessServiceFactory;
 import com.example.walkwalkrevolution.fitness.FitnessService;
@@ -33,6 +34,8 @@ import java.util.List;
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     //Default set to non-testing
     public final static boolean MOCK_TESTING = false;
+    public final static boolean is_Proposed_Walk_Creator = false;
+    private static boolean isFirstTime = true;
 
     public static final int RC_SIGN_IN = 55;
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -59,6 +62,12 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
 
         //TODO - MOCK TESTING DONE HERE FOR CURRENT USER
         if(MOCK_TESTING) {
+            if(!isFirstTime){
+                Log.d("HOMEPAGE ONCREATE", "USER DETAILS ALREADY MOCKED -- SKIPPING");
+                return;
+            }
+            Log.d("HOMEPAGE ONCREATE", "USER DETAILS SUCCESSFULLY MOCKED");
+            isFirstTime = false;
             UserDetails mockCurrentUser = new UserDetails("Yoshi", "Yoshi@gmail.com");
             UserDetailsFactory.put("currentUser", mockCurrentUser);
 
@@ -77,7 +86,34 @@ public class HomePage extends AppCompatActivity implements UpdateStepTextView {
                     .setCreator(mockedMember)
                     .buildRoute();
             TeamMemberFactory.put("aksingh@ucsd.edu",mockedMember );
+
+            Route mockedRoute2 = Route.RouteBuilder.newInstance()
+                    .setName("Route 3")
+                    .setStartingPoint("start3")
+                    .setSteps(50)
+                    .setDistance(12.9)
+                    .setDate("1/9/20")
+                    .setDuration(1, 29)
+                    .setOptionalFeatures(null)
+                    .setOptionalFeaturesStr(null)
+                    .setNotes("notes")
+                    .setUserHasWalkedRoute(false)
+                    .setCreator(mockedMember)
+                    .buildRoute();
+            TeamMemberFactory.put("aksingh@ucsd.edu",mockedMember );
+
             TeamMemberFactory.addRoute(new Pair<>("aksingh@ucsd.edu",mockedRoute));
+            TeamMemberFactory.addRoute(new Pair<>("aksingh@ucsd.edu",mockedRoute2));
+
+            ProposedWalk mock = null;
+            if(HomePage.is_Proposed_Walk_Creator){
+                TeamMember creatorMock = TeamMemberFactory.get("aksingh@ucsd.edu");
+                mock = new ProposedWalk("Ash Road", "03/13/2020", "12:00 PM", creatorMock);
+            }else{
+                TeamMember creatorMock = TeamMemberFactory.get("Yoshi@gmail.com");
+                mock = new ProposedWalk("Ash Road", "03/13/2020", "12:00 PM", creatorMock);
+            }
+            TeamMemberFactory.setProposedWalk(mock);
 
         }else{
             // Initiallize firebase
