@@ -186,7 +186,6 @@ public class CloudDatabase {
                                         if (!proposedWalkJSON.equals("")) {
                                             ProposedWalk pw = ProposedWalkJsonConverter.convertJsonToWalk(proposedWalkJSON);
                                             TeamMemberFactory.setProposedWalk(pw);
-                                            cb.callBack();
                                         } else {
                                             Log.d(TAG, "team has no proposed walk");
                                             TeamMemberFactory.setProposedWalk(null);
@@ -204,6 +203,9 @@ public class CloudDatabase {
                         }
                     });
         }
+
+        cb.callBack();
+        Log.d(TAG, "Finished calling CloudDatabase.populateTeamProposedWalk()");
     }
 
     /**

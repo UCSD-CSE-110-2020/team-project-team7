@@ -29,6 +29,9 @@ public class ScheduledWalksPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "INSIDE SCHEDULED WALKS");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scheduled_walks_page);
+
         ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
             @Override
             public void callBack() {
@@ -36,9 +39,6 @@ public class ScheduledWalksPage extends AppCompatActivity {
                 Log.d(TAG, "Called setup");
             }
         });
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scheduled_walks_page);
 
 
         //setUp();
