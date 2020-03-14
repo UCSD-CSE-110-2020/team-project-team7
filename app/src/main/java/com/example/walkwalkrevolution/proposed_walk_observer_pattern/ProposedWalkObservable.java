@@ -72,7 +72,7 @@ public  class ProposedWalkObservable extends Observable {
     }
 
     /**
-     * Set the proposed walk and store it in the cloud.
+     * Set the proposed walk and store it in the cloud for scheduling.
      */
     public static void setProposedWalkInCloud(ProposedWalk proposedWalkA) {
         if (proposedWalk != null) {

@@ -31,6 +31,8 @@ import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.walkwalkrevolution.HomePage.MOCK_TESTING;
+
 /**
  * Handles interactions with editing details of and saving a
  * Routes entry on the Routes Form Activity.
@@ -167,7 +169,7 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         // Find out which intent we are from
         checkIntent();
 
-        // Make the check mark disappear if this is not walked tema route
+        // Make the check mark disappear if this is not walked team route
         adjustCheckMark();
     }
 
@@ -220,13 +222,15 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
                     intentFromRoutesDetails(); // Load UI as if coming from Personal Routes Page
                     intentFromTeamRoutes();
                     teamRoute = TreeSetManipulation.getSelectedRoute();
-                    ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
-                        @Override
-                        public void callBack() {
-                            return;
-                        }
-                    });
                     saveButton.setVisibility(View.INVISIBLE);
+                    if (!HomePage.MOCK_TESTING) {
+                        ProposedWalkObservable.fetchProposedWalk(new CloudCallBack() {
+                            @Override
+                            public void callBack() {
+                                return;
+                            }
+                        });
+                    }
                     Log.d(TAG, "Intent Found: Route Preview from Team Routes Page");
                     break;
                 default:
@@ -372,13 +376,15 @@ public class RoutesForm extends AppCompatActivity implements ProposedWalkObserve
         proposeWalkButton = (Button) findViewById(R.id.proposeWalkButton);
         proposeWalkButton.setVisibility(View.VISIBLE);
 
-        // Add this activity into the observer pattern
-        ProposedWalkObservable.register(this);
-        // Start the fetcher intent service
-        Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
-        startService(intent);
+        if (!HomePage.MOCK_TESTING) {
+            // Add this activity into the observer pattern
+            ProposedWalkObservable.register(this);
+            // Start the fetcher intent service
+            Intent intent = new Intent(RoutesForm.this, ProposedWalkFetcherService.class);
+            startService(intent);
+            updateProposeWalkButton();
+        }
 
-        updateProposeWalkButton();
         intentIsFromTeamRoutes = true; // For displaying the ProposedWalkButton
     }
 

@@ -108,6 +108,13 @@ public class SendProposedWalk extends AppCompatActivity implements ProposedWalkO
      * Save button behavior. Send the proposed walk to the cloud.
      */
     private void sendProposedWalk() {
+        if (HomePage.MOCK_TESTING) {
+            Log.d(TAG, "MOCKING!");
+            Intent intent = new Intent(this, TeammatesPage.class);
+            startActivity(intent);
+            finish();
+        }
+
         // Check if a proposed walk was already made, this happens if someone else made a proposed
         // walk while we were on this page
         if (cloudProposedWalk != null) {

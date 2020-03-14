@@ -32,7 +32,7 @@ import java.util.List;
 
 public class HomePage extends AppCompatActivity implements UpdateStepTextView {
     //Default set to non-testing
-    public final static boolean MOCK_TESTING = false;
+    public final static boolean MOCK_TESTING = true;
 
     public static final int RC_SIGN_IN = 55;
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
