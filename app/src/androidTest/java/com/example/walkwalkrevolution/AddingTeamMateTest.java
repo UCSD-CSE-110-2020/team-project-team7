@@ -54,6 +54,8 @@ public class AddingTeamMateTest {
         intent = new Intent( getInstrumentation().getTargetContext(), HomePage.class);
         intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
         intent.putExtra("testStep", true);
+        intent.putExtra("testService", true );
+        intent.putExtra("creator", true );
     }
     private void clearSharedPrefs() {
         Context targetContext = getInstrumentation().getTargetContext();

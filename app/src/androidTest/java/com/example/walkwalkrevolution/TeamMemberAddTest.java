@@ -32,13 +32,9 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-/**
- * BDD TEST MS2
- * Checks to see if the team members have good details
- */
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TeamMemberNameTest {
+public class TeamMemberAddTest {
     Intent intent;
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
@@ -50,6 +46,8 @@ public class TeamMemberNameTest {
         clearSharedPrefs();
         intent = new Intent( getInstrumentation().getTargetContext(), HomePage.class);
         intent.putExtra(HomePage.FITNESS_SERVICE_KEY, TEST_SERVICE);
+        intent.putExtra("testService", true);
+        intent.putExtra("creator", true);
         intent.putExtra("testStep", true);
     }
 
@@ -60,19 +58,9 @@ public class TeamMemberNameTest {
         sharedPreferences.edit().putBoolean("my_first_time", true).commit();
     }
     @Test
-    public void teamMemberNameTest() {
+    public void teamMemberAddTest() {
         mActivityTestRule.launchActivity(intent);
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.height_save_btn), withText("Save"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.teammatesButton), withText("TEAM"),
                         childAtPosition(
                                 allOf(withId(R.id.buttonLayout),
@@ -81,7 +69,16 @@ public class TeamMemberNameTest {
                                                 3)),
                                 1),
                         isDisplayed()));
-        appCompatButton2.perform(click());
+        appCompatButton.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.teammateName), withText("Amrit Singh"),
