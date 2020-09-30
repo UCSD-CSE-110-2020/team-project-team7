@@ -1,6 +1,5 @@
 # WalkWalkRevolution
 Created for CSE 110: Software Engineering
-README taken from here: https://github.com/UCSD-CSE-110-2020/team-project-team24
 # References
   * The Espresso Tests use a TestRule adapted from [this SO post](https://stackoverflow.com/questions/37597080/reset-app-state-between-instrumentationtestcase-runs)
   * The GoogleFit API adapter, FitnessService, FitnessServiceFactor, the Testing FitnessService all adapted from [lab 4](https://github.com/UCSD-CSE-110-2020/lab4-fitness)
